@@ -1,0 +1,116 @@
+{% extends 'manage_work/base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "ScholarSpace | Manage Work" %}{% endblock %}
+{% block nav_dashboard %}mw-active{% endblock %}
+{% block page_title %}Dashboard{% endblock %}
+
+{% block header_actions %}
+<form method="POST" action="{% url 'manage_work:load_sample' %}" class="inline">
+  {% csrf_token %}
+  <button type="submit" class="px-4 py-1.5 rounded-full border border-outline-variant text-xs font-bold hover:bg-surface-variant/30 transition-colors">{% trans "Load sample" %}</button>
+</form>
+<form method="POST" action="{% url 'manage_work:clear_all' %}" class="inline"
+      onsubmit='return confirm("{% trans "Delete ALL your deadlines?" %}")'>
+  {% csrf_token %}
+  <button type="submit" class="px-4 py-1.5 rounded-full bg-red-50 text-red-600 text-xs font-bold hover:bg-red-100 transition-colors">{% trans "Clear all" %}</button>
+</form>
+{% endblock %}
+
+{% block mw_content %}
+<div class="space-y-8">
+
+  <!-- Quick stat cards -->
+  <div class="grid grid-cols-3 gap-4">
+    <a href="{% url 'manage_work:my_tasks' %}" class="bg-white rounded-2xl p-5 border border-outline-variant/30 no-underline group hover:shadow-md transition-shadow">
+      <div class="flex items-center gap-3 mb-3">
+        <div class="w-9 h-9 bg-orange-100 rounded-xl flex items-center justify-center">
+          <span class="material-symbols-outlined text-orange-600 text-[20px]">description</span>
+        </div>
+        <span class="text-xs font-bold text-on-surface-variant uppercase tracking-wider">{% trans "Total tasks" %}</span>
+      </div>
+      <p class="text-3xl font-black font-headline text-on-surface">{{ mw_total_tasks|default:"0" }}</p>
+    </a>
+    <a href="{% url 'manage_work:conflicts' %}" class="bg-white rounded-2xl p-5 border border-outline-variant/30 no-underline group hover:shadow-md transition-shadow">
+      <div class="flex items-center gap-3 mb-3">
+        <div class="w-9 h-9 bg-red-100 rounded-xl flex items-center justify-center">
+          <span class="material-symbols-outlined text-red-600 text-[20px]">bolt</span>
+        </div>
+        <span class="text-xs font-bold text-on-surface-variant uppercase tracking-wider">{% trans "Conflicts" %}</span>
+      </div>
+      <p class="text-3xl font-black font-headline text-on-surface">{{ mw_conflicts|default:"0" }}</p>
+    </a>
+    <a href="{% url 'manage_work:reminders' %}" class="bg-white rounded-2xl p-5 border border-outline-variant/30 no-underline group hover:shadow-md transition-shadow">
+      <div class="flex items-center gap-3 mb-3">
+        <div class="w-9 h-9 bg-green-100 rounded-xl flex items-center justify-center">
+          <span class="material-symbols-outlined text-green-600 text-[20px]">alarm</span>
+        </div>
+        <span class="text-xs font-bold text-on-surface-variant uppercase tracking-wider">{% trans "Due in 72h" %}</span>
+      </div>
+      <p class="text-3xl font-black font-headline text-on-surface">{{ mw_due_72h|default:"0" }}</p>
+    </a>
+  </div>
+
+  <!-- Quick-access grid -->
+  <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+    {% for icon, label, url_name, color in quick_links %}
+    <a href="{{ url_name }}" class="bg-white rounded-2xl p-5 border border-outline-variant/30 no-underline hover:shadow-md transition-shadow flex items-center gap-3">
+      <span class="material-symbols-outlined text-primary text-[24px]">{{ icon }}</span>
+      <span class="font-semibold text-sm text-on-surface">{{ label }}</span>
+    </a>
+    {% empty %}
+    <a href="{% url 'manage_work:add_deadline' %}"  class="bg-white rounded-2xl p-5 border border-outline-variant/30 no-underline hover:shadow-md transition-shadow flex items-center gap-3">
+      <span class="material-symbols-outlined text-primary text-[24px]">add_circle</span>
+      <span class="font-semibold text-sm text-on-surface">{% trans "Add Deadline" %}</span>
+    </a>
+    <a href="{% url 'manage_work:my_tasks' %}" class="bg-white rounded-2xl p-5 border border-outline-variant/30 no-underline hover:shadow-md transition-shadow flex items-center gap-3">
+      <span class="material-symbols-outlined text-primary text-[24px]">checklist</span>
+      <span class="font-semibold text-sm text-on-surface">{% trans "My Tasks" %}</span>
+    </a>
+    <a href="{% url 'manage_work:smart_plan' %}" class="bg-white rounded-2xl p-5 border border-outline-variant/30 no-underline hover:shadow-md transition-shadow flex items-center gap-3">
+      <span class="material-symbols-outlined text-primary text-[24px]">auto_awesome</span>
+      <span class="font-semibold text-sm text-on-surface">{% trans "Smart Plan" %}</span>
+    </a>
+    <a href="{% url 'manage_work:conflicts' %}" class="bg-white rounded-2xl p-5 border border-outline-variant/30 no-underline hover:shadow-md transition-shadow flex items-center gap-3">
+      <span class="material-symbols-outlined text-red-500 text-[24px]">warning</span>
+      <span class="font-semibold text-sm text-on-surface">{% trans "Conflicts" %}</span>
+    </a>
+    <a href="{% url 'manage_work:analytics' %}" class="bg-white rounded-2xl p-5 border border-outline-variant/30 no-underline hover:shadow-md transition-shadow flex items-center gap-3">
+      <span class="material-symbols-outlined text-primary text-[24px]">bar_chart</span>
+      <span class="font-semibold text-sm text-on-surface">{% trans "Analytics" %}</span>
+    </a>
+    <a href="{% url 'manage_work:sms_settings' %}" class="bg-white rounded-2xl p-5 border border-outline-variant/30 no-underline hover:shadow-md transition-shadow flex items-center gap-3">
+      <span class="material-symbols-outlined text-primary text-[24px]">sms</span>
+      <span class="font-semibold text-sm text-on-surface">{% trans "SMS Settings" %}</span>
+    </a>
+    {% endfor %}
+  </div>
+
+  <!-- How It Works -->
+  <section class="bg-[#f0f1f9] rounded-3xl p-8">
+    <h3 class="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest mb-8">{% trans "How It Works" %}</h3>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div class="space-y-3">
+        <span class="material-symbols-outlined text-orange-500 text-2xl">bolt</span>
+        <h4 class="text-sm font-bold text-on-surface">{% trans "Auto conflict detection" %}</h4>
+        <p class="text-xs text-on-surface-variant leading-relaxed">{% trans "When two tasks share overlapping prep time, a conflict is flagged immediately." %}</p>
+      </div>
+      <div class="space-y-3">
+        <span class="material-symbols-outlined text-pink-400 text-2xl">psychology</span>
+        <h4 class="text-sm font-bold text-on-surface">{% trans "Smart sequencing" %}</h4>
+        <p class="text-xs text-on-surface-variant leading-relaxed">{% trans "The Smart Plan orders your tasks by priority, urgency, effort, and conflict severity." %}</p>
+      </div>
+      <div class="space-y-3">
+        <span class="material-symbols-outlined text-yellow-500 text-2xl">notifications</span>
+        <h4 class="text-sm font-bold text-on-surface">{% trans "Urgency reminders" %}</h4>
+        <p class="text-xs text-on-surface-variant leading-relaxed">{% trans "Reminders surfaces tasks due within 72 hours, sorted by how soon they're due." %}</p>
+      </div>
+      <div class="space-y-3">
+        <span class="material-symbols-outlined text-primary text-2xl">bar_chart</span>
+        <h4 class="text-sm font-bold text-on-surface">{% trans "Workflow analytics" %}</h4>
+        <p class="text-xs text-on-surface-variant leading-relaxed">{% trans "Track your workload with charts, histograms, and productivity insights." %}</p>
+      </div>
+    </div>
+  </section>
+</div>
+{% endblock %}

@@ -1,0 +1,52 @@
+{% extends 'manage_work/base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "ScholarSpace | Activity Log" %}{% endblock %}
+{% block nav_telemetry %}mw-active{% endblock %}
+{% block page_title %}Activity Log{% endblock %}
+
+{% block mw_content %}
+<div class="space-y-6">
+  <div>
+    <h2 class="text-xl font-bold font-headline text-on-surface">{% trans "Activity Log" %}</h2>
+    <p class="text-sm text-on-surface-variant mt-1">{% trans "Last 100 events for your account." %}</p>
+  </div>
+
+  {% if events %}
+  <div class="bg-white rounded-2xl border border-outline-variant/30 overflow-hidden">
+    <ul class="divide-y divide-outline-variant/10">
+      {% for event in events %}
+      <li class="flex items-start gap-4 px-6 py-3.5 hover:bg-[#f8f9ff] transition-colors">
+        <span class="material-symbols-outlined text-primary text-[18px] mt-0.5 shrink-0">
+          {% if event.event_type == 'deadline_created' %}add_circle
+          {% elif event.event_type == 'deadline_completed' %}check_circle
+          {% elif event.event_type == 'deadline_deleted' %}delete
+          {% elif event.event_type == 'conflict_detected' %}warning
+          {% elif event.event_type == 'conflict_resolved' %}check_circle
+          {% elif event.event_type == 'reminder_sent' %}mail
+          {% elif event.event_type == 'smart_plan_viewed' %}auto_awesome
+          {% elif event.event_type == 'analytics_viewed' %}bar_chart
+          {% else %}history{% endif %}
+        </span>
+        <div class="flex-1 min-w-0">
+          <p class="text-sm font-semibold text-on-surface">{{ event.get_event_type_display }}</p>
+          {% if event.deadline %}
+          <p class="text-xs text-on-surface-variant truncate">{{ event.deadline.title }}</p>
+          {% elif event.metadata %}
+          <p class="text-xs text-on-surface-variant truncate">{{ event.metadata|truncatechars:80 }}</p>
+          {% endif %}
+        </div>
+        <span class="text-xs text-on-surface-variant shrink-0 mt-0.5">{{ event.occurred_at|date:"M d H:i" }}</span>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+  {% else %}
+  <div class="bg-white rounded-2xl border border-outline-variant/30 py-16 flex flex-col items-center text-center gap-3">
+    <span class="material-symbols-outlined text-on-surface-variant text-4xl">history</span>
+    <h3 class="text-lg font-bold font-headline text-on-surface">{% trans "No activity yet" %}</h3>
+    <p class="text-sm text-on-surface-variant">{% trans "Events will appear here as you use Manage Work." %}</p>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

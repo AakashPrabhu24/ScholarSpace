@@ -1,0 +1,170 @@
+{% extends 'timetable_app/base.html' %}
+
+{% block title %}Student Timetable Maker - Questions{% endblock %}
+
+{% block content %}
+<section class="questions-section">
+    <h2>Create Your Personalized Timetable</h2>
+    <p>Please answer the following questions to help us generate a timetable that suits your needs.</p>
+    
+    <form method="post" action="{% url 'timetable_app:generate_timetable' %}">
+        {% csrf_token %}
+        
+        <div class="form-section">
+            <h3>Basic Information</h3>
+            <div class="form-group">
+                <label for="{{ form.study_preference.id_for_label }}">{{ form.study_preference.label }}</label>
+                {{ form.study_preference }}
+            </div>
+            
+            <div class="form-group">
+                <label for="{{ form.stream.id_for_label }}">{{ form.stream.label }}</label>
+                {{ form.stream }}
+            </div>
+            
+            <div class="form-group">
+                <label for="{{ form.education_level.id_for_label }}">{{ form.education_level.label }}</label>
+                {{ form.education_level }}
+            </div>
+        </div>
+        
+        <div class="form-section">
+            <h3>Activities & Commitments</h3>
+            <div class="form-group">
+                <label for="{{ form.job_status.id_for_label }}">{{ form.job_status.label }}</label>
+                {{ form.job_status }}
+            </div>
+            
+            <div class="form-group job-hours" style="display: none;">
+                <label for="{{ form.job_hours.id_for_label }}">{{ form.job_hours.label }}</label>
+                {{ form.job_hours }}
+            </div>
+            
+            <div class="form-group">
+                <label for="{{ form.attending_classes.id_for_label }}">{{ form.attending_classes.label }}</label>
+                {{ form.attending_classes }}
+            </div>
+            
+            <div class="form-group class-hours" style="display: none;">
+                <label for="{{ form.class_hours.id_for_label }}">{{ form.class_hours.label }}</label>
+                {{ form.class_hours }}
+            </div>
+            
+            <div class="form-group">
+                <label for="{{ form.daily_activities_hours.id_for_label }}">{{ form.daily_activities_hours.label }}</label>
+                {{ form.daily_activities_hours }}
+                <small>Include sleep, meals, personal care, etc.</small>
+            </div>
+        </div>
+        
+        <div class="form-section">
+            <h3>Exam Preparation</h3>
+            <div class="form-group">
+                <label for="{{ form.preparing_for_exam.id_for_label }}">{{ form.preparing_for_exam.label }}</label>
+                {{ form.preparing_for_exam }}
+            </div>
+            
+            <div class="form-group exam-date" style="display: none;">
+                <label for="{{ form.exam_date.id_for_label }}">{{ form.exam_date.label }}</label>
+                {{ form.exam_date }}
+            </div>
+        </div>
+        
+        <div class="form-section">
+            <h3>Subjects & Preparation Levels</h3>
+            <p>Enter your subjects and current preparation level (0-100%)</p>
+            
+            <div class="subject-group">
+                <h4>Languages</h4>
+                <div class="form-row">
+                    <div class="form-group half">
+                        <label for="{{ form.language1_name.id_for_label }}">{{ form.language1_name.label }}</label>
+                        {{ form.language1_name }}
+                    </div>
+                    <div class="form-group half">
+                        <label for="{{ form.language1_level.id_for_label }}">{{ form.language1_level.label }}</label>
+                        {{ form.language1_level }}
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group half">
+                        <label for="{{ form.language2_name.id_for_label }}">{{ form.language2_name.label }}</label>
+                        {{ form.language2_name }}
+                    </div>
+                    <div class="form-group half">
+                        <label for="{{ form.language2_level.id_for_label }}">{{ form.language2_level.label }}</label>
+                        {{ form.language2_level }}
+                    </div>
+                </div>
+            </div>
+            
+            <div class="subject-group">
+                <h4>Other Subjects</h4>
+                <div class="form-row">
+                    <div class="form-group half">
+                        <label for="{{ form.subject1_name.id_for_label }}">{{ form.subject1_name.label }}</label>
+                        {{ form.subject1_name }}
+                    </div>
+                    <div class="form-group half">
+                        <label for="{{ form.subject1_level.id_for_label }}">{{ form.subject1_level.label }}</label>
+                        {{ form.subject1_level }}
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group half">
+                        <label for="{{ form.subject2_name.id_for_label }}">{{ form.subject2_name.label }}</label>
+                        {{ form.subject2_name }}
+                    </div>
+                    <div class="form-group half">
+                        <label for="{{ form.subject2_level.id_for_label }}">{{ form.subject2_level.label }}</label>
+                        {{ form.subject2_level }}
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group half">
+                        <label for="{{ form.subject3_name.id_for_label }}">{{ form.subject3_name.label }}</label>
+                        {{ form.subject3_name }}
+                    </div>
+                    <div class="form-group half">
+                        <label for="{{ form.subject3_level.id_for_label }}">{{ form.subject3_level.label }}</label>
+                        {{ form.subject3_level }}
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group half">
+                        <label for="{{ form.subject4_name.id_for_label }}">{{ form.subject4_name.label }}</label>
+                        {{ form.subject4_name }}
+                    </div>
+                    <div class="form-group half">
+                        <label for="{{ form.subject4_level.id_for_label }}">{{ form.subject4_level.label }}</label>
+                        {{ form.subject4_level }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="form-section">
+            <h3>Planning Parameters</h3>
+            <div class="form-group">
+                <label for="{{ form.force_majeure_days.id_for_label }}">{{ form.force_majeure_days.label }}</label>
+                {{ form.force_majeure_days }}
+                <small>Days to keep aside for unexpected events</small>
+            </div>
+            
+            <div class="form-group">
+                <label for="{{ form.revision_days.id_for_label }}">{{ form.revision_days.label }}</label>
+                {{ form.revision_days }}
+            </div>
+        </div>
+        
+        <div class="form-buttons">
+            <button type="submit" class="btn btn-primary">Generate Timetable</button>
+            <button type="reset" class="btn btn-secondary">Reset</button>
+        </div>
+    </form>
+</section>
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends 'manage_work/base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "ScholarSpace | Reminders" %}{% endblock %}
+{% block nav_reminders %}mw-active{% endblock %}
+{% block page_title %}Reminders{% endblock %}
+
+{% block mw_content %}
+<div class="space-y-6">
+  <div>
+    <h2 class="text-xl font-bold font-headline text-on-surface">{% trans "Upcoming Reminders" %}</h2>
+    <p class="text-sm text-on-surface-variant mt-1">{% trans "Sent automatically via email and/or SMS at 72h, 24h, and 1h before each deadline." %}</p>
+  </div>
+
+  {% if reminders %}
+  <div class="bg-white rounded-2xl border border-outline-variant/30 overflow-hidden">
+    <ul class="divide-y divide-outline-variant/10">
+      {% for r in reminders %}
+      <li class="flex items-center gap-4 px-6 py-4 hover:bg-[#f8f9ff] transition-colors">
+        <div class="w-10 h-10 rounded-full flex items-center justify-center shrink-0
+                    {% if r.channel == 'sms' %}bg-purple-100 text-purple-600{% else %}bg-primary-container text-primary{% endif %}">
+          <span class="material-symbols-outlined text-[20px]">{% if r.channel == 'sms' %}sms{% else %}mail{% endif %}</span>
+        </div>
+        <div class="flex-1 min-w-0">
+          <p class="font-semibold text-on-surface text-sm truncate">{{ r.deadline.title }}</p>
+          <p class="text-xs text-on-surface-variant">{{ r.remind_at|date:"M d, Y" }} at {{ r.remind_at|time:"H:i" }} UTC &bull; <span class="uppercase font-bold">{{ r.channel }}</span></p>
+        </div>
+        <span class="text-xs text-on-surface-variant shrink-0">{{ r.remind_at|timeuntil }} {% trans "away" %}</span>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+  {% else %}
+  <div class="bg-white rounded-2xl border border-outline-variant/30 py-20 flex flex-col items-center text-center gap-4">
+    <span class="material-symbols-outlined text-on-surface-variant text-4xl">notifications_off</span>
+    <h3 class="text-lg font-bold font-headline text-on-surface">{% trans "No upcoming reminders" %}</h3>
+    <p class="text-sm text-on-surface-variant">{% trans "Add deadlines and reminders will be scheduled automatically at 72h, 24h, and 1h before each one." %}</p>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

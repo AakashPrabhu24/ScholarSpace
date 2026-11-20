@@ -1,0 +1,37 @@
+db.sqlite3
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+env/
+.venv/
+
+# Django specific
+*.log
+media/
+static/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Secrets - NEVER COMMIT THESE
+*.json
+*.env
+.env*
+google_oauth_client_secret.json
+google_calendar_api_key.txt
+google_books_api_key.txt
+secrets/
+credentials/
+config/secrets/
+*password*
+*secret*
+*token*
+
+# Ignore general text logs/notes, but keep requirements
+*.txt
+!requirements*.txt
+

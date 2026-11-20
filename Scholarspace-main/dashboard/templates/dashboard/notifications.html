@@ -1,0 +1,453 @@
+{% extends 'dashboard/scholar_app_base.html' %}
+{% load static %}
+
+{% block title %}ScholarSpace | Notifications{% endblock %}
+
+{% block scholar_floating_shapes %}
+<div class="absolute top-[10%] right-[5%] w-80 h-80 bg-primary-container/10 rounded-full blur-[120px] pointer-events-none" aria-hidden="true"></div>
+<div class="absolute bottom-[10%] left-[5%] w-64 h-64 bg-tertiary-container/10 rounded-full blur-[100px] pointer-events-none" aria-hidden="true"></div>
+{% endblock %}
+
+{% block main_class %}flex-grow w-full max-w-full px-0 py-0 pt-0 pb-24 md:pb-0{% endblock %}
+
+{% block content %}
+<div class="pt-24 pb-16 px-4 md:px-8 max-w-3xl mx-auto space-y-8">
+
+  <!-- Page header -->
+  <header class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div>
+      <p class="text-primary font-bold text-xs uppercase tracking-widest mb-1">ScholarSpace</p>
+      <h1 class="text-4xl font-extrabold font-headline text-on-surface tracking-tight">Notifications</h1>
+      <p class="text-on-surface-variant mt-1 text-sm">
+        {% if notifications %}{{ notifications|length }} notification{{ notifications|length|pluralize }}{% else %}All clear{% endif %}
+      </p>
+    </div>
+    {% if notifications %}
+    <form method="POST" action="{% url 'notifications-mark-read' %}">
+      {% csrf_token %}
+      <button type="submit"
+              class="flex items-center gap-2 px-5 py-2.5 bg-surface-container border border-outline-variant/20 rounded-full text-sm font-semibold text-on-surface hover:bg-surface-container-high transition-all active:scale-95">
+        <span class="material-symbols-outlined text-[18px]">done_all</span> Mark all read
+      </button>
+    </form>
+    {% endif %}
+  </header>
+
+  <!-- ── Tour Invite Card ─────────────────────────────────────────────────── -->
+  <section class="bg-gradient-to-br from-primary to-primary-dim rounded-xl p-6 text-on-primary shadow-lg shadow-primary/20 flex flex-col sm:flex-row sm:items-center gap-5">
+    <div class="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center shrink-0">
+      <span class="material-symbols-outlined text-3xl" style="font-variation-settings:'FILL' 1">explore</span>
+    </div>
+    <div class="flex-1 min-w-0">
+      <h2 class="text-xl font-bold font-headline mb-1">Take a Quick Tour</h2>
+      <p class="text-on-primary/80 text-sm leading-relaxed">
+        New here? Let us walk you through every feature — Homework, Deadlines, Smart Plan, and more.
+      </p>
+    </div>
+    <button id="start-tour-btn"
+            onclick="ScholarTour.start()"
+            class="shrink-0 flex items-center gap-2 px-6 py-3 bg-white text-primary font-bold rounded-full hover:bg-white/90 active:scale-95 transition-all text-sm font-headline shadow">
+      <span class="material-symbols-outlined text-[18px]">play_circle</span> Start Tour
+    </button>
+  </section>
+
+  <!-- ── Notification Feed ────────────────────────────────────────────────── -->
+  {% if notifications %}
+  <section class="space-y-3">
+    {% for notif in notifications %}
+    <div class="flex items-start gap-4 p-5 rounded-xl border transition-all
+                {% if not notif.is_read %}bg-primary-container/10 border-primary/20{% else %}bg-surface-container-lowest border-outline-variant/10{% endif %}">
+
+      <!-- Icon bubble -->
+      <div class="shrink-0 w-11 h-11 rounded-full flex items-center justify-center
+                  {% if notif.notif_type == 'welcome' %}bg-tertiary-container text-tertiary
+                  {% elif notif.notif_type == 'homework' %}bg-primary-container text-primary
+                  {% elif notif.notif_type == 'todo' %}bg-secondary-container text-secondary
+                  {% elif notif.notif_type == 'deadline' %}bg-error-container/40 text-error
+                  {% elif notif.notif_type == 'notes' %}bg-primary-container/60 text-primary
+                  {% else %}bg-surface-container text-on-surface-variant{% endif %}">
+        <span class="material-symbols-outlined text-[20px]" style="font-variation-settings:'FILL' 1">{{ notif.icon }}</span>
+      </div>
+
+      <!-- Content -->
+      <div class="flex-1 min-w-0">
+        <div class="flex items-start justify-between gap-2 mb-1">
+          <p class="font-bold text-on-surface font-headline text-sm {% if not notif.is_read %}text-primary{% endif %}">
+            {{ notif.title }}
+          </p>
+          {% if not notif.is_read %}
+          <span class="shrink-0 w-2 h-2 mt-1.5 bg-primary rounded-full"></span>
+          {% endif %}
+        </div>
+        <p class="text-on-surface-variant text-sm leading-relaxed">{{ notif.message }}</p>
+        <div class="flex items-center justify-between mt-2">
+          <span class="text-xs text-outline">{{ notif.created_at|timesince }} ago</span>
+          {% if notif.link %}
+          <a href="{{ notif.link }}"
+             class="text-xs font-bold text-primary hover:underline underline-offset-2 no-underline flex items-center gap-0.5">
+            View <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+          </a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </section>
+
+  {% else %}
+  <!-- Empty state -->
+  <section class="bg-surface-container-lowest rounded-xl border border-outline-variant/10 py-20 flex flex-col items-center text-center gap-4">
+    <div class="w-16 h-16 bg-surface-container rounded-full flex items-center justify-center">
+      <span class="material-symbols-outlined text-outline text-3xl">notifications_off</span>
+    </div>
+    <h3 class="text-xl font-bold font-headline text-on-surface">All clear!</h3>
+    <p class="text-on-surface-variant max-w-xs text-sm">
+      No notifications yet. Notifications will appear here when you add homework, goals, deadlines, or notes.
+    </p>
+  </section>
+  {% endif %}
+
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     ScholarSpace Interactive Tour
+══════════════════════════════════════════════════════════════════════════ -->
+<div id="scholar-tour-overlay" class="fixed inset-0 z-[9999] pointer-events-none" aria-hidden="true" style="display:none">
+  <!-- Dark backdrop with cutout hole via box-shadow -->
+  <div id="scholar-tour-backdrop" class="absolute inset-0" style="background:rgba(0,0,0,0)"></div>
+
+  <!-- Spotlight ring -->
+  <div id="scholar-tour-spotlight"
+       class="absolute rounded-xl pointer-events-none transition-all duration-500"
+       style="box-shadow: 0 0 0 9999px rgba(0,0,0,0.55); border: 2px solid #bfc6fd; display:none">
+  </div>
+
+  <!-- Tooltip card -->
+  <div id="scholar-tour-card"
+       class="absolute pointer-events-auto bg-white rounded-xl shadow-2xl border border-outline-variant/20 w-80 p-5 transition-all duration-300"
+       style="display:none; z-index:10000">
+    <!-- Progress dots -->
+    <div id="tour-dots" class="flex gap-1.5 mb-4"></div>
+
+    <!-- Step header -->
+    <div class="flex items-center gap-3 mb-3">
+      <div id="tour-icon-wrap" class="w-10 h-10 rounded-xl bg-primary-container flex items-center justify-center shrink-0">
+        <span id="tour-icon" class="material-symbols-outlined text-primary text-[22px]" style="font-variation-settings:'FILL' 1">star</span>
+      </div>
+      <div>
+        <p id="tour-label" class="text-[10px] font-black uppercase tracking-widest text-primary"></p>
+        <h3 id="tour-title" class="font-extrabold font-headline text-on-surface text-base leading-tight"></h3>
+      </div>
+    </div>
+
+    <p id="tour-desc" class="text-sm text-on-surface-variant leading-relaxed mb-5"></p>
+
+    <!-- Actions -->
+    <div class="flex items-center justify-between gap-3">
+      <button id="tour-exit-btn"
+              onclick="ScholarTour.exit()"
+              class="text-xs font-semibold text-outline hover:text-error transition-colors bg-transparent border-0 cursor-pointer px-0">
+        Exit tour
+      </button>
+      <div class="flex gap-2">
+        <button id="tour-prev-btn"
+                onclick="ScholarTour.prev()"
+                class="px-4 py-2 rounded-full border border-outline-variant/30 text-sm font-bold text-on-surface-variant hover:bg-surface-container transition-all active:scale-95 bg-white cursor-pointer">
+          Back
+        </button>
+        <button id="tour-next-btn"
+                onclick="ScholarTour.next()"
+                class="px-5 py-2 rounded-full bg-gradient-to-br from-primary to-primary-dim text-on-primary text-sm font-bold hover:opacity-90 active:scale-95 transition-all cursor-pointer border-0">
+          Next
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   ScholarSpace Feature Tour  —  fixed Options-menu handling
+   Steps with needsOptionsMenu:true hold the dropdown open
+   so every item can be spotlighted properly.
+============================================================ */
+var ScholarTour = (function () {
+
+  /* ── dropdown helpers ──────────────────────────────────── */
+  function _wrap() { return document.querySelector("[data-scholar-options]"); }
+
+  function openOptionsMenu() {
+    var w = _wrap(); if (!w) return;
+    var t = w.querySelector(".scholar-options-trigger");
+    var p = w.querySelector(".scholar-options-panel");
+    w.classList.add("is-open");
+    if (t) t.setAttribute("aria-expanded", "true");
+    if (p) p.setAttribute("aria-hidden",   "false");
+  }
+
+  function closeOptionsMenu() {
+    var w = _wrap(); if (!w) return;
+    var t = w.querySelector(".scholar-options-trigger");
+    var p = w.querySelector(".scholar-options-panel");
+    w.classList.remove("is-open");
+    if (t) t.setAttribute("aria-expanded", "false");
+    if (p) p.setAttribute("aria-hidden",   "true");
+  }
+
+  /* ── steps ─────────────────────────────────────────────── */
+  var steps = [
+    {
+      label: "ScholarSpace", needsOptionsMenu: false,
+      title: "Welcome to ScholarSpace!",
+      desc:  "Your all-in-one academic hub. This tour highlights every feature in about 2 minutes. Use the buttons or arrow keys to navigate.",
+      icon: "school", color: "bg-primary-container", iconColor: "text-primary",
+      selector: ".scholar-top-nav",
+    },
+    {
+      label: "Dashboard", needsOptionsMenu: false,
+      title: "Your Learning Hub",
+      desc:  "The Home link takes you to the dashboard — a grid of feature cards. Click any card to jump straight in.",
+      icon: "space_dashboard", color: "bg-primary-container", iconColor: "text-primary",
+      selector: "a[href='/dashboard/']",
+    },
+    {
+      label: "Manage Work", needsOptionsMenu: false,
+      title: "Deadline & Conflict Manager",
+      desc:  "Add deadlines, detect scheduling conflicts, get a priority-ranked Smart Plan, and receive SMS/email reminders at 72 h, 24 h and 1 h before each task.",
+      icon: "event_busy", color: "bg-error-container", iconColor: "text-error",
+      selector: "a[href='/manage-work/']",
+    },
+    {
+      label: "Options Menu", needsOptionsMenu: true,
+      title: "Options Dropdown — now open!",
+      desc:  "Most study tools live inside this dropdown. It will stay open for the next several steps so you can see exactly where each feature lives.",
+      icon: "apps", color: "bg-surface-container", iconColor: "text-on-surface-variant",
+      selector: ".scholar-options-trigger",
+    },
+    {
+      label: "Homework", needsOptionsMenu: true,
+      title: "Homework Tracker",
+      desc:  "Log assignments with subject, title, description, and due date. Mark them complete as you go — never miss a deadline again.",
+      icon: "assignment", color: "bg-primary-container", iconColor: "text-primary",
+      selector: "a[role='menuitem'][href='/homework']",
+    },
+    {
+      label: "My Goals", needsOptionsMenu: true,
+      title: "Goal / To-Do Manager",
+      desc:  "Set academic milestones and track them. Toggle goals complete when done and watch your progress grow.",
+      icon: "ads_click", color: "bg-secondary-container", iconColor: "text-secondary",
+      selector: "a[role='menuitem'][href='/todo']",
+    },
+    {
+      label: "Notes", needsOptionsMenu: true,
+      title: "Smart Notes",
+      desc:  "Create rich text notes and attach PDF files. All notes are private to your account.",
+      icon: "note_alt", color: "bg-primary-container", iconColor: "text-primary",
+      selector: "a[role='menuitem'][href='/notes/']",
+    },
+    {
+      label: "Wikipedia", needsOptionsMenu: true,
+      title: "Wikipedia Search",
+      desc:  "Smart fuzzy search — even typos and titles like 'hollow knight' resolve to the correct article instantly.",
+      icon: "language", color: "bg-surface-container", iconColor: "text-on-surface-variant",
+      selector: "a[role='menuitem'][href='/wiki']",
+    },
+    {
+      label: "YouTube", needsOptionsMenu: true,
+      title: "Video Learning",
+      desc:  "Search YouTube and watch videos in a clean embedded player right inside ScholarSpace — no distractions.",
+      icon: "smart_display", color: "bg-error-container", iconColor: "text-error",
+      selector: "a[role='menuitem'][href='/youtube/']",
+    },
+    {
+      label: "Books", needsOptionsMenu: true,
+      title: "Digital Library",
+      desc:  "Search millions of books via Google Books and Open Library — textbooks, journals, and resources for any subject.",
+      icon: "menu_book", color: "bg-tertiary-container", iconColor: "text-tertiary",
+      selector: "a[role='menuitem'][href='/books']",
+    },
+    {
+      label: "Dictionary", needsOptionsMenu: true,
+      title: "Dictionary & Synonyms",
+      desc:  "Definition, phonetics with playable audio, usage example, and clickable synonym chips for any English word.",
+      icon: "dictionary", color: "bg-surface-container", iconColor: "text-on-surface-variant",
+      selector: "a[role='menuitem'][href='/dictionary']",
+    },
+    {
+      label: "Timetable", needsOptionsMenu: true,
+      title: "AI Study Timetable",
+      desc:  "Answer a few questions about your schedule and get a personalised daily study plan generated on the fly.",
+      icon: "calendar_month", color: "bg-secondary-container", iconColor: "text-secondary",
+      selector: "a[role='menuitem'][href='/timetable/']",
+    },
+    {
+      label: "Google Calendar", needsOptionsMenu: true,
+      title: "Calendar Integration",
+      desc:  "Full embedded Google Calendar plus a live sidebar of upcoming events fetched from the Calendar API.",
+      icon: "event", color: "bg-primary-container", iconColor: "text-primary",
+      selector: "a[role='menuitem'][href='/calendar/google/']",
+    },
+    {
+      label: "Profile", needsOptionsMenu: false,
+      title: "Your Profile",
+      desc:  "A one-page summary of all pending homework and goals — your personal academic snapshot.",
+      icon: "account_circle", color: "bg-surface-container", iconColor: "text-on-surface-variant",
+      selector: "a[href='/profile/']",
+    },
+    {
+      label: "Notifications", needsOptionsMenu: false,
+      title: "Notification Centre",
+      desc:  "You are here! Alerts appear whenever you add homework, goals, notes, or deadlines — plus welcome messages.",
+      icon: "notifications", color: "bg-tertiary-container", iconColor: "text-tertiary",
+      selector: "a[href='/notifications/']",
+    },
+  ];
+
+  var current = 0;
+  var overlay, spotlight, card;
+
+  function byId(id) { return document.getElementById(id); }
+
+  function getEl(sel) {
+    if (!sel) return null;
+    return document.querySelector(sel) || null;
+  }
+
+  function positionSpotlight(el) {
+    if (!el) { spotlight.style.display = "none"; return; }
+    var r = el.getBoundingClientRect(), pad = 8;
+    spotlight.style.display = "block";
+    spotlight.style.top     = (r.top    - pad + window.scrollY) + "px";
+    spotlight.style.left    = (r.left   - pad + window.scrollX) + "px";
+    spotlight.style.width   = (r.width  + pad * 2) + "px";
+    spotlight.style.height  = (r.height + pad * 2) + "px";
+  }
+
+  function positionCard(el) {
+    var cw = 320, pad = 16, vw = window.innerWidth, vh = window.innerHeight;
+    var left, top;
+    if (!el) {
+      left = (vw - cw) / 2;
+      top  = vh / 2 - 160;
+    } else {
+      var r = el.getBoundingClientRect();
+      top  = r.bottom + pad + window.scrollY;
+      left = r.left   + window.scrollX;
+      if (left + cw > vw - pad) left = vw - cw - pad;
+      if (left < pad)           left = pad;
+      if (r.bottom + 260 + pad > vh) top = r.top - 260 - pad + window.scrollY;
+    }
+    card.style.left = left + "px";
+    card.style.top  = top  + "px";
+  }
+
+  function buildDots() {
+    var el = byId("tour-dots");
+    el.innerHTML = "";
+    steps.forEach(function (_, i) {
+      var d = document.createElement("span");
+      d.style.cssText =
+        "display:inline-block;border-radius:9999px;transition:all .3s;height:6px;" +
+        "background:" + (i === current ? "#545c8c" : "#b2b1bc") + ";" +
+        "width:"       + (i === current ? "18"     : "6")        + "px";
+      el.appendChild(d);
+    });
+  }
+
+  function updateCard(step) {
+    byId("tour-label").textContent = step.label;
+    byId("tour-title").textContent = step.title;
+    byId("tour-desc").textContent  = step.desc;
+    byId("tour-icon").textContent  = step.icon;
+    var wrap = byId("tour-icon-wrap");
+    wrap.className = "w-10 h-10 rounded-xl flex items-center justify-center shrink-0 " + step.color;
+    byId("tour-icon").className = "material-symbols-outlined text-[22px] " + step.iconColor;
+    byId("tour-prev-btn").style.display = current === 0 ? "none" : "";
+    byId("tour-next-btn").textContent   = current === steps.length - 1 ? "Finish" : "Next";
+    buildDots();
+  }
+
+  function render() {
+    var step = steps[current];
+
+    /*
+     * 3-phase approach to beat the dropdown's own "close on outside click":
+     *
+     * Phase 1 (60 ms): runs AFTER the browser has fired the click-outside
+     *   handler that would normally close the menu.  We open or close it here.
+     *
+     * Phase 2 (+ 200 ms if dropdown needed): waits for the CSS transition of
+     *   the panel so getBoundingClientRect returns real coordinates.
+     *
+     * Phase 3 (+ 80 ms): re-queries the element after any scroll settles,
+     *   then paints spotlight + card.
+     */
+    setTimeout(function () {
+
+      if (step.needsOptionsMenu) {
+        openOptionsMenu();
+      } else {
+        closeOptionsMenu();
+      }
+
+      var animDelay = step.needsOptionsMenu ? 200 : 0;
+
+      setTimeout(function () {
+        var el = getEl(step.selector);
+        if (el) el.scrollIntoView({ behavior: "smooth", block: "nearest" });
+
+        setTimeout(function () {
+          var el2 = getEl(step.selector);
+          positionSpotlight(el2);
+          positionCard(el2);
+          updateCard(step);
+        }, el ? 80 : 0);
+
+      }, animDelay);
+
+    }, 60);
+  }
+
+  /* ── public API ─────────────────────────────────────────── */
+  function start() {
+    overlay   = byId("scholar-tour-overlay");
+    spotlight = byId("scholar-tour-spotlight");
+    card      = byId("scholar-tour-card");
+    current   = 0;
+    overlay.style.display       = "block";
+    overlay.setAttribute("aria-hidden", "false");
+    spotlight.style.display     = "block";
+    card.style.display          = "block";
+    overlay.style.pointerEvents = "none";
+    card.style.pointerEvents    = "auto";
+    render();
+  }
+
+  function next() {
+    if (current < steps.length - 1) { current++; render(); }
+    else exit();
+  }
+
+  function prev() {
+    if (current > 0) { current--; render(); }
+  }
+
+  function exit() {
+    closeOptionsMenu();
+    var o = byId("scholar-tour-overlay");
+    if (o) { o.style.display = "none"; o.setAttribute("aria-hidden", "true"); }
+  }
+
+  /* keyboard shortcuts */
+  document.addEventListener("keydown", function (e) {
+    var o = byId("scholar-tour-overlay");
+    if (!o || o.style.display === "none") return;
+    if (e.key === "ArrowRight" || e.key === "Enter") next();
+    if (e.key === "ArrowLeft")  prev();
+    if (e.key === "Escape")     exit();
+  });
+
+  return { start: start, next: next, prev: prev, exit: exit };
+})();
+</script>
+{% endblock %}

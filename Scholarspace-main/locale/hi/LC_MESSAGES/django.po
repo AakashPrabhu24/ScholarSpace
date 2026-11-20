@@ -1,0 +1,1409 @@
+# Hindi translations for ScholarSpace
+# This file is distributed under the same license as the ScholarSpace package.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: ScholarSpace\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-04-05 06:38+0000\n"
+"PO-Revision-Date: 2026-04-05 06:38+0000\n"
+"Last-Translator: ScholarSpace Team\n"
+"Language-Team: Hindi\n"
+"Language: hi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid ""
+"Your ScholarSpace dashboard is ready. Plan, learn, and explore in one place."
+msgstr ""
+"आपका स्कॉलरस्पेस डैशबोर्ड तैयार है। योजना करें, सीखें, और एक ही स्थान पर "
+"खोजें।"
+
+msgid "Welcome back,"
+msgstr "वापस स्वागत है,"
+
+msgid "Close settings"
+msgstr "सेटिंग्स बंद करें"
+
+msgid "Appearance"
+msgstr "दिखावट"
+
+msgid "Track assignments and deadlines with ease."
+msgstr "आसानियों और समय सीमाओं को आसानी से ट्रैक करें।"
+
+msgid "Open homework"
+msgstr "होमवर्क खोलें"
+
+msgid "Curated video content for visual learning."
+msgstr "दृश्य शिक्षण के लिए व्यवस्थित वीडियो सामग्री।"
+
+msgid "A vast digital library of textbooks and journals."
+msgstr "पाठ्यपुस्तकों और जर्नलों का एक विशाल डिजिटल लाइब्रेरी।"
+
+msgid "Instant access to world's encyclopedia."
+msgstr "दुनिया के विश्वकोशा में तत्काल पहुंच।"
+
+msgid "Set milestones and track your academic progress."
+msgstr "मीलस्टोन सेट करें और अपनी शैक्षणिक प्रगति को ट्रैक करें।"
+
+msgid "Stay on track"
+msgstr "ट्रैक पर बने रहें"
+
+msgid "Create and organize your study notes with quick access."
+msgstr "त्वरित पहुंच के साथ अपने अध्ययन नोट्स बनाएं और व्यवस्थित करें।"
+
+msgid "Generate optimized study schedules that fit your lifestyle."
+msgstr "अपनी जीवनशैली के अनुकूल अध्ययन समय सारणी उत्पन्न करें।"
+
+msgid ""
+"Open ScholarSpace calendar page with embed and Calendar API data (key used "
+"on server only)."
+msgstr ""
+"एम्बेड और कैलेंडर API डेटा के साथ स्कॉलरस्पेस कैलेंडर पृष्ठ खोलें (केवल "
+"सर्वर पर उपयोग की जाती है)।"
+
+msgid "Open calendar"
+msgstr "कैलेंडर खोलें"
+
+msgid "Manage Work"
+msgstr "काम प्रबंधित करें"
+
+msgid "Options"
+msgstr "विकल्प"
+
+msgid "Feedback"
+msgstr "प्रतिक्रिया"
+
+msgid "Alerts"
+msgstr "चेतावनियां"
+
+msgid "Scholar"
+msgstr "विद्यार्थी"
+
+msgid "Dark Mode"
+msgstr "डार्क मोड"
+
+msgid "Language"
+msgstr "भाषा"
+
+msgid "Choose your preferred language"
+msgstr "अपनी पसंदीदा भाषा चुनें"
+
+msgid "Notifications"
+msgstr "सूचनाएं"
+
+msgid "Account"
+msgstr "खाता"
+
+msgid "Dashboard"
+msgstr "डैशबोर्ड"
+
+msgid "Save"
+msgstr "सेव करें"
+
+msgid "Home"
+msgstr "होम"
+
+msgid "Profile"
+msgstr "प्रोफाइल"
+
+msgid "Logout"
+msgstr "लॉगआउट"
+
+msgid "Login"
+msgstr "लॉगिन"
+
+msgid "Register"
+msgstr "रजिस्टर"
+
+msgid "Settings"
+msgstr "सेटिंग्स"
+
+msgid "Close settings"
+msgstr "सेटिंग्स बंद करें"
+
+msgid "Appearance"
+msgstr "दिखावट"
+
+msgid "Adjust for low light environments"
+msgstr "कम रोशनी वाले वातावरण के लिए समायोजित करें"
+
+msgid ""
+"Open the Deadline module: add tasks, spot conflicts, and see reminders — "
+"same stack as your Jarvis and other modules."
+msgstr ""
+"डेडलाइन मॉड्यूल खोलें: कार्य जोड़ें, विरोधों का पता लगाएं, और रिमाइंडर देखें"
+" — आपके जार्विस और अन्य मॉड्यूल के समान स्टैक।"
+
+msgid "Open deadlines"
+msgstr "डेडलाइन खोलें"
+
+msgid "Dictionary"
+msgstr "शब्दकोश"
+
+msgid "Expand your vocabulary and master new languages."
+msgstr "अपनी शब्दावली का विस्तार करें और नई भाषाओं में महारत हासिल करें।"
+
+msgid "AI Calculator"
+msgstr "AI कैलकुलेटर"
+
+msgid "Draw math problems and solve them instantly with AI."
+msgstr "गणित समस्याएं खींचें और AI के साथ तुरंत हल करें।"
+
+msgid "Quiz"
+msgstr "क्विज"
+
+msgid "Test your knowledge with adaptive study quizzes."
+msgstr "अनुकूल अध्ययन क्विज के साथ अपना ज्ञान परखीजिए।"
+
+msgid "Courses"
+msgstr "कोर्स"
+
+msgid "Browse and manage your enrolled academic courses."
+msgstr "अपने नामांकित अकादमिक कोर्स ब्राउज़ करें और प्रबंधित करें।"
+
+msgid "ScholarSpace | Discover Knowledge"
+msgstr "स्कॉलरस्पेस | ज्ञान खोजें"
+
+msgid "Discover Knowledge"
+msgstr "ज्ञान खोजें"
+
+msgid "Search educational videos, lectures, and tutorials..."
+msgstr "शैक्षणिक वीडियो, व्याख्यान, और ट्यूटोरियल खोजें..."
+
+msgid "Search"
+msgstr "खोजें"
+
+msgid "All Topics"
+msgstr "सभी विषय"
+
+msgid "Computer Science"
+msgstr "कंप्यूटर विज्ञान"
+
+msgid "Mathematics"
+msgstr "गणित"
+
+msgid "History"
+msgstr "इतिहास"
+
+msgid "Physics"
+msgstr "भौतिकी"
+
+msgid "Filters"
+msgstr "फिल्टर"
+
+msgid "No videos found for"
+msgstr "के लिए कोई वीडियो नहीं मिलीं"
+
+msgid "Try different keywords or use the topic chips."
+msgstr "अलग कीवर्ड आज़माएं या विषय चिप्स का उपयोग करें।"
+
+msgid "Search YouTube for lectures and tutorials"
+msgstr "व्याख्यान और ट्यूटोरियल के लिए यूट्यूब खोजें"
+
+msgid "Use the bar above or pick a topic chip to load results."
+msgstr ""
+"परिणामी बार का उपयोग करें या परिणामी लोड करने के लिए एक विषय चिप चुनें।"
+
+msgid "More results on YouTube"
+msgstr "यूट्यूब पर अधिक परिणाम"
+
+msgid "Play here"
+msgstr "यहां चलाएं"
+
+msgid "Open YouTube"
+msgstr "यूट्यूब खोलें"
+
+msgid "ScholarSpace | Discover Your Next Read"
+msgstr "स्कॉलरस्पेस | आपकी अगली पुस्तक खोजें"
+
+msgid "Discover Your Next Read"
+msgstr "आपकी अगली पुस्तक खोजें"
+
+msgid "All Books"
+msgstr "सभी पुस्तकें"
+
+msgid "Science"
+msgstr "विज्ञान"
+
+msgid "Mathematics"
+msgstr "गणित"
+
+msgid "Literature"
+msgstr "साहित्य"
+
+msgid "Philosophy"
+msgstr "दर्शन"
+
+msgid "History"
+msgstr "इतिहास"
+
+msgid "No exact match for"
+msgstr "के लिए कोई एकदम नहीं मिली"
+
+msgid "Showing results for"
+msgstr "के लिए परिणाम दिखा रहे हैं"
+
+msgid "Results from"
+msgstr "से परिणाम"
+
+msgid "Open Library"
+msgstr "ओपन लाइब्रेरी"
+
+msgid "(Google Books had no matches or was temporarily unavailable)."
+msgstr "(गूगल बुक्स का कोई मेल नहीं या अस्थायी अनुपलभ्य था)."
+
+msgid "View on Google Books"
+msgstr "गूगल बुक्स पर देखें"
+
+msgid "Book"
+msgstr "पुस्तक"
+
+msgid "No books matched"
+msgstr "कोई पुस्तक मेल नहीं"
+
+msgid "Try another keyword or chip."
+msgstr "दूसरा कीवर्ड या चिप आज़माएं।"
+
+msgid ""
+"Search by title or topic, or pick a category chip. Featured picks below are "
+"for inspiration."
+msgstr ""
+"शीर्षक या विषय से खोजें, या एक श्रेणी चिप चुनें। नीचे चुनाविंद प्रेरित हैं।"
+
+msgid "The Republic"
+msgstr "गणतराज्य"
+
+msgid "Quantum Electrodynamics"
+msgstr "क्वांटम इलेक्ट्रोडायनामिक्स"
+
+msgid "Modern Architecture"
+msgstr "आधुनिक वास्तुक्य"
+
+msgid "Infinite Powers"
+msgstr "अनंत शक्तियां"
+
+msgid "Top result"
+msgstr "शीर्ष परिणाम"
+
+msgid "Open preview"
+msgstr "पूर्व्यू खोलें"
+
+msgid "AI Drawable Calculator"
+msgstr "AI ड्रॉएबल कैलकुलेटर"
+
+msgid "Recognized (Click to Edit):"
+msgstr "पहचाना गया (संपादित करने के लिए क्लिक करें):"
+
+msgid "Manual Override: Edit if AI misreads"
+msgstr "मैनुअल ओवरराइड: AI गलत हो तो संपादित करें"
+
+msgid "Draw something..."
+msgstr "कुछ खींचें..."
+
+msgid "Result:"
+msgstr "परिणाम:"
+
+msgid "Processing..."
+msgstr "प्रक्रिया हो रहा है..."
+
+msgid "Clear Canvas"
+msgstr "कैनवास साफ करें"
+
+msgid "Clear"
+msgstr "साफ करें"
+
+msgid "Undo Last Stroke"
+msgstr "अंतिम स्ट्रोक पूर्ववत करें"
+
+msgid "Undo"
+msgstr "पूर्ववत करें"
+
+msgid "Toggle Eraser"
+msgstr "इरेज़र टॉगल करें"
+
+msgid "Erase"
+msgstr "मिटाएं"
+
+msgid "Force Solve"
+msgstr "बल से हल करें"
+
+msgid "Solve"
+msgstr "हल करें"
+
+msgid "Graph Output"
+msgstr "ग्राफ आउटपुट"
+
+msgid "In Progress"
+msgstr "प्रगति पर है"
+
+msgid "Student Workspace"
+msgstr "छात्र कार्यक्षेत्र"
+
+msgid "or sign up with"
+msgstr "या इसके साथ साइन अप करें"
+
+msgid "Already have an account?"
+msgstr "क्या आपके पास पहले से खाता है?"
+
+msgid "ScholarSpace | Create Account"
+msgstr "संविदा | खाता बनाएँ"
+
+msgid "(optional)"
+msgstr "(वैकल्पिक)"
+
+msgid "Enter Workspace"
+msgstr "कार्यक्षेत्र दर्ज करें"
+
+msgid "Please enter your credentials to access your workspace."
+msgstr "कृपया एक्सेस करने के लिए अपनी साख दर्ज करें।"
+
+msgid "Your display name across ScholarSpace."
+msgstr "संविदा पर आपका प्रदर्शन नाम।"
+
+msgid "YouTube"
+msgstr "YouTube"
+
+msgid "Finished"
+msgstr "समाप्त"
+
+msgid "Sign In"
+msgstr "साइन इन करें"
+
+msgid "All clear!"
+msgstr "सब साफ़!"
+
+msgid "Smart Plan"
+msgstr "स्मार्ट योजना"
+
+msgid "Keep me signed in for 30 days"
+msgstr "मुझे 30 दिनों तक साइन इन रखें"
+
+msgid "Focus Mode"
+msgstr "फोकस मोड"
+
+msgid "Email Reminders"
+msgstr "ईमेल रिमाइंडर"
+
+msgid "Notes"
+msgstr "Notes"
+
+msgid "Continue with Google"
+msgstr "Google के साथ जारी रखें"
+
+msgid "Goals Completed"
+msgstr "लक्ष्य पूरे हुए"
+
+msgid "Space"
+msgstr "अंतरिक्ष"
+
+msgid "Add new goal"
+msgstr "नया लक्ष्य जोड़ें"
+
+msgid "ScholarSpace | Homework"
+msgstr "संविदा | होमवर्क"
+
+msgid "Activate Notifications"
+msgstr "सूचनाएं सक्रिय करें"
+
+msgid "Notes & Goals"
+msgstr "नोट्स और लक्ष्य"
+
+msgid ""
+"One account. Every tool you need to plan, learn, and hit every deadline."
+msgstr "एक खाता। हर उपकरण जिसकी आपको आवश्यकता है।"
+
+msgid "Describe the task details..."
+msgstr "कार्य विवरण लिखें..."
+
+msgid "or sign in with"
+msgstr "या इसके साथ साइन इन करें"
+
+msgid "Add a Goal"
+msgstr "लक्ष्य जोड़ें"
+
+msgid "Completed"
+msgstr "पूरा हुआ"
+
+msgid "Create Notes"
+msgstr "नोट्स बनाएं"
+
+msgid "Join"
+msgstr "जुड़ें"
+
+msgid "Academic Email"
+msgstr "शैक्षणिक ईमेल"
+
+msgid "Get notified every minute"
+msgstr "हर मिनट सूचना पाएं"
+
+msgid "Save Goal"
+msgstr "लक्ष्य सहेजें"
+
+msgid "Pending"
+msgstr "लंबित"
+
+msgid "Receive deadline reminders and account notifications by email."
+msgstr "ईमेल द्वारा समय सीमा अनुस्मारक प्राप्त करें।"
+
+msgid "Task"
+msgstr "कार्य"
+
+msgid "ScholarSpace."
+msgstr "संविदा।"
+
+msgid "Subject"
+msgstr "विषय"
+
+msgid "Mark as Complete"
+msgstr "पूर्ण के रूप में चिह्नित करें"
+
+msgid "Explore"
+msgstr "एक्सप्लोर करें"
+
+msgid "Enter Your Search"
+msgstr "अपनी खोज दर्ज करें"
+
+msgid "Cancel"
+msgstr "रद्द करें"
+
+msgid "Title"
+msgstr "शीर्षक"
+
+msgid "Illuminate"
+msgstr "रोशन करें"
+
+msgid "(optional — for SMS reminders)"
+msgstr "(वैकल्पिक — एसएमएस रिमाइंडर के लिए)"
+
+msgid "Due Date"
+msgstr "अंतिम तिथि"
+
+msgid "e.g., Biology Essay Draft..."
+msgstr "जैसे, जीवविज्ञान निबंध ड्राफ्ट..."
+
+msgid "Create Note"
+msgstr "नोट बनाएं"
+
+msgid "Forgot password?"
+msgstr "पासवर्ड भूल गए?"
+
+msgid "Confirm Password"
+msgstr "पासवर्ड की पुष्टि करें"
+
+msgid "All caught up!"
+msgstr "सब पूरा हुआ!"
+
+msgid "Add a new milestone to your academic path."
+msgstr "अपने शैक्षणिक पथ में नया मील का पत्थर जोड़ें।"
+
+msgid "Deadline Tracker"
+msgstr "समय सीमा ट्रैकर"
+
+msgid "ScholarSpace | My Goals"
+msgstr "संविदा | मेरे लक्ष्य"
+
+msgid "Search assignments..."
+msgstr "असाइनमेंट खोजें..."
+
+msgid ""
+"Use your ScholarSpace username (often the same as your university email)."
+msgstr "अपने उपयोगकर्ता नाम का उपयोग करें।"
+
+msgid "Delete task"
+msgstr "कार्य हटाएँ"
+
+msgid "Email Address"
+msgstr "Email Address"
+
+msgid "Create Assignment"
+msgstr "असाइनमेंट बनाएं"
+
+msgid "Wikipedia"
+msgstr "Wikipedia"
+
+msgid "Books"
+msgstr "Books"
+
+msgid "Google Calendar"
+msgstr "Google Calendar"
+
+msgid ""
+"Access your ScholarSpace account for research, planning, and academic work."
+msgstr "अपने खाते तक पहुंचें।"
+
+msgid "Password"
+msgstr "पासवर्ड"
+
+msgid "e.g. Mathematics"
+msgstr "जैसे गणित"
+
+msgid ""
+"No goals yet. Add your first academic milestone below to start tracking your"
+" progress."
+msgstr "अभी कोई लक्ष्य नहीं। अपना पहला शैक्षणिक लक्ष्य नीचे जोड़ें।"
+
+msgid "(optional — for email reminders)"
+msgstr "(वैकल्पिक — ईमेल रिमाइंडर के लिए)"
+
+msgid "Welcome Back"
+msgstr "वापसी पर स्वागत है"
+
+msgid "Security"
+msgstr "सुरक्षा"
+
+msgid "Status"
+msgstr "स्थिति"
+
+msgid "Mark as Incomplete"
+msgstr "अपूर्ण के रूप में चिह्नित करें"
+
+msgid "e.g. History Final Essay"
+msgstr "जैसे इतिहास अंतिम निबंध"
+
+msgid "Get SMS alerts via Twilio at 72h, 24h &amp; 1h before every deadline."
+msgstr "समय सीमा से पहले एसएमएस अलर्ट प्राप्त करें।"
+
+msgid "Username"
+msgstr "उपयोगकर्ता नाम"
+
+msgid ""
+"Try the Pomodoro technique today. Focus for 25 minutes, then take a 5-minute"
+" breather. Your brain will thank you!"
+msgstr ""
+"आज पोमोडोरो तकनीक आजमाएं। 25 मिनट ध्यान केंद्रित करें, फिर 5 मिनट का ब्रेक "
+"लें।"
+
+msgid "Assignment"
+msgstr "असाइनमेंट"
+
+msgid "Create New Goal"
+msgstr "नया लक्ष्य बनाएं"
+
+msgid "Email"
+msgstr "ईमेल"
+
+msgid "Create your account"
+msgstr "अपना खाता बनाएं"
+
+msgid "SMS Reminders"
+msgstr "एसएमएस अनुस्मारक"
+
+msgid "Everything."
+msgstr "सब कुछ।"
+
+msgid "Tools / Workspace"
+msgstr "उपकरण / कार्यक्षेत्र"
+
+msgid "Already finished?"
+msgstr "क्या पहले ही पूरा हो चुका है?"
+
+msgid "Time Table"
+msgstr "Time Table"
+
+msgid "ScholarSpace | Wikipedia Search"
+msgstr "संविदा | विकिपीडिया खोज"
+
+msgid "Task Title"
+msgstr "कार्य का शीर्षक"
+
+msgid "Action"
+msgstr "क्रिया"
+
+msgid "Current Task List"
+msgstr "वर्तमान कार्य सूची"
+
+msgid "Art"
+msgstr "कला"
+
+msgid "Track your academic milestones and stay on target."
+msgstr "अपने शैक्षणिक मील के पत्थर ट्रैक करें।"
+
+msgid "Master Your Academic Journey."
+msgstr "अपनी शैक्षणिक यात्रा में महारत हासिल करें।"
+
+msgid "Create your free academic profile"
+msgstr "अपना निःशुल्क शैक्षणिक प्रोफ़ाइल बनाएं"
+
+msgid "No homework assignments yet. Create one using the form on the right."
+msgstr "अभी तक कोई होमवर्क नहीं। दाईं ओर दिए फॉर्म का उपयोग करके बनाएं।"
+
+msgid "Related Topics"
+msgstr "संबंधित विषय"
+
+msgid "Discover the universe of knowledge with a touch of cosmic brilliance."
+msgstr "ब्रह्मांडीय चमक के स्पर्श के साथ ज्ञान के ब्रह्मांड की खोज करें।"
+
+msgid ""
+"Fill in the details below — email and phone are optional but unlock "
+"reminders."
+msgstr "नीचे दिए गए विवरण भरें — ईमेल और फोन वैकल्पिक हैं।"
+
+msgid "Progress"
+msgstr "प्रगति"
+
+msgid "Active Homework"
+msgstr "सक्रिय होमवर्क"
+
+msgid "Sign in"
+msgstr "साइन इन करें"
+
+msgid "No assignments match your search."
+msgstr "आपकी खोज से कोई असाइनमेंट मेल नहीं खाता।"
+
+msgid "Trending Constellations of Knowledge"
+msgstr "ज्ञान के रुझान वाले नक्षत्र"
+
+msgid "Focus Tip"
+msgstr "फोकस टिप"
+
+msgid "Homework"
+msgstr "Homework"
+
+msgid "My Goals"
+msgstr "मेरे लक्ष्य"
+
+msgid "Phone Number"
+msgstr "फोन नंबर"
+
+msgid "Sign Up"
+msgstr "साइन अप करें"
+
+msgid "ScholarSpace — Discover Your Next Read"
+msgstr "ScholarSpace — Discover Your Next Read"
+
+msgid "Last Searched"
+msgstr "अंतिम खोजा गया"
+
+msgid "Did you mean?"
+msgstr "क्या आपका मतलब था?"
+
+msgid "Description"
+msgstr "विवरण"
+
+msgid "ScholarSpace - Login"
+msgstr "संविदा - प्रवेश"
+
+msgid "Create Account"
+msgstr "Create Account"
+
+msgid "Timetable"
+msgstr "Timetable"
+
+msgid "ScholarSpace | Notes"
+msgstr "स्कॉलरस्पेस | नोट्स"
+
+msgid "My Notes"
+msgstr "मेरे नोट्स"
+
+msgid "notes"
+msgstr "नोट्स"
+
+msgid "Has PDF attachment"
+msgstr "पीडीएफ संलग्नक है"
+
+msgid "View"
+msgstr "देखें"
+
+msgid "Delete this note?"
+msgstr "क्या इस नोट को हटा दें?"
+
+msgid "No notes yet"
+msgstr "अभी तक कोई नोट्स नहीं"
+
+msgid "Create your first note using the form. You can attach a PDF too!"
+msgstr ""
+"फॉर्म का उपयोग करके अपना पहला नोट बनाएं। आप एक पीडीएफ भी जोड़ सकते हैं!"
+
+msgid "New Note"
+msgstr "नया नोट"
+
+msgid "Add a title, description, and optional PDF."
+msgstr "एक शीर्षक, विवरण, और वैकल्पिक पीडीएफ जोड़ें।"
+
+msgid "e.g. Chapter 3 Summary"
+msgstr "जैसे अध्याय 3 का सारांश"
+
+msgid "Write your note content here..."
+msgstr "अपनी नोट सामग्री यहां लिखें..."
+
+msgid "PDF Attachment"
+msgstr "पीडीएफ संलग्नक"
+
+msgid "Save Note"
+msgstr "नोट सहेजें"
+
+msgid "Study Tip"
+msgstr "अध्ययन युक्ति"
+
+msgid ""
+"Use the Cornell Note method: divide your page into cues, notes, and a "
+"summary section for better recall."
+msgstr ""
+"कॉर्नेल नोट पद्धति का उपयोग करें: बेहतर याद के लिए अपने पृष्ठ को संकेतों, "
+"नोट्स और सारांश अनुभाग में विभाजित करें।"
+
+msgid "ScholarSpace | Dictionary"
+msgstr "स्कॉलरस्पेस | शब्दकोश"
+
+msgid "Define "
+msgstr "परिभाषित करें "
+
+msgid "Anything."
+msgstr "कुछ भी।"
+
+msgid "Definitions, phonetics, examples, and synonyms - instantly."
+msgstr "परिभाषाएँ, ध्वन्यात्मकता, उदाहरण और समानार्थक शब्द - तुरंत।"
+
+msgid "Enter a word…"
+msgstr "एक शब्द दर्ज करें..."
+
+msgid "Look Up"
+msgstr "खोजें"
+
+msgid "Pronounce"
+msgstr "उच्चारण करें"
+
+msgid "Definition"
+msgstr "परिभाषा"
+
+msgid "Example"
+msgstr "उदाहरण"
+
+msgid "Synonyms"
+msgstr "समानार्थक शब्द"
+
+msgid "No synonyms available."
+msgstr "कोई समानार्थक शब्द उपलब्ध नहीं है।"
+
+msgid "Try these words"
+msgstr "इन शब्दों को आजमाएं"
+
+msgid "ScholarSpace | Study Timetable"
+msgstr "स्कॉलरस्पेस | अध्ययन समय सारणी"
+
+msgid "Create Your Personalised"
+msgstr "अपनी व्यक्तिगत "
+
+msgid "Study Timetable"
+msgstr "अध्ययन समय सारणी"
+
+msgid ""
+"Answer a few questions about your schedule and preferences to generate a "
+"customised study timetable that works for you."
+msgstr ""
+"एक अनुकूलित अध्ययन समय सारणी बनाने के लिए अपने कार्यक्रम और प्राथमिकताओं के "
+"बारे में कुछ सवालों के जवाब दें जो आपके लिए काम करती है।"
+
+msgid "Get Started"
+msgstr "शुरू करें"
+
+msgid "Personalised"
+msgstr "व्यक्तिगत"
+
+msgid "Tailored to your schedule, preferences, and educational needs."
+msgstr "आपके कार्यक्रम, प्राथमिकताओं और शैक्षिक आवश्यकताओं के अनुरूप।"
+
+msgid "Effective"
+msgstr "प्रभावी"
+
+msgid ""
+"Optimised study distribution based on your preparation level in each "
+"subject."
+msgstr ""
+"प्रत्येक विषय में आपकी तैयारी के स्तर के आधार पर अनुकूलित अध्ययन वितरण।"
+
+msgid "Balanced"
+msgstr "संतुलित"
+
+msgid "Accounts for your job, classes, and personal activities."
+msgstr "आपके काम, कक्षाओं और व्यक्तिगत गतिविधियों का ध्यान रखता है।"
+
+msgid "How it works"
+msgstr "यह कैसे काम करता है"
+
+msgid "Tell us your schedule"
+msgstr "हमें अपना कार्यक्रम बताएं"
+
+msgid ""
+"Share your study preference (day/night), job hours, class hours, and exam "
+"date."
+msgstr ""
+"अपनी अध्ययन प्राथमिकता (दिन/रात), काम के घंटे, कक्षा के घंटे और परीक्षा की "
+"तिथि साझा करें।"
+
+msgid "Add your subjects"
+msgstr "अपने विषय जोड़ें"
+
+msgid ""
+"List up to 4 subjects and 2 languages with your current preparation level "
+"(0–100%)."
+msgstr ""
+"अपने वर्तमान तैयारी स्तर (0-100%) के साथ अधिकतम 4 विषय और 2 भाषाएं सूचीबद्ध "
+"करें।"
+
+msgid "Get your timetable"
+msgstr "अपनी समय सारणी प्राप्त करें"
+
+msgid ""
+"Receive a daily schedule with time slots allocated proportionally to each "
+"subject's need."
+msgstr ""
+"प्रत्येक विषय की आवश्यकता के अनुसार आनुपातिक रूप से आवंटित समय स्लॉट के साथ "
+"एक दैनिक कार्यक्रम प्राप्त करें।"
+
+msgid "Start Building My Timetable"
+msgstr "मेरी समय सारणी बनाना शुरू करें"
+
+msgid "COURSES - Home"
+msgstr "पाठ्यक्रम - मुखपृष्ठ"
+
+msgid "COURSES"
+msgstr "पाठ्यक्रम"
+
+msgid "Welcome to the ScholarSpace Courses"
+msgstr "स्कॉलरस्पेस पाठ्यक्रम में आपका स्वागत है"
+
+msgid "Choose a domain to explore educational videos:"
+msgstr "शैक्षिक वीडियो देखने के लिए एक डोमेन चुनें:"
+
+msgid "Quiz App - Home"
+msgstr "क्विज़ ऐप - मुखपृष्ठ"
+
+msgid "Welcome to Test Series"
+msgstr "टेस्ट सीरीज़ में आपका स्वागत है"
+
+msgid "View Test"
+msgstr "टेस्ट देखें"
+
+msgid "Create New Quiz"
+msgstr "नई क्विज़ बनाएं"
+
+msgid "ScholarSpace | Academic Calendar"
+msgstr "स्कॉलरस्पेस | शैक्षणिक कैलेंडर"
+
+msgid "Academic Calendar"
+msgstr "शैक्षणिक कैलेंडर"
+
+msgid ""
+"Add GOOGLE_CALENDAR_API_KEY or google_calendar_api_key.txt for the upcoming-"
+"events list."
+msgstr ""
+"आगामी घटनाओं की सूची के लिए GOOGLE_CALENDAR_API_KEY या "
+"google_calendar_api_key.txt जोड़ें।"
+
+msgid "Disconnect Google Calendar"
+msgstr "Google कैलेंडर डिस्कनेक्ट करें"
+
+msgid "Connect Google Calendar"
+msgstr "Google कैलेंडर कनेक्ट करें"
+
+msgid "Open Google Calendar"
+msgstr "Google कैलेंडर खोलें"
+
+msgid ""
+"Full Google Calendar (embedded). Use tabs inside the frame for day, week, or"
+" agenda."
+msgstr ""
+"पूरा Google कैलेंडर (एम्बेडेड)। दिन, सप्ताह, या एजेंडे के लिए फ्रेम के अंदर "
+"टैब का उपयोग करें।"
+
+msgid "Pop out embed"
+msgstr "एम्बेड पॉप आउट करें"
+
+msgid "Upcoming (Calendar API)"
+msgstr "आगामी (कैलेंडर एपीआई)"
+
+msgid ""
+"No upcoming events loaded yet. Check API key, Calendar API enablement, and "
+"public calendar ID."
+msgstr ""
+"अभी तक कोई आगामी ईवेंट लोड नहीं हुआ है। एपीआई कुंजी, कैलेंडर एपीआई और "
+"सार्वजनिक कैलेंडर आईडी की जांच करें।"
+
+msgid "Focus"
+msgstr "ध्यान दें"
+
+msgid ""
+"Keep this page open for your live Google Calendar, or open the full site in "
+"a new tab for creating events on your personal calendar."
+msgstr ""
+"अपने लाइव Google कैलेंडर के लिए इस पेज को खुला रखें, या अपने व्यक्तिगत "
+"कैलेंडर पर ईवेंट बनाने के लिए नए टैब में पूरी साइट खोलें।"
+
+msgid "Back to Dashboard"
+msgstr "डैशबोर्ड पर वापस जाएं"
+
+msgid "Tools"
+msgstr "उपकरण"
+
+msgid "ScholarSpace | Manage Work"
+msgstr "स्कॉलरस्पेस | कार्य प्रबंधित करें"
+
+msgid "Total tasks"
+msgstr "कुल कार्य"
+
+msgid "Conflicts"
+msgstr "टकराव"
+
+msgid "Due in 72h"
+msgstr "72 घंटे में देय"
+
+msgid "Core"
+msgstr "मुख्य"
+
+msgid "Add Deadline"
+msgstr "समय सीमा जोड़ें"
+
+msgid "ScholarSpace | Add Deadline"
+msgstr "स्कॉलरस्पेस | समय सीमा जोड़ें"
+
+msgid "My Tasks"
+msgstr "मेरे कार्य"
+
+msgid "ScholarSpace | My Tasks"
+msgstr "स्कॉलरस्पेस | मेरे कार्य"
+
+msgid "Calendar"
+msgstr "कैलेंडर"
+
+msgid "ScholarSpace | Calendar"
+msgstr "स्कॉलरस्पेस | कैलेंडर"
+
+msgid "ScholarSpace | Conflicts"
+msgstr "स्कॉलरस्पेस | टकराव"
+
+msgid "ScholarSpace | Smart Plan"
+msgstr "स्कॉलरस्पेस | स्मार्ट योजना"
+
+msgid "Reminders"
+msgstr "अनुस्मारक"
+
+msgid "ScholarSpace | Reminders"
+msgstr "स्कॉलरस्पेस | अनुस्मारक"
+
+msgid "Analytics"
+msgstr "विश्लेषण"
+
+msgid "ScholarSpace | Analytics"
+msgstr "स्कॉलरस्पेस | विश्लेषण"
+
+msgid "SMS Settings"
+msgstr "एसएमएस सेटिंग्स"
+
+msgid "ScholarSpace | SMS Settings"
+msgstr "स्कॉलरस्पेस | एसएमएस सेटिंग्स"
+
+msgid "Activity Log"
+msgstr "गतिविधि लॉग"
+
+msgid "ScholarSpace | Activity Log"
+msgstr "स्कॉलरस्पेस | गतिविधि लॉग"
+
+msgid "Coming Soon"
+msgstr "जल्द आ रहा है"
+
+msgid "AI Scheduling"
+msgstr "एआई शेड्यूलिंग"
+
+msgid "Calendar Sync"
+msgstr "कैलेंडर सिंक"
+
+msgid "Soon"
+msgstr "जल्द"
+
+msgid "Plan deadlines and spot conflicts in one place."
+msgstr "एक ही स्थान पर समय सीमा की योजना बनाएं और टकराव का पता लगाएं।"
+
+msgid "Load sample"
+msgstr "नमूना लोड करें"
+
+msgid "Clear all"
+msgstr "सभी साफ़ करें"
+
+msgid "Delete ALL your deadlines?"
+msgstr "क्या आपकी सभी समय सीमाएं हटा दें?"
+
+msgid "Delete ALL deadlines?"
+msgstr "क्या सभी समय सीमाएं हटा दें?"
+
+msgid "Delete"
+msgstr "हटाएं"
+
+msgid "How It Works"
+msgstr "यह कैसे काम करता है"
+
+msgid "Auto conflict detection"
+msgstr "स्वतः टकराव का पता लगाना"
+
+msgid ""
+"When two tasks share overlapping prep time, a conflict is flagged "
+"immediately."
+msgstr ""
+"जब दो कार्यों की तैयारी का समय ओवरलैप होता है, तो तुरंत एक टकराव दर्ज किया "
+"जाता है।"
+
+msgid "Smart sequencing"
+msgstr "स्मार्ट अनुक्रमण"
+
+msgid ""
+"The Smart Plan orders your tasks by priority, urgency, effort, and conflict "
+"severity."
+msgstr ""
+"स्मार्ट प्लान आपके कार्यों को प्राथमिकता, तत्कालता, प्रयास और टकराव की "
+"गंभीरता के अनुसार आदेशित करता है।"
+
+msgid "Urgency reminders"
+msgstr "तत्कालता अनुस्मारक"
+
+msgid ""
+"Reminders surfaces tasks due within 72 hours, sorted by how soon they're "
+"due."
+msgstr ""
+"अनुस्मारक 72 घंटों के भीतर देय कार्यों को सामने लाता है, वे कितनी जल्दी देय "
+"हैं इसके अनुसार क्रमबद्ध किए जाते हैं।"
+
+msgid "Reminders surface tasks due within 72 hours, sorted by urgency."
+msgstr ""
+"अनुस्मारक 72 घंटों के भीतर देय कार्यों को तत्कालता के अनुसार क्रमबद्ध करके "
+"सामने लाता है।"
+
+msgid "Workflow analytics"
+msgstr "वर्कफ़्लो विश्लेषण"
+
+msgid ""
+"Track your workload with charts, histograms, and productivity insights."
+msgstr ""
+"चार्ट, हिस्टोग्राम और उत्पादकता अंतर्दृष्टि के साथ अपने कार्यभार को ट्रैक "
+"करें।"
+
+msgid "Add a new deadline"
+msgstr "एक नई समय सीमा जोड़ें"
+
+msgid ""
+"Enter your upcoming assignments, exams, hackathons, or projects. Conflicts "
+"are detected automatically."
+msgstr ""
+"अपने आगामी असाइनमेंट, परीक्षा, हैकथॉन या प्रोजेक्ट दर्ज करें। टकराव स्वतः ही"
+" पता लगाए जाते हैं।"
+
+msgid "Deadline Details"
+msgstr "समय सीमा विवरण"
+
+msgid "Task / Event Name"
+msgstr "कार्य / घटना का नाम"
+
+msgid "Type"
+msgstr "प्रकार"
+
+msgid "Priority"
+msgstr "प्राथमिकता"
+
+msgid "Deadline (Date & Time)"
+msgstr "समय सीमा (दिनांक और समय)"
+
+msgid "Est. Hours Needed"
+msgstr "अनुमानित आवश्यक घंटे"
+
+msgid "optional"
+msgstr "वैकल्पिक"
+
+msgid "Any context, resources, or reminders..."
+msgstr "कोई संदर्भ, संसाधन, या अनुस्मारक..."
+
+msgid "e.g. Data Structures Assignment 3"
+msgstr "जैसे डेटा स्ट्रक्चर्स असाइनमेंट 3"
+
+msgid "e.g. 8"
+msgstr "जैसे 8"
+
+msgid ""
+"e.g. I will start Task A two days earlier to avoid the overlap, and "
+"reschedule Task B by 4 hours..."
+msgstr ""
+"जैसे मैं ओवरलैप से बचने के लिए टास्क ए को दो दिन पहले शुरू करूंगा, और टास्क "
+"बी को 4 घंटे बाद फिर से शेड्यूल करूंगा..."
+
+msgid "+91 98765 43210"
+msgstr "+91 98765 43210"
+
+msgid "All Types"
+msgstr "सभी प्रकार"
+
+msgid "Exam"
+msgstr "परीक्षा"
+
+msgid "Hackathon"
+msgstr "हैकथॉन"
+
+msgid "Project"
+msgstr "परियोजना"
+
+msgid "All Priorities"
+msgstr "सभी प्राथमिकताएं"
+
+msgid "Critical"
+msgstr "अत्यंत महत्वपूर्ण"
+
+msgid "High"
+msgstr "उच्च"
+
+msgid "Medium"
+msgstr "मध्यम"
+
+msgid "Low"
+msgstr "निम्न"
+
+msgid "Sort: Date"
+msgstr "क्रमबद्ध करें: दिनांक"
+
+msgid "Sort: Priority"
+msgstr "क्रमबद्ध करें: प्राथमिकता"
+
+msgid "Clear filters"
+msgstr "फ़िल्टर साफ़ करें"
+
+msgid "Hrs"
+msgstr "घंटे"
+
+msgid "Actions"
+msgstr "कार्रवाइयां"
+
+msgid "Done"
+msgstr "हो गया"
+
+msgid "Overdue"
+msgstr "समय सीमा पार"
+
+msgid "Due Soon"
+msgstr "जल्द देय"
+
+msgid "Upcoming"
+msgstr "आगामी"
+
+msgid "Mark complete"
+msgstr "पूर्ण चिह्नित करें"
+
+msgid "Conflict"
+msgstr "टकराव"
+
+msgid "No tasks yet"
+msgstr "अभी तक कोई कार्य नहीं"
+
+msgid "No tasks match your filters."
+msgstr "कोई भी कार्य आपके फ़िल्टर से मेल नहीं खाता।"
+
+msgid "Add your first deadline to get started."
+msgstr "शुरू करने के लिए अपनी पहली समय सीमा जोड़ें।"
+
+msgid "Mon"
+msgstr "सोम"
+
+msgid "Tue"
+msgstr "मंगल"
+
+msgid "Wed"
+msgstr "बुध"
+
+msgid "Thu"
+msgstr "गुरु"
+
+msgid "Fri"
+msgstr "शुक्र"
+
+msgid "Sat"
+msgstr "शनि"
+
+msgid "Sun"
+msgstr "रवि"
+
+msgid "Deadlines This Month"
+msgstr "इस महीने की समय सीमाएं"
+
+msgid "conflict"
+msgstr "टकराव"
+
+msgid "No deadlines this month."
+msgstr "इस महीने कोई समय सीमा नहीं है।"
+
+msgid "Scheduling Conflicts"
+msgstr "शेड्यूलिंग टकराव"
+
+msgid ""
+"Conflicts arise when two tasks' preparation windows overlap. Resolve them to"
+" optimise your schedule."
+msgstr ""
+"टकराव तब पैदा होते हैं जब दो कार्यों की तैयारी के विंडो ओवरलैप होते हैं। "
+"अपने कार्यक्रम को अनुकूलित करने के लिए उनका समाधान करें।"
+
+msgid "Task A"
+msgstr "कार्य a"
+
+msgid "Task B"
+msgstr "कार्य b"
+
+msgid "Resolution Plan "
+msgstr "समाधान योजना "
+
+msgid "(optional — describe how you plan to handle this)"
+msgstr "(वैकल्पिक — बताएं कि आप इसे कैसे संभालने की योजना बनाते हैं)"
+
+msgid ""
+"Writing a plan helps you stay accountable. Mark resolved once you have "
+"actioned it."
+msgstr ""
+"योजना लिखना आपको जवाबदेह बने रहने में मदद करता है। कार्रवाई करने के बाद इसे "
+"हल के रूप में चिह्नित करें।"
+
+msgid "Mark as Resolved"
+msgstr "हल के रूप में चिह्नित करें"
+
+msgid "No conflicts detected"
+msgstr "कोई टकराव नहीं मिला"
+
+msgid "Your preparation windows don't overlap. Keep it up!"
+msgstr "आपके काम की तैयारी का समय ओवरलैप नहीं होता है। इसे बनाए रखें!"
+
+msgid "Optimised Task Order"
+msgstr "अनुकूलित कार्य क्रम"
+
+msgid ""
+"Tasks ranked by a weighted score: priority (40%), urgency (30%), conflict "
+"involvement (20%), and estimated effort (10%)."
+msgstr ""
+"कार्य एक भारित स्कोर द्वारा रैंक किए जाते हैं: प्राथमिकता (40%), तत्कालता "
+"(30%), टकराव भागीदारी (20%), और अनुमानित प्रयास (10%)।"
+
+msgid "Score"
+msgstr "स्कोर"
+
+msgid "No tasks to plan"
+msgstr "योजना बनाने के लिए कोई कार्य नहीं"
+
+msgid "Add deadlines first, then the smart plan will rank them automatically."
+msgstr ""
+"पहले समय सीमा जोड़ें, फिर स्मार्ट योजना उन्हें स्वचालित रूप से रैंक करेगी।"
+
+msgid "Upcoming Reminders"
+msgstr "आगामी अनुस्मारक"
+
+msgid ""
+"Sent automatically via email and/or SMS at 72h, 24h, and 1h before each "
+"deadline."
+msgstr ""
+"प्रत्येक समय सीमा से 72 घंटे, 24 घंटे और 1 घंटे पहले ईमेल और/या एसएमएस के "
+"माध्यम से स्वचालित रूप से भेजा जाता है।"
+
+msgid "away"
+msgstr "दूर"
+
+msgid "No upcoming reminders"
+msgstr "कोई आगामी अनुस्मारक नहीं"
+
+msgid ""
+"Add deadlines and reminders will be scheduled automatically at 72h, 24h, and"
+" 1h before each one."
+msgstr ""
+"समय सीमा जोड़ें और प्रत्येक से 72 घंटे, 24 घंटे और 1 घंटे पहले स्वचालित रूप "
+"से अनुस्मारक निर्धारित किए जाएंगे।"
+
+msgid "Workload Overview"
+msgstr "कार्यभार अवलोकन"
+
+msgid "A live snapshot of your academic workload."
+msgstr "आपके शैक्षणिक कार्यभार का एक लाइव स्नैपशॉट।"
+
+msgid "Total Tasks"
+msgstr "कुल कार्य"
+
+msgid "Total Hrs"
+msgstr "कुल घंटे"
+
+msgid "High Priority"
+msgstr "उच्च प्राथमिकता"
+
+msgid "By Type"
+msgstr "प्रकार द्वारा"
+
+msgid "By Priority"
+msgstr "प्राथमिकता द्वारा"
+
+msgid "No data yet."
+msgstr "अभी तक कोई डेटा नहीं।"
+
+msgid "Top Tasks by Effort"
+msgstr "प्रयास द्वारा शीर्ष कार्य"
+
+msgid "Twilio is configured"
+msgstr "ट्विलियो कॉन्फ़िगर किया गया है"
+
+msgid "SMS delivery is active."
+msgstr "एसएमएस डिलीवरी सक्रिय है।"
+
+msgid "Twilio not configured"
+msgstr "ट्विलियो कॉन्फ़िगर नहीं किया गया है"
+
+msgid "Set these environment variables before starting the server:"
+msgstr "सर्वर शुरू करने से पहले इन पर्यावरण चर को सेट करें:"
+
+msgid "Your Phone Number"
+msgstr "आपका फ़ोन नंबर"
+
+msgid "Currently:"
+msgstr "वर्तमान में:"
+
+msgid "No phone number saved yet."
+msgstr "अभी तक कोई फोन नंबर सहेजा नहीं गया है।"
+
+msgid "Phone (E.164 format: +919876543210)"
+msgstr "फ़ोन (E.164 प्रारूप: +919876543210)"
+
+msgid "Include country code: +919876543210 (India) or +14155552671 (US)"
+msgstr "देश कोड शामिल करें: +919876543210 (भारत) या +14155552671 (अमेरिका)"
+
+msgid "Send Test SMS"
+msgstr "परीक्षण एसएमएस भेजें"
+
+msgid "Send a test to"
+msgstr "एक परीक्षण को भेजें"
+
+msgid "to confirm everything works."
+msgstr "पुष्टि करने के लिए कि सब कुछ काम करता है।"
+
+msgid "Reminder Schedule"
+msgstr "अनुस्मारक अनुसूची"
+
+msgid "Early Warning"
+msgstr "प्रारंभिक चेतावनी"
+
+msgid "Time to plan and gather resources."
+msgstr "योजना बनाने और संसाधन जुटाने का समय।"
+
+msgid "Final Day"
+msgstr "अंतिम दिन"
+
+msgid "Review progress and wrap up."
+msgstr "प्रगति की समीक्षा करें और समापन करें।"
+
+msgid "Last Chance"
+msgstr "अंतिम मौका"
+
+msgid "Final push before deadline."
+msgstr "समय सीमा से पहले अंतिम प्रयास।"
+
+msgid "No upcoming reminders. Add deadlines to schedule some."
+msgstr "कोई आगामी अनुस्मारक नहीं। कुछ शेड्यूल करने के लिए समय सीमा जोड़ें।"
+
+msgid "Sent History"
+msgstr "प्रेषित इतिहास"
+
+msgid "Last 100 events for your account."
+msgstr "आपके खाते के लिए अंतिम 100 ईवेंट।"
+
+msgid "No activity yet"
+msgstr "अभी तक कोई गतिविधि नहीं"
+
+msgid "Events will appear here as you use Manage Work."
+msgstr ""
+"जैसे ही आप कार्य प्रबंधित करें का उपयोग करेंगे, ईवेंट यहां दिखाई देंगे।"

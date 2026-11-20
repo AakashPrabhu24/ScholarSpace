@@ -1,0 +1,93 @@
+{% extends 'manage_work/base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "ScholarSpace | Analytics" %}{% endblock %}
+{% block nav_analytics %}mw-active{% endblock %}
+{% block page_title %}Analytics{% endblock %}
+
+{% block mw_content %}
+<div class="space-y-8">
+  <div>
+    <h2 class="text-xl font-bold font-headline text-on-surface">{% trans "Workload Overview" %}</h2>
+    <p class="text-sm text-on-surface-variant mt-1">{% trans "A live snapshot of your academic workload." %}</p>
+  </div>
+
+  <!-- KPI row -->
+  <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+    {% for label, value, color in kpi_items %}
+    <div class="bg-white rounded-2xl p-5 border border-outline-variant/30 text-center">
+      <p class="text-3xl font-black font-headline {{ color }}">{{ value }}</p>
+      <p class="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider mt-1">{{ label }}</p>
+    </div>
+    {% empty %}
+    <div class="bg-white rounded-2xl p-5 border border-outline-variant/30 text-center">
+      <p class="text-3xl font-black font-headline text-on-surface">{{ analytics.total_tasks }}</p>
+      <p class="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider mt-1">{% trans "Total Tasks" %}</p>
+    </div>
+    <div class="bg-white rounded-2xl p-5 border border-outline-variant/30 text-center">
+      <p class="text-3xl font-black font-headline text-red-600">{{ analytics.active_conflicts }}</p>
+      <p class="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider mt-1">{% trans "Conflicts" %}</p>
+    </div>
+    <div class="bg-white rounded-2xl p-5 border border-outline-variant/30 text-center">
+      <p class="text-3xl font-black font-headline text-primary">{{ analytics.total_hours_ahead }}</p>
+      <p class="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider mt-1">{% trans "Total Hrs" %}</p>
+    </div>
+    <div class="bg-white rounded-2xl p-5 border border-outline-variant/30 text-center">
+      <p class="text-3xl font-black font-headline text-orange-600">{{ analytics.overdue_tasks }}</p>
+      <p class="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider mt-1">{% trans "Overdue" %}</p>
+    </div>
+    <div class="bg-white rounded-2xl p-5 border border-outline-variant/30 text-center">
+      <p class="text-3xl font-black font-headline text-purple-600">{{ analytics.high_priority }}</p>
+      <p class="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider mt-1">{% trans "High Priority" %}</p>
+    </div>
+    {% endfor %}
+  </div>
+
+  <!-- By Type + By Priority -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div class="bg-white rounded-2xl border border-outline-variant/30 p-6">
+      <h2 class="font-bold font-headline text-on-surface mb-5">{% trans "By Type" %}</h2>
+      {% for type_key, count in analytics.category_dist.items %}
+      <div class="flex items-center gap-3 mb-3">
+        <span class="text-sm font-medium text-on-surface w-24 capitalize">{{ type_key }}</span>
+        <div class="flex-1 bg-surface-variant rounded-full h-2.5 overflow-hidden">
+          <div class="h-full bg-primary rounded-full"
+               style="width:{% if analytics.total_tasks %}{% widthratio count analytics.total_tasks 100 %}{% else %}0{% endif %}%"></div>
+        </div>
+        <span class="text-sm font-bold text-on-surface w-5 text-right">{{ count }}</span>
+      </div>
+      {% empty %}<p class="text-sm text-on-surface-variant">{% trans "No data yet." %}</p>{% endfor %}
+    </div>
+    <div class="bg-white rounded-2xl border border-outline-variant/30 p-6">
+      <h2 class="font-bold font-headline text-on-surface mb-5">{% trans "By Priority" %}</h2>
+      {% for pri_key, count in analytics.priority_dist.items %}
+      <div class="flex items-center gap-3 mb-3">
+        <span class="text-sm font-medium text-on-surface w-20 capitalize">{{ pri_key }}</span>
+        <div class="flex-1 bg-surface-variant rounded-full h-2.5 overflow-hidden">
+          <div class="h-full rounded-full
+            {% if pri_key == 'critical' %}bg-red-600{% elif pri_key == 'high' %}bg-red-300{% elif pri_key == 'medium' %}bg-primary{% else %}bg-gray-400{% endif %}"
+               style="width:{% if analytics.total_tasks %}{% widthratio count analytics.total_tasks 100 %}{% else %}0{% endif %}%"></div>
+        </div>
+        <span class="text-sm font-bold text-on-surface w-5 text-right">{{ count }}</span>
+      </div>
+      {% empty %}<p class="text-sm text-on-surface-variant">{% trans "No data yet." %}</p>{% endfor %}
+    </div>
+  </div>
+
+  <!-- Effort chart -->
+  {% if analytics.effort_data %}
+  <div class="bg-white rounded-2xl border border-outline-variant/30 p-6">
+    <h2 class="font-bold font-headline text-on-surface mb-5">{% trans "Top Tasks by Effort" %}</h2>
+    {% for title, hours in analytics.effort_data %}
+    <div class="flex items-center gap-4 mb-3">
+      <span class="text-sm font-medium text-on-surface truncate w-44">{{ title }}</span>
+      <div class="flex-1 bg-surface-variant rounded-full h-2.5 overflow-hidden">
+        <div class="h-full bg-primary rounded-full" style="width:{% widthratio hours 40 100 %}%"></div>
+      </div>
+      <span class="text-sm font-bold text-primary w-12 text-right">{{ hours }}h</span>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

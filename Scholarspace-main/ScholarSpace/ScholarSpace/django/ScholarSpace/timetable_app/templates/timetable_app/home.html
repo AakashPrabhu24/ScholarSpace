@@ -1,0 +1,28 @@
+{% extends 'timetable_app/base.html' %}
+
+{% block title %}ScholarSpace | Study Timetable{% endblock %}
+
+{% block timetable_body %}
+<section class="hero">
+    <div class="hero-content">
+        <h2>Create Your Personalized Study Timetable</h2>
+        <p>Answer a few questions about your schedule and preferences to generate a customized study timetable that works for you.</p>
+        <a data-scholar-vt href="{% url 'timetable_app:questions' %}" class="btn btn-primary">Get Started</a>
+    </div>
+</section>
+
+<section class="features">
+    <div class="feature">
+        <h3>Personalized</h3>
+        <p>Tailored to your schedule, preferences, and educational needs.</p>
+    </div>
+    <div class="feature">
+        <h3>Effective</h3>
+        <p>Optimized study distribution based on your preparation level in each subject.</p>
+    </div>
+    <div class="feature">
+        <h3>Balanced</h3>
+        <p>Accounts for your job, classes, and personal activities.</p>
+    </div>
+</section>
+{% endblock timetable_body %}

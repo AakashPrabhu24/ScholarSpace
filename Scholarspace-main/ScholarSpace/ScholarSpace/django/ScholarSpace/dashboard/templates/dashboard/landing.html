@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ScholarSpace | Learn smarter</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "outline-variant": "#b2b1bc",
+          "on-error": "#fff7f7",
+          "on-tertiary-fixed-variant": "#674c72",
+          "surface-bright": "#fbf8fe",
+          "background": "#fbf8fe",
+          "secondary-dim": "#4f5266",
+          "surface-container-high": "#e9e7f1",
+          "on-primary-container": "#373f6d",
+          "surface-container": "#efedf6",
+          "primary": "#545c8c",
+          "on-secondary-fixed-variant": "#585a6f",
+          "tertiary-fixed-dim": "#e2c0ee",
+          "secondary-fixed-dim": "#d1d3eb",
+          "on-tertiary-fixed": "#493055",
+          "primary-dim": "#48507f",
+          "on-error-container": "#6e0523",
+          "on-surface": "#31323b",
+          "tertiary-container": "#f1cefc",
+          "secondary": "#5b5e72",
+          "on-primary-fixed-variant": "#404876",
+          "surface-variant": "#e3e1ed",
+          "error": "#a8364b",
+          "on-secondary-container": "#4e5065",
+          "tertiary-dim": "#64496f",
+          "surface-container-low": "#f5f2fb",
+          "tertiary": "#71557c",
+          "error-dim": "#6b0221",
+          "surface-container-highest": "#e3e1ed",
+          "surface": "#fbf8fe",
+          "on-surface-variant": "#5e5e68",
+          "tertiary-fixed": "#f1cefc",
+          "on-secondary": "#faf8ff",
+          "on-primary": "#faf8ff",
+          "surface-container-lowest": "#ffffff",
+          "surface-dim": "#dad9e4",
+          "inverse-surface": "#0d0e12",
+          "outline": "#7a7a84",
+          "on-background": "#31323b",
+          "inverse-on-surface": "#9e9ca2",
+          "secondary-container": "#e0e1f9",
+          "on-tertiary-container": "#5d4368",
+          "on-secondary-fixed": "#3c3e51",
+          "surface-tint": "#545c8c",
+          "error-container": "#f97386",
+          "on-primary-fixed": "#232b57",
+          "primary-container": "#bfc6fd",
+          "secondary-fixed": "#e0e1f9",
+          "inverse-primary": "#bfc6fd",
+          "primary-fixed-dim": "#b1b8ee",
+          "on-tertiary": "#fff7fc",
+          "primary-fixed": "#bfc6fd"
+        },
+        borderRadius: {
+          DEFAULT: "1rem",
+          lg: "2rem",
+          xl: "3rem",
+          full: "9999px"
+        },
+        fontFamily: {
+          headline: ["Plus Jakarta Sans", "sans-serif"],
+          body: ["Inter", "sans-serif"],
+          label: ["Inter", "sans-serif"]
+        }
+      }
+    }
+  }
+</script>
+<style>
+  body { font-family: Inter, system-ui, sans-serif; }
+  .font-headline { font-family: "Plus Jakarta Sans", system-ui, sans-serif; }
+  .material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  }
+  .bg-scholar-gradient {
+    background: radial-gradient(circle at 10% 20%, rgba(191, 198, 253, 0.15) 0%, rgba(255, 255, 255, 0) 40%),
+                radial-gradient(circle at 90% 80%, rgba(241, 206, 252, 0.15) 0%, rgba(255, 255, 255, 0) 40%);
+  }
+  .floating-shape {
+    position: absolute;
+    z-index: -1;
+    filter: blur(60px);
+    opacity: 0.4;
+  }
+</style>
+</head>
+<body class="bg-surface font-body text-on-surface bg-scholar-gradient min-h-screen relative overflow-x-hidden">
+<div class="floating-shape bg-primary-container w-96 h-96 rounded-full top-[-10%] left-[-5%]"></div>
+<div class="floating-shape bg-tertiary-container w-[500px] h-[500px] rounded-full bottom-[-10%] right-[-5%]"></div>
+
+<nav class="fixed top-0 z-50 w-full bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-b border-slate-200/60 dark:border-slate-800/60">
+  <div class="relative flex w-full items-center justify-between min-h-[3rem] px-6 py-3 max-w-screen-2xl mx-auto">
+    <a href="{% url 'public_landing' %}" class="relative z-10 shrink-0 text-2xl font-black tracking-tight text-indigo-700 dark:text-indigo-300 font-headline">ScholarSpace</a>
+    <a href="{% url 'public_landing' %}" class="absolute left-1/2 top-1/2 hidden md:inline-block -translate-x-1/2 -translate-y-1/2 text-sm font-semibold text-indigo-700 dark:text-indigo-300 border-b-2 border-indigo-600 dark:border-indigo-400 pb-1 whitespace-nowrap">Home</a>
+    <div class="relative z-10 flex shrink-0 items-center">
+      <a href="{% url 'login' %}" class="inline-flex items-center justify-center bg-primary hover:bg-primary-dim text-on-primary px-6 py-2.5 rounded-full text-sm font-semibold shadow-md transition-transform active:scale-95">Login</a>
+    </div>
+  </div>
+</nav>
+
+<header class="pt-32 pb-16 px-6 max-w-7xl mx-auto text-center">
+  <h1 class="text-5xl md:text-7xl font-extrabold font-headline tracking-tighter text-on-surface mb-4">
+    Welcome back, <span class="text-primary italic">Scholar</span>
+  </h1>
+  <p class="text-on-surface-variant text-lg md:text-xl font-medium max-w-2xl mx-auto">
+    Your ScholarSpace hub is ready. Plan study, explore resources, and stay organized in one place.
+  </p>
+</header>
+
+<main class="px-6 pb-24 max-w-screen-2xl mx-auto">
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+
+    <div class="lg:col-span-2 lg:row-span-2 group bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col border border-outline-variant/10 text-left cursor-default">
+      <div class="relative h-64 overflow-hidden">
+        <img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" alt="" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA9WAX9NSeifQEKQrYCo8fCvYbDTcuK2_uLMwkLIrNpOQEMzFHoQozdISTSClLnhgS6xOUMuuhFEzUJjqaa7H_vQmFiAGgQRRqp4ROIqoqhMhKM6vIhBnXW-GCgFp9AYrxydqYiM0S2vuV8XiTRyLRrIF0WnUgTn7GwNBDvw21rkmOphbLMTZaNeOYDe-uGP81IEy21Gcq8qkmgkslIG8C5Szd1UoI1Pt1VWlVKlqxWqvjdjnndWbE2vHtjLb8ey926tGZvXeo-ZPY"/>
+        <div class="absolute inset-0 bg-gradient-to-t from-primary/80 to-transparent"></div>
+        <div class="absolute bottom-6 left-6 text-white">
+          <span class="material-symbols-outlined text-4xl mb-2">school</span>
+          <h3 class="text-3xl font-bold font-headline">Courses</h3>
+        </div>
+      </div>
+      <div class="p-6">
+        <p class="text-on-surface-variant leading-relaxed mb-6">Manage your curriculum and access high-quality educational resources across multiple disciplines.</p>
+        <span class="bg-primary-container text-on-primary-container px-6 py-3 rounded-full font-bold inline-flex items-center gap-2">
+          View Enrollment <span class="material-symbols-outlined text-sm">arrow_forward</span>
+        </span>
+      </div>
+    </div>
+
+    <div class="group bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col border border-outline-variant/10 cursor-default">
+      <div class="relative h-40 overflow-hidden">
+        <img class="w-full h-full object-cover" alt="" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCLs-8Ih7eDC2wcEZ_JgQVB4Gx_-_b05BCC2e0fpG24VFPUajypZRBREG0K41bGPNbk2noBT1bKV7QrECwqtQlYeiptiPj_TO0VcN4XBaKkNPNF795vXUXa-eTF960GOUVNiJbaNt0wew06GF82VrOFPcXpW8rbvFRb4gV0JeGvA3AiZeKrRzsIXa5D_zQ9psfpkQgRXkVvfC5mMqCUC_N8bvHleOj1oSCv_RF3rDlIDY2p3-RATBmIe86qVdVVcCn_jKh0ICFahOw"/>
+        <div class="absolute inset-0 bg-gradient-to-t from-secondary/60 to-transparent"></div>
+        <div class="absolute bottom-4 left-4 text-white flex items-center gap-2">
+          <span class="material-symbols-outlined">assignment</span>
+          <h3 class="font-bold font-headline">Homework</h3>
+        </div>
+      </div>
+      <div class="p-5">
+        <p class="text-sm text-on-surface-variant">Track assignments and deadlines with ease.</p>
+      </div>
+    </div>
+
+    <div class="group bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col border border-outline-variant/10 cursor-default">
+      <div class="p-6">
+        <div class="w-12 h-12 bg-primary-container rounded-2xl flex items-center justify-center text-primary mb-4">
+          <span class="material-symbols-outlined text-2xl">calculate</span>
+        </div>
+        <h3 class="font-bold text-xl font-headline mb-2">AI Calculator</h3>
+        <p class="text-sm text-on-surface-variant leading-snug">Solve complex mathematical problems using advanced OCR and logic.</p>
+      </div>
+      <img class="h-24 w-full object-cover mt-auto" alt="" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCjk-XYxg7r_YGKRwnGD7kSyFxwyQc5uZSWydABKtCfbJjSU7JSl3uE8Vs88Tz6FDXndFYHJVo_UmlLX7vBbT7ZK2aS1Abi4AE4rME8RFSrZ0n1UDqa9MpvCXE4A_Z1V3uHMIWwhuPl1Skc6bbyaCNP0tQbURcJ9x6qIm1yM4AhPIoq4AQJkEwYZQFrkP-dx4yoGRqRaZ9rH3C5UiIPYK5WYt8rH_l2zNZywzVzZAQP5XisuesGVmkTEt0Vd3L7js_m1_5Ya-Vnoto"/>
+    </div>
+
+    <div class="group bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col border border-outline-variant/10 cursor-default">
+      <div class="p-6">
+        <div class="w-12 h-12 bg-secondary-container rounded-2xl flex items-center justify-center text-secondary mb-4">
+          <span class="material-symbols-outlined text-2xl">calendar_month</span>
+        </div>
+        <h3 class="font-bold text-xl font-headline mb-2">Time Table</h3>
+        <p class="text-sm text-on-surface-variant leading-snug">Generate optimized study schedules that fit your lifestyle.</p>
+      </div>
+      <img class="h-24 w-full object-cover mt-auto" alt="" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB95ilg3FDIs7tcNPHArh4FoFwaZ1Eq02rxZM3qQp4Tc0qkRO9219ozyRm-SahEijnbN0xNT2a5eUq4tY3lJ0pchIj0XCzGhCXU2F88UcK4cQNf3TT25fmlciCgO-TjJhutr8lcMgTWLMtGNR95AI_iu2Dyd3ixe-LZre3fKLCWAAx56sBc3mwgEH7IODvwVc1rua20WhPIoUwrQlWhsTDt4YA2txgosD8Qx5RFIghIXKRoyIPXCFhXh8rknS51VjWWvGgEcWDbI7k"/>
+    </div>
+
+    <div class="group bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col border border-outline-variant/10 cursor-default">
+      <div class="relative h-32 overflow-hidden">
+        <img class="w-full h-full object-cover" alt="" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBbESPRimfDfM6a96Zx5xctHzgg2kQqhjs70Sd_YrBYEaxCmhK-wahzNd7c6kljM3zIxIAQ19q3wOAIdnI2aSWxhuej4L93X54N9wwGUohpjDH-UwxWE9ysLbJ7scaFQaS4Qa7wPQANsMqfMO50oqGNAj4xkMtsWNrzn5dApfXLgmgIlPFE4gRWzar29J5L-PSrOd8WV729fsyuLsK8WdlCYBHPPFOKJ9_iu-uaU1DtWWQAVr4z-Yoxq3VFX_fVKRAAy11DB8oDvUs"/>
+        <div class="absolute inset-0 bg-red-600/20"></div>
+      </div>
+      <div class="p-6">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="material-symbols-outlined text-red-600">video_library</span>
+          <h3 class="font-bold font-headline">YouTube</h3>
+        </div>
+        <p class="text-sm text-on-surface-variant">Curated video content for visual learning.</p>
+      </div>
+    </div>
+
+    <div class="group bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col border border-outline-variant/10 cursor-default">
+      <div class="p-6">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="material-symbols-outlined text-amber-700">menu_book</span>
+          <h3 class="font-bold font-headline">Books</h3>
+        </div>
+        <p class="text-sm text-on-surface-variant">A vast digital library of textbooks and journals.</p>
+      </div>
+      <img class="h-32 w-full object-cover mt-auto" alt="" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDIUFLGHj60967AkulNor9Cawdw_6m3utn3WpldQy6BRO3NMujwtpbGs6mE9uX0fB_UFO7YJxbHJGFsUyQSNwOAT7CmuMVeFHYNLxi1u2NjnuBZBxXFSpyQ4U5pZ6omIoUMU31nXZA_FBjQ_Kl5zKXs3InzzIU4c9Hr1e5tkA3Lu9o-en3Pena8L2l6U2uGJOpmAyr_m0X11IuvUFJQVjRH9JhZZBEzkUhrWKKeh_QRLI1wHinkvas4QbToaRm58fVz1pRzSJEHwkU"/>
+    </div>
+
+    <div class="group bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col border border-outline-variant/10 cursor-default">
+      <div class="p-6">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="material-symbols-outlined text-slate-700">language</span>
+          <h3 class="font-bold font-headline">Wikipedia</h3>
+        </div>
+        <p class="text-sm text-on-surface-variant">Instant access to the world's encyclopedia.</p>
+      </div>
+      <img class="h-32 w-full object-cover mt-auto" alt="" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAjtP8JQbryAFZgZwS1nGDWwWohfLUJ8XHNIXxb2tT2InE7zcvrUXEkiOCESgpyBaMfYFgZPaDuF8ytcAHLPGWsCK2y_vwYJEj1zQ4jsZFLt4_3ivcQp579w7dLm3zZVTXk4bY35qLkh2rnrDM8SQUOVv3473-1JZ3nLwZCMijdpwtz7IlgwlY_-c70lxmVX-tpYmXwW7ft4YBBeSTAWrG74DsVQRYxEVkXYm7i-GY7TPA5_6PSb5eM2SypxT3rpNhgXFYe5MKlm1o"/>
+    </div>
+
+    <div class="group bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col border border-outline-variant/10 lg:col-span-1 cursor-default">
+      <div class="p-6 flex flex-col h-full">
+        <div class="w-12 h-12 bg-tertiary-container rounded-2xl flex items-center justify-center text-tertiary mb-4">
+          <span class="material-symbols-outlined text-2xl">ads_click</span>
+        </div>
+        <h3 class="font-bold text-xl font-headline mb-2">My Goals</h3>
+        <p class="text-sm text-on-surface-variant mb-4">Set milestones and track your academic progress.</p>
+        <div class="mt-auto pt-4 border-t border-surface-variant">
+          <div class="w-full bg-surface-container h-2 rounded-full overflow-hidden">
+            <div class="bg-tertiary w-3/4 h-full rounded-full"></div>
+          </div>
+          <p class="text-[10px] uppercase font-bold mt-2 text-tertiary">75% Monthly Target Reach</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="group bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col border border-outline-variant/10 cursor-default">
+      <div class="p-6">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="material-symbols-outlined text-on-surface-variant">dictionary</span>
+          <h3 class="font-bold font-headline">Dictionary</h3>
+        </div>
+        <p class="text-sm text-on-surface-variant">Expand your vocabulary and master new languages.</p>
+      </div>
+    </div>
+
+    <div class="group bg-primary-container text-on-primary-container rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 flex flex-col border border-primary/20 cursor-default">
+      <div class="p-6 flex-1 flex flex-col justify-center text-center">
+        <span class="material-symbols-outlined text-4xl mb-2 mx-auto">quiz</span>
+        <h3 class="text-xl font-bold font-headline mb-1">Test Center</h3>
+        <p class="text-sm font-medium opacity-80">Prepare for exams with adaptive mock tests.</p>
+      </div>
+      <span class="bg-primary text-on-primary py-3 w-full font-bold text-sm text-center block">Start Practice Session</span>
+    </div>
+  </div>
+</main>
+
+<footer class="py-12 border-t border-surface-container-high bg-surface-container-low">
+  <div class="max-w-7xl mx-auto px-6 flex flex-col items-center">
+    <div class="flex items-center gap-2 mb-6">
+      <span class="text-xl font-black font-headline text-indigo-700">ScholarSpace</span>
+    </div>
+    <p class="text-on-surface-variant text-sm font-medium text-center">
+      © 2026 ScholarSpace Dashboard. All rights reserved.<br/>
+      <span class="opacity-50 text-[10px] mt-2 block">CRAFTED FOR ACADEMIC EXCELLENCE</span>
+    </p>
+  </div>
+</footer>
+</body>
+</html>

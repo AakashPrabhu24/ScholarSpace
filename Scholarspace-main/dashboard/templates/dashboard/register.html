@@ -1,0 +1,371 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}{% trans "ScholarSpace | Create Account" %}{% endblock %}
+{% block html_class %}light{% endblock %}
+{% block body_class %}bg-background text-on-background min-h-screen flex flex-col{% endblock %}
+
+{% block extra_head %}
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      colors: {
+        "primary": "#545c8c", "primary-dim": "#48507f", "primary-container": "#bfc6fd",
+        "on-primary": "#faf8ff", "on-primary-container": "#373f6d",
+        "secondary": "#5b5e72", "secondary-container": "#e0e1f9", "on-secondary-container": "#4e5065",
+        "tertiary": "#71557c", "tertiary-container": "#f1cefc", "on-tertiary-container": "#5d4368",
+        "surface": "#fbf8fe", "surface-container": "#efedf6", "surface-container-high": "#e9e7f1",
+        "surface-container-highest": "#e3e1ed", "surface-container-low": "#f5f2fb",
+        "surface-container-lowest": "#ffffff", "surface-variant": "#e3e1ed",
+        "on-surface": "#31323b", "on-surface-variant": "#5e5e68",
+        "background": "#fbf8fe", "on-background": "#31323b",
+        "outline": "#7a7a84", "outline-variant": "#b2b1bc",
+        "error": "#a8364b", "error-container": "#f97386", "on-error": "#fff7f7",
+        "on-error-container": "#6e0523", "inverse-surface": "#0d0e12",
+        "inverse-on-surface": "#9e9ca2", "inverse-primary": "#bfc6fd",
+        "tertiary-fixed": "#f1cefc", "on-tertiary-fixed": "#493055",
+        "tertiary-fixed-dim": "#e2c0ee", "on-tertiary-fixed-variant": "#674c72",
+        "secondary-fixed": "#e0e1f9", "secondary-fixed-dim": "#d1d3eb",
+        "on-secondary-fixed": "#3c3e51", "on-secondary-fixed-variant": "#585a6f",
+        "primary-fixed": "#bfc6fd", "primary-fixed-dim": "#b1b8ee",
+        "on-primary-fixed": "#232b57", "on-primary-fixed-variant": "#404876",
+        "surface-tint": "#545c8c", "surface-bright": "#fbf8fe", "surface-dim": "#dad9e4",
+        "on-secondary": "#faf8ff", "on-tertiary": "#fff7fc",
+        "secondary-dim": "#4f5266", "tertiary-dim": "#64496f",
+        "error-dim": "#6b0221"
+      },
+      borderRadius: { DEFAULT: "1rem", lg: "2rem", xl: "3rem", full: "9999px" },
+      fontFamily: { headline: ["Plus Jakarta Sans"], body: ["Inter"], label: ["Inter"] }
+    }
+  }
+};
+</script>
+<style>
+  body { font-family: 'Inter', sans-serif; }
+  .font-headline { font-family: 'Plus Jakarta Sans', sans-serif; }
+  .material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50%       { transform: translateY(-10px); }
+  }
+  .anim-up   { animation: fadeUp 0.55s cubic-bezier(.22,.68,0,1.2) both; }
+  .delay-1   { animation-delay: 0.08s; }
+  .delay-2   { animation-delay: 0.16s; }
+  .delay-3   { animation-delay: 0.24s; }
+  .delay-4   { animation-delay: 0.32s; }
+  .delay-5   { animation-delay: 0.40s; }
+  .delay-6   { animation-delay: 0.48s; }
+  .delay-7   { animation-delay: 0.56s; }
+  .delay-8   { animation-delay: 0.64s; }
+  .delay-9   { animation-delay: 0.72s; }
+  .float-anim { animation: float 5s ease-in-out infinite; }
+
+  .input-wrap { transition: box-shadow .2s, background .2s; border-radius: 0.875rem; }
+  .input-wrap:focus-within { box-shadow: 0 0 0 2px #545c8c; background: #ffffff !important; }
+
+  .btn-primary { position: relative; overflow: hidden; transition: all .2s; }
+  .btn-primary:active { transform: scale(.98); }
+  .btn-primary::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,.14) 50%, transparent 70%);
+    transform: translateX(-100%); transition: transform .55s ease;
+  }
+  .btn-primary:hover::after { transform: translateX(100%); }
+
+  .social-btn { transition: background .2s, transform .15s; }
+  .social-btn:hover { background: #efedf6; transform: translateY(-1px); }
+
+  .field-error { color: #a8364b; font-size: .72rem; margin-top: .25rem; margin-left: .25rem; }
+  .field-error ul { list-style: none; padding: 0; margin: 0; }
+
+  main > .messages { max-width: 72rem; margin: 0 auto; padding: 0 .5rem 1rem; }
+  main .messages .alert { border-radius: 1rem; padding: .75rem 1rem; margin-bottom: .5rem; font-size: .875rem; border: none; }
+  main .messages .alert-success { background: #bfc6fd; color: #373f6d; }
+  main .messages .alert-error, main .messages .alert-danger { background: #f97386; color: #6e0523; }
+
+  .blob { position: absolute; border-radius: 9999px; filter: blur(60px); pointer-events: none; }
+</style>
+{% endblock extra_head %}
+
+{% block navbar %}
+<header class="sticky top-0 z-50 w-full bg-white/80 backdrop-blur-xl border-b border-slate-200/60">
+  <div class="flex w-full items-center justify-between min-h-[3rem] px-6 py-3 max-w-screen-2xl mx-auto">
+    <a href="{% url 'public_landing' %}"
+       class="text-2xl font-black tracking-tight text-indigo-700 font-headline no-underline">ScholarSpace</a>
+    <a href="{% url 'public_landing' %}"
+       class="hidden md:inline text-sm font-semibold text-indigo-700 border-b-2 border-indigo-600 pb-0.5 no-underline">{% trans "Home" %}</a>
+    <a href="{% url 'login' %}"
+       class="inline-flex items-center px-6 py-2.5 rounded-full text-sm font-semibold border border-outline text-primary hover:bg-slate-50 transition-all active:scale-95 no-underline">
+      {% trans "Sign In" %}
+    </a>
+  </div>
+</header>
+{% endblock navbar %}
+
+{% block main_class %}flex-grow flex flex-col justify-center p-4 md:p-10{% endblock %}
+
+{% block content %}
+<div class="max-w-6xl w-full mx-auto grid md:grid-cols-2 overflow-hidden
+            bg-surface-container-lowest rounded-2xl
+            shadow-[0_8px_40px_rgba(49,50,59,0.09)]
+            border border-outline-variant/20 anim-up delay-1">
+
+  <!-- ── Left panel: branding ──────────────────────────────────────────────── -->
+  <div class="hidden md:flex flex-col justify-center p-14 bg-surface-container-low relative overflow-hidden">
+    <div class="blob w-56 h-56 bg-primary-container/20 -top-14 -right-10"></div>
+    <div class="blob w-72 h-72 bg-tertiary-container/15 -bottom-20 -left-16"></div>
+
+    <div class="relative z-10">
+      <h1 class="text-5xl font-extrabold font-headline text-primary tracking-tight leading-tight mb-5 anim-up delay-2">
+        {% trans "Join" %}<br/><span class="text-tertiary">{% trans "ScholarSpace." %}</span>
+      </h1>
+      <p class="text-on-surface-variant text-lg leading-relaxed mb-8 max-w-sm anim-up delay-3">
+        {% trans "One account. Every tool you need to plan, learn, and hit every deadline." %}
+      </p>
+
+      <!-- Feature chips -->
+      <div class="flex flex-wrap gap-2 mb-10 anim-up delay-4">
+        <span class="px-3 py-1.5 rounded-full bg-secondary-fixed-dim text-on-secondary-fixed text-xs font-semibold">{% trans "Deadline Tracker" %}</span>
+        <span class="px-3 py-1.5 rounded-full bg-tertiary-fixed text-on-tertiary-fixed text-xs font-semibold">{% trans "SMS Reminders" %}</span>
+        <span class="px-3 py-1.5 rounded-full bg-primary-container text-on-primary-container text-xs font-semibold">{% trans "Smart Plan" %}</span>
+        <span class="px-3 py-1.5 rounded-full bg-surface-container-high text-on-surface-variant text-xs font-semibold">{% trans "Notes & Goals" %}</span>
+      </div>
+
+      <!-- What each field is used for -->
+      <ul class="space-y-3 anim-up delay-5">
+        <li class="flex items-start gap-3">
+          <span class="material-symbols-outlined text-primary mt-0.5 shrink-0 text-[20px]">person</span>
+          <div>
+            <p class="text-sm font-bold text-on-surface">{% trans "Username" %}</p>
+            <p class="text-xs text-on-surface-variant">{% trans "Your display name across ScholarSpace." %}</p>
+          </div>
+        </li>
+        <li class="flex items-start gap-3">
+          <span class="material-symbols-outlined text-secondary mt-0.5 shrink-0 text-[20px]">mail</span>
+          <div>
+            <p class="text-sm font-bold text-on-surface">{% trans "Email" %} <span class="font-normal text-outline">{% trans "(optional)" %}</span></p>
+            <p class="text-xs text-on-surface-variant">{% trans "Receive deadline reminders and account notifications by email." %}</p>
+          </div>
+        </li>
+        <li class="flex items-start gap-3">
+          <span class="material-symbols-outlined text-tertiary mt-0.5 shrink-0 text-[20px]">phone_iphone</span>
+          <div>
+            <p class="text-sm font-bold text-on-surface">{% trans "Phone Number" %} <span class="font-normal text-outline">{% trans "(optional)" %}</span></p>
+            <p class="text-xs text-on-surface-variant">{% trans "Get SMS alerts via Twilio at 72h, 24h &amp; 1h before every deadline." %}</p>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Floating illustration -->
+    <div class="mt-10 float-anim anim-up delay-5">
+      <div class="rounded-2xl overflow-hidden shadow-xl border-4 border-white">
+        <svg viewBox="0 0 480 200" xmlns="http://www.w3.org/2000/svg" class="w-full">
+          <rect width="480" height="200" fill="#1a2236"/>
+          <!-- SMS bubble -->
+          <rect x="20" y="30" width="180" height="60" rx="12" fill="#2a3650"/>
+          <rect x="28" y="42" width="140" height="8" rx="4" fill="#bfc6fd" opacity=".8"/>
+          <rect x="28" y="56" width="100" height="6" rx="3" fill="#7a84b4" opacity=".6"/>
+          <rect x="28" y="68" width="120" height="6" rx="3" fill="#7a84b4" opacity=".5"/>
+          <rect x="190" y="46" width="12" height="12" rx="6" fill="#a8364b"/>
+          <!-- Email bubble -->
+          <rect x="20" y="110" width="200" height="60" rx="12" fill="#2a3650"/>
+          <text x="32" y="132" fill="#bfc6fd" font-size="9" font-family="monospace">[ScholarSpace] Reminder</text>
+          <rect x="28" y="138" width="150" height="6" rx="3" fill="#7a84b4" opacity=".6"/>
+          <rect x="28" y="150" width="110" height="6" rx="3" fill="#7a84b4" opacity=".5"/>
+          <!-- Phone mockup -->
+          <rect x="310" y="20" width="80" height="155" rx="14" fill="#0d1520" stroke="#bfc6fd" stroke-width="1.5"/>
+          <rect x="316" y="32" width="68" height="118" rx="6" fill="#1e2a3a"/>
+          <rect x="326" y="42" width="48" height="28" rx="5" fill="#2a3a54"/>
+          <text x="334" y="59" fill="#bfc6fd" font-size="8" font-family="monospace">SMS Alert</text>
+          <rect x="326" y="76" width="48" height="8" rx="3" fill="#545c8c" opacity=".7"/>
+          <rect x="326" y="88" width="36" height="8" rx="3" fill="#545c8c" opacity=".5"/>
+          <rect x="326" y="104" width="48" height="20" rx="5" fill="#545c8c"/>
+          <text x="338" y="118" fill="#faf8ff" font-size="7" font-family="monospace">View</text>
+          <circle cx="350" cy="172" r="6" fill="#2a3a54"/>
+          <!-- Decorative dots -->
+          <circle cx="260" cy="50"  r="4" fill="#bfc6fd" opacity=".4"/>
+          <circle cx="275" cy="80"  r="3" fill="#f1cefc" opacity=".5"/>
+          <circle cx="250" cy="120" r="5" fill="#bfc6fd" opacity=".3"/>
+          <circle cx="285" cy="150" r="3" fill="#e2c0ee" opacity=".5"/>
+          <!-- Arrow from bubble to phone -->
+          <path d="M220 60 Q260 60 310 80" stroke="#545c8c" stroke-width="1.5" fill="none" stroke-dasharray="4 3"/>
+          <path d="M220 140 Q265 140 310 130" stroke="#545c8c" stroke-width="1.5" fill="none" stroke-dasharray="4 3"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Right panel: form ──────────────────────────────────────────────────── -->
+  <div class="p-8 md:p-12 flex flex-col justify-center">
+
+    <div class="mb-7 anim-up delay-2">
+      <h2 class="text-2xl font-bold font-headline text-on-surface mb-1">{% trans "Create your account" %}</h2>
+      <p class="text-on-surface-variant text-sm">{% trans "Fill in the details below — email and phone are optional but unlock reminders." %}</p>
+    </div>
+
+    {% if form.non_field_errors %}
+    <div class="mb-4 p-3 rounded-xl bg-error-container/30 border border-error/20 text-error text-sm">
+      {{ form.non_field_errors }}
+    </div>
+    {% endif %}
+
+    <form method="post" action="" autocomplete="on">
+      {% csrf_token %}
+      <div class="space-y-4">
+
+        <!-- Username -->
+        <div class="anim-up delay-3">
+          <label class="block text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-1.5 ml-1"
+                 for="{{ form.username.id_for_label }}">
+            {% trans "Username" %} <span class="text-error">*</span>
+          </label>
+          <div class="input-wrap flex items-center bg-surface-container-high">
+            <span class="material-symbols-outlined ml-4 text-outline text-[22px] shrink-0 select-none">person</span>
+            {{ form.username }}
+          </div>
+          {% if form.username.errors %}
+          <div class="field-error">{{ form.username.errors }}</div>
+          {% endif %}
+        </div>
+
+        <!-- Email -->
+        <div class="anim-up delay-4">
+          <label class="block text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-1.5 ml-1"
+                 for="{{ form.email.id_for_label }}">
+            {% trans "Email Address" %}
+            <span class="normal-case font-normal text-outline tracking-normal ml-1">{% trans "(optional — for email reminders)" %}</span>
+          </label>
+          <div class="input-wrap flex items-center bg-surface-container-high">
+            <span class="material-symbols-outlined ml-4 text-outline text-[22px] shrink-0 select-none">mail</span>
+            {{ form.email }}
+          </div>
+          {% if form.email.errors %}
+          <div class="field-error">{{ form.email.errors }}</div>
+          {% endif %}
+        </div>
+
+        <!-- Phone Number -->
+        <div class="anim-up delay-5">
+          <label class="block text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-1.5 ml-1"
+                 for="{{ form.phone_number.id_for_label }}">
+            {% trans "Phone Number" %}
+            <span class="normal-case font-normal text-outline tracking-normal ml-1">{% trans "(optional — for SMS reminders)" %}</span>
+          </label>
+          <div class="input-wrap flex items-center bg-surface-container-high">
+            <span class="material-symbols-outlined ml-4 text-outline text-[22px] shrink-0 select-none">phone_iphone</span>
+            {{ form.phone_number }}
+          </div>
+          <p class="text-[11px] text-outline mt-1 ml-1">Include country code — e.g. +919876543210 (India) or +14155552671 (US)</p>
+          {% if form.phone_number.errors %}
+          <div class="field-error">{{ form.phone_number.errors }}</div>
+          {% endif %}
+        </div>
+
+        <!-- Divider -->
+        <div class="flex items-center gap-3 py-1 anim-up delay-5">
+          <div class="h-px flex-1 bg-outline-variant/30"></div>
+          <span class="text-[11px] font-semibold text-outline uppercase tracking-widest">{% trans "Security" %}</span>
+          <div class="h-px flex-1 bg-outline-variant/30"></div>
+        </div>
+
+        <!-- Password -->
+        <div class="anim-up delay-6">
+          <label class="block text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-1.5 ml-1"
+                 for="{{ form.password1.id_for_label }}">
+            {% trans "Password" %} <span class="text-error">*</span>
+          </label>
+          <div class="input-wrap flex items-center bg-surface-container-high">
+            <span class="material-symbols-outlined ml-4 text-outline text-[22px] shrink-0 select-none">lock</span>
+            {{ form.password1 }}
+          </div>
+          {% if form.password1.errors %}
+          <div class="field-error">{{ form.password1.errors }}</div>
+          {% endif %}
+        </div>
+
+        <!-- Confirm Password -->
+        <div class="anim-up delay-7">
+          <label class="block text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-1.5 ml-1"
+                 for="{{ form.password2.id_for_label }}">
+            {% trans "Confirm Password" %} <span class="text-error">*</span>
+          </label>
+          <div class="input-wrap flex items-center bg-surface-container-high">
+            <span class="material-symbols-outlined ml-4 text-outline text-[22px] shrink-0 select-none">verified_user</span>
+            {{ form.password2 }}
+          </div>
+          {% if form.password2.errors %}
+          <div class="field-error">{{ form.password2.errors }}</div>
+          {% endif %}
+        </div>
+
+        <!-- Submit -->
+        <div class="pt-2 anim-up delay-8">
+          <button type="submit"
+                  class="btn-primary w-full bg-gradient-to-br from-primary to-primary-dim text-on-primary font-bold py-4 rounded-full shadow-lg hover:shadow-xl text-sm tracking-wide font-headline">
+            {% trans "Create Account" %}
+          </button>
+        </div>
+
+        <!-- Divider: or sign up with -->
+        <div class="flex items-center gap-4 py-1 anim-up delay-8">
+          <div class="h-px flex-grow bg-outline-variant/30"></div>
+          <span class="text-xs text-outline font-medium uppercase tracking-tighter whitespace-nowrap">{% trans "or sign up with" %}</span>
+          <div class="h-px flex-grow bg-outline-variant/30"></div>
+        </div>
+
+        <!-- Google OAuth -->
+        <div class="anim-up delay-9">
+          <a href="{% url 'google_oauth_start' %}"
+             class="social-btn flex items-center justify-center gap-3 w-full border border-outline-variant/30 py-3.5 rounded-full no-underline text-on-surface bg-white">
+            <svg width="20" height="20" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M17.64 9.20c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.874 2.684-6.615z" fill="#4285F4"/>
+              <path d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 009 18z" fill="#34A853"/>
+              <path d="M3.964 10.71A5.41 5.41 0 013.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 000 9c0 1.452.348 2.827.957 4.042l3.007-2.332z" fill="#FBBC05"/>
+              <path d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 00.957 4.958L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58z" fill="#EA4335"/>
+            </svg>
+            <span class="text-sm font-semibold">{% trans "Continue with Google" %}</span>
+          </a>
+          <p class="text-[11px] text-outline text-center mt-2">
+            Google sign-up won't collect your phone number. Add it after signing in at
+            <a href="/manage-work/sms-settings/" class="text-primary font-semibold hover:underline">SMS Settings</a>.
+          </p>
+        </div>
+
+      </div>
+    </form>
+
+    <p class="mt-6 text-center text-sm text-on-surface-variant anim-up delay-9">
+      {% trans "Already have an account?" %}
+      <a href="{% url 'login' %}" class="text-primary font-bold hover:underline underline-offset-4 ml-1">{% trans "Sign in" %}</a>
+    </p>
+  </div>
+
+</div>
+{% endblock content %}
+
+{% block footer %}
+<footer class="bg-slate-50 py-8 mt-auto">
+  <div class="max-w-7xl mx-auto px-8 flex flex-col md:flex-row items-center justify-between gap-4">
+    <p class="text-sm text-slate-500">© 2026 ScholarSpace. All rights reserved.</p>
+    <div class="flex gap-6 text-sm text-slate-500">
+      <a href="#" class="hover:text-indigo-500 transition-colors">Privacy</a>
+      <a href="#" class="hover:text-indigo-500 transition-colors">Terms</a>
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLSeXbqorpTQJgPj26UjIslaqMuwM0fphvYulL70F8mXxiqrYhQ/viewform?usp=sharing"
+         target="_blank" rel="noopener" class="hover:text-indigo-500 transition-colors">Contact</a>
+    </div>
+  </div>
+</footer>
+{% endblock footer %}

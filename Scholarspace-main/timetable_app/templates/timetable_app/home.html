@@ -1,0 +1,109 @@
+{% extends 'timetable_app/base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "ScholarSpace | Study Timetable" %}{% endblock %}
+
+{% block timetable_body %}
+<div class="space-y-12">
+
+  <!-- Hero section -->
+  <section class="text-center pt-4 pb-4">
+    <div class="w-16 h-16 bg-primary-container rounded-2xl mx-auto mb-6 flex items-center justify-center shadow-sm">
+      <span class="material-symbols-outlined text-primary text-3xl" style="font-variation-settings:'FILL' 1">calendar_month</span>
+    </div>
+    <h1 class="text-4xl md:text-5xl font-extrabold font-headline text-on-surface tracking-tight mb-4">
+      {% trans "Create Your Personalised" %}<br/>
+      <span class="text-primary">{% trans "Study Timetable" %}</span>
+    </h1>
+    <p class="text-on-surface-variant text-lg max-w-2xl mx-auto leading-relaxed mb-8">
+      {% trans "Answer a few questions about your schedule and preferences to generate a customised study timetable that works for you." %}
+    </p>
+    <a data-scholar-vt href="{% url 'timetable_app:questions' %}"
+       class="inline-flex items-center gap-2 px-10 py-4 bg-gradient-to-br from-primary to-primary-dim
+              text-on-primary font-bold text-base rounded-full shadow-lg shadow-primary/20
+              hover:shadow-xl hover:opacity-90 active:scale-95 transition-all no-underline font-headline">
+      <span class="material-symbols-outlined text-[20px]">play_arrow</span>
+      {% trans "Get Started" %}
+    </a>
+  </section>
+
+  <!-- Feature cards -->
+  <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+    <div class="bg-surface-container-lowest rounded-xl p-7 border border-outline-variant/10 shadow-sm text-center hover:shadow-md transition-shadow">
+      <div class="w-12 h-12 bg-primary-container rounded-2xl mx-auto mb-4 flex items-center justify-center">
+        <span class="material-symbols-outlined text-primary text-[24px]" style="font-variation-settings:'FILL' 1">person_pin</span>
+      </div>
+      <h3 class="font-bold font-headline text-primary text-lg mb-2">{% trans "Personalised" %}</h3>
+      <p class="text-sm text-on-surface-variant leading-relaxed">
+        {% trans "Tailored to your schedule, preferences, and educational needs." %}
+      </p>
+    </div>
+
+    <div class="bg-surface-container-lowest rounded-xl p-7 border border-outline-variant/10 shadow-sm text-center hover:shadow-md transition-shadow">
+      <div class="w-12 h-12 bg-secondary-container rounded-2xl mx-auto mb-4 flex items-center justify-center">
+        <span class="material-symbols-outlined text-secondary text-[24px]" style="font-variation-settings:'FILL' 1">trending_up</span>
+      </div>
+      <h3 class="font-bold font-headline text-secondary text-lg mb-2">{% trans "Effective" %}</h3>
+      <p class="text-sm text-on-surface-variant leading-relaxed">
+        {% trans "Optimised study distribution based on your preparation level in each subject." %}
+      </p>
+    </div>
+
+    <div class="bg-surface-container-lowest rounded-xl p-7 border border-outline-variant/10 shadow-sm text-center hover:shadow-md transition-shadow">
+      <div class="w-12 h-12 bg-tertiary-container rounded-2xl mx-auto mb-4 flex items-center justify-center">
+        <span class="material-symbols-outlined text-tertiary text-[24px]" style="font-variation-settings:'FILL' 1">balance</span>
+      </div>
+      <h3 class="font-bold font-headline text-tertiary text-lg mb-2">{% trans "Balanced" %}</h3>
+      <p class="text-sm text-on-surface-variant leading-relaxed">
+        {% trans "Accounts for your job, classes, and personal activities." %}
+      </p>
+    </div>
+
+  </section>
+
+  <!-- How it works -->
+  <section class="bg-surface-container-lowest rounded-xl border border-outline-variant/10 shadow-sm p-8">
+    <h2 class="text-xl font-bold font-headline text-on-surface mb-6 text-center">{% trans "How it works" %}</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+      <div class="flex flex-col items-center text-center gap-3">
+        <div class="w-10 h-10 bg-primary text-on-primary rounded-full flex items-center justify-center font-black font-headline text-lg">1</div>
+        <h4 class="font-bold text-on-surface font-headline">{% trans "Tell us your schedule" %}</h4>
+        <p class="text-sm text-on-surface-variant leading-relaxed">
+          {% trans "Share your study preference (day/night), job hours, class hours, and exam date." %}
+        </p>
+      </div>
+
+      <div class="flex flex-col items-center text-center gap-3">
+        <div class="w-10 h-10 bg-primary text-on-primary rounded-full flex items-center justify-center font-black font-headline text-lg">2</div>
+        <h4 class="font-bold text-on-surface font-headline">{% trans "Add your subjects" %}</h4>
+        <p class="text-sm text-on-surface-variant leading-relaxed">
+          {% trans "List up to 4 subjects and 2 languages with your current preparation level (0–100%)." %}
+        </p>
+      </div>
+
+      <div class="flex flex-col items-center text-center gap-3">
+        <div class="w-10 h-10 bg-primary text-on-primary rounded-full flex items-center justify-center font-black font-headline text-lg">3</div>
+        <h4 class="font-bold text-on-surface font-headline">{% trans "Get your timetable" %}</h4>
+        <p class="text-sm text-on-surface-variant leading-relaxed">
+          {% trans "Receive a daily schedule with time slots allocated proportionally to each subject's need." %}
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- CTA footer -->
+  <div class="text-center pb-4">
+    <a data-scholar-vt href="{% url 'timetable_app:questions' %}"
+       class="inline-flex items-center gap-2 px-8 py-3.5 border-2 border-primary text-primary
+              font-bold text-sm rounded-full hover:bg-primary hover:text-on-primary
+              active:scale-95 transition-all no-underline font-headline">
+      <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+      {% trans "Start Building My Timetable" %}
+    </a>
+  </div>
+
+</div>
+{% endblock timetable_body %}

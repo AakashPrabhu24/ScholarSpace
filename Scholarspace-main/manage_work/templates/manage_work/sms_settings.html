@@ -1,0 +1,166 @@
+{% extends 'manage_work/base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "ScholarSpace | SMS Settings" %}{% endblock %}
+{% block nav_sms %}mw-active{% endblock %}
+{% block page_title %}SMS Notifications{% endblock %}
+
+{% block mw_content %}
+<div class="space-y-8 max-w-2xl">
+
+  <!-- Twilio status -->
+  {% if twilio_configured %}
+  <div class="flex items-center gap-3 p-4 bg-green-50 border border-green-200 rounded-2xl">
+    <span class="material-symbols-outlined text-green-600 shrink-0" style="font-variation-settings:'FILL' 1">check_circle</span>
+    <div>
+      <p class="font-bold text-on-surface text-sm">{% trans "Twilio is configured" %}</p>
+      <p class="text-xs text-on-surface-variant">{% trans "SMS delivery is active." %}</p>
+    </div>
+  </div>
+  {% else %}
+  <div class="p-5 bg-red-50 border border-red-200 rounded-2xl">
+    <div class="flex items-start gap-3 mb-4">
+      <span class="material-symbols-outlined text-red-500 shrink-0 mt-0.5">warning</span>
+      <div>
+        <p class="font-bold text-on-surface text-sm mb-1">{% trans "Twilio not configured" %}</p>
+        <p class="text-xs text-on-surface-variant leading-relaxed">{% trans "Set these environment variables before starting the server:" %}</p>
+      </div>
+    </div>
+    <div class="bg-white rounded-xl p-4 font-mono text-xs text-on-surface space-y-1 border border-red-100">
+      <p>set TWILIO_ACCOUNT_SID=ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</p>
+      <p>set TWILIO_AUTH_TOKEN=your_auth_token</p>
+      <p>set TWILIO_PHONE_NUMBER=+1xxxxxxxxxx</p>
+    </div>
+    <p class="text-xs text-on-surface-variant mt-3">Get free credentials at <a href="https://www.twilio.com/try-twilio" target="_blank" class="text-primary font-semibold hover:underline">twilio.com/try-twilio</a></p>
+  </div>
+  {% endif %}
+
+  <!-- Phone number form -->
+  <div class="bg-white rounded-2xl border border-outline-variant/30 p-7">
+    <div class="flex items-center gap-4 mb-6">
+      <div class="w-11 h-11 bg-primary-container rounded-2xl flex items-center justify-center shrink-0">
+        <span class="material-symbols-outlined text-primary" style="font-variation-settings:'FILL' 1">phone_iphone</span>
+      </div>
+      <div>
+        <h2 class="text-base font-bold font-headline text-on-surface">{% trans "Your Phone Number" %}</h2>
+        <p class="text-xs text-on-surface-variant">
+          {% if profile.phone_number %}{% trans "Currently:" %} <span class="font-bold text-primary">{{ profile.phone_number }}</span>
+          {% else %}{% trans "No phone number saved yet." %}{% endif %}
+        </p>
+      </div>
+    </div>
+    <form method="POST" class="space-y-4">
+      {% csrf_token %}<input type="hidden" name="action" value="update_phone">
+      <div>
+        <label class="block text-xs font-bold text-primary mb-2" for="id_phone">{% trans "Phone (E.164 format: +919876543210)" %}</label>
+        <div class="flex gap-3">
+          <input id="id_phone" name="phone_number" type="tel"
+                 value="{{ profile.phone_number|default:'' }}"
+                 placeholder="{% trans '+91 98765 43210' %}"
+                 class="flex-1 px-4 py-3 rounded-xl border border-outline-variant bg-[#f8f9ff] focus:ring-2 focus:ring-primary outline-none text-sm transition-all"/>
+          <button type="submit" class="px-6 py-3 bg-primary text-white rounded-xl font-bold text-sm hover:brightness-110 active:scale-95 transition-all">{% trans "Save" %}</button>
+        </div>
+        <p class="text-[11px] text-on-surface-variant mt-1.5">{% trans "Include country code: +919876543210 (India) or +14155552671 (US)" %}</p>
+      </div>
+    </form>
+  </div>
+
+  <!-- Test SMS -->
+  <div class="bg-white rounded-2xl border border-outline-variant/30 p-7">
+    <h2 class="text-base font-bold font-headline text-on-surface mb-2 flex items-center gap-2">
+      <span class="material-symbols-outlined text-primary">send</span> {% trans "Send Test SMS" %}
+    </h2>
+    <p class="text-sm text-on-surface-variant mb-5">{% trans "Send a test to" %} <strong>{{ profile.phone_number|default:"your phone" }}</strong> {% trans "to confirm everything works." %}</p>
+    <form method="POST">
+      {% csrf_token %}<input type="hidden" name="action" value="test_sms">
+      <button type="submit"
+              {% if not profile.phone_number or not twilio_configured %}disabled{% endif %}
+              class="px-6 py-2.5 bg-primary text-white rounded-full font-bold text-sm hover:brightness-110 active:scale-95 transition-all disabled:opacity-40 disabled:cursor-not-allowed">
+        {% trans "Send Test SMS" %}
+      </button>
+    </form>
+  </div>
+
+  <!-- Reminder schedule explanation -->
+  <div class="bg-[#f0f1f9] rounded-2xl p-7">
+    <h2 class="text-base font-bold font-headline text-on-surface mb-5">{% trans "Reminder Schedule" %}</h2>
+    <div class="grid grid-cols-3 gap-4">
+      {% for hours, label, desc in reminder_schedule %}
+      <div class="bg-white rounded-xl p-4 text-center border border-outline-variant/20">
+        <p class="text-xl font-black font-headline text-primary mb-1">{{ hours }}h</p>
+        <p class="text-xs font-bold text-on-surface">{{ label }}</p>
+        <p class="text-[11px] text-on-surface-variant mt-1 leading-tight">{{ desc }}</p>
+      </div>
+      {% empty %}
+      <div class="bg-white rounded-xl p-4 text-center border border-outline-variant/20">
+        <p class="text-xl font-black font-headline text-primary mb-1">72h</p>
+        <p class="text-xs font-bold text-on-surface">{% trans "Early Warning" %}</p>
+        <p class="text-[11px] text-on-surface-variant mt-1 leading-tight">{% trans "Time to plan and gather resources." %}</p>
+      </div>
+      <div class="bg-white rounded-xl p-4 text-center border border-outline-variant/20">
+        <p class="text-xl font-black font-headline text-primary mb-1">24h</p>
+        <p class="text-xs font-bold text-on-surface">{% trans "Final Day" %}</p>
+        <p class="text-[11px] text-on-surface-variant mt-1 leading-tight">{% trans "Review progress and wrap up." %}</p>
+      </div>
+      <div class="bg-white rounded-xl p-4 text-center border border-outline-variant/20">
+        <p class="text-xl font-black font-headline text-primary mb-1">1h</p>
+        <p class="text-xs font-bold text-on-surface">{% trans "Last Chance" %}</p>
+        <p class="text-[11px] text-on-surface-variant mt-1 leading-tight">{% trans "Final push before deadline." %}</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- Upcoming reminders -->
+  <div class="bg-white rounded-2xl border border-outline-variant/30 overflow-hidden">
+    <div class="px-6 py-4 border-b border-outline-variant/20 bg-[#f8f9ff] flex items-center justify-between">
+      <h2 class="font-bold font-headline text-on-surface">{% trans "Upcoming Reminders" %}</h2>
+      <span class="text-xs text-on-surface-variant">{{ upcoming|length }} pending</span>
+    </div>
+    {% if upcoming %}
+    <ul class="divide-y divide-outline-variant/10">
+      {% for r in upcoming %}
+      <li class="flex items-center gap-4 px-6 py-3 hover:bg-[#f8f9ff] transition-colors">
+        <div class="w-9 h-9 rounded-full flex items-center justify-center shrink-0
+                    {% if r.channel == 'sms' %}bg-purple-100 text-purple-600{% else %}bg-primary-container text-primary{% endif %}">
+          <span class="material-symbols-outlined text-[17px]">{% if r.channel == 'sms' %}sms{% else %}mail{% endif %}</span>
+        </div>
+        <div class="flex-1 min-w-0">
+          <p class="font-semibold text-on-surface text-sm truncate">{{ r.deadline.title }}</p>
+          <p class="text-xs text-on-surface-variant">{{ r.remind_at|date:"M d" }} at {{ r.remind_at|time:"H:i" }} UTC &bull; {{ r.channel|upper }}</p>
+        </div>
+        <span class="text-xs text-on-surface-variant shrink-0">{{ r.remind_at|timeuntil }} {% trans "away" %}</span>
+      </li>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <div class="py-10 text-center text-on-surface-variant text-sm">{% trans "No upcoming reminders" %}. Add deadlines to schedule some.</div>
+    {% endif %}
+  </div>
+
+  {% if sent_history %}
+  <div class="bg-white rounded-2xl border border-outline-variant/30 overflow-hidden">
+    <div class="px-6 py-4 border-b border-outline-variant/20 bg-[#f8f9ff] flex items-center justify-between">
+      <h2 class="font-bold font-headline text-on-surface">{% trans "Sent History" %}</h2>
+      <form method="POST">{% csrf_token %}<input type="hidden" name="action" value="clear_sent">
+        <button type="submit" class="text-xs font-bold text-red-500 hover:underline bg-transparent border-0 cursor-pointer">{% trans "Clear" %}</button>
+      </form>
+    </div>
+    <ul class="divide-y divide-outline-variant/10">
+      {% for r in sent_history %}
+      <li class="flex items-center gap-4 px-6 py-3 opacity-60">
+        <span class="material-symbols-outlined text-[16px] {% if r.channel == 'sms' %}text-purple-500{% else %}text-primary{% endif %}">
+          {% if r.channel == 'sms' %}sms{% else %}mail{% endif %}
+        </span>
+        <div class="flex-1 min-w-0">
+          <p class="text-sm text-on-surface truncate">{{ r.deadline.title }}</p>
+          <p class="text-xs text-on-surface-variant">{{ r.sent_at|date:"M d" }} at {{ r.sent_at|time:"H:i" }} UTC &bull; {{ r.channel|upper }}</p>
+        </div>
+        <span class="material-symbols-outlined text-green-500 text-[16px]" style="font-variation-settings:'FILL' 1">check_circle</span>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

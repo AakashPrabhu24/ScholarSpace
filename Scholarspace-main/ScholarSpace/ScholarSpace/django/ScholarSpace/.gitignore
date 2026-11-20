@@ -1,0 +1,7 @@
+google_oauth_client_secret.json
+google_calendar_api_key.txt
+client_secret*.json
+*.pyc
+__pycache__/
+db.sqlite3
+media/

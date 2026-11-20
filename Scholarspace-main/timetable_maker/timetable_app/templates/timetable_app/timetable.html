@@ -1,0 +1,78 @@
+{% extends 'timetable_app/base.html' %}
+
+{% block title %}Your Personalized Timetable{% endblock %}
+
+{% block content %}
+<section class="timetable-section">
+    <h2>Your Personalized Study Timetable</h2>
+    
+    <div class="timetable-summary">
+        <h3>Timetable Summary</h3>
+        <div class="summary-grid">
+            <div class="summary-item">
+                <span class="summary-label">Available Study Hours:</span>
+                <span class="summary-value">{{ timetable.available_hours }} hours/day</span>
+            </div>
+            
+            <div class="summary-item">
+                <span class="summary-label">Days Until Exam:</span>
+                <span class="summary-value">{{ timetable.exam_days_left }} days</span>
+            </div>
+            <div class="summary-item">
+                <span class="summary-label">Effective Study Days:</span>
+                <span class="summary-value">{{ timetable.effective_days }} days</span>
+            </div>
+            <div class="summary-item">
+                <span class="summary-label">Revision Days:</span>
+                <span class="summary-value">{{ timetable.revision_days }} days</span>
+            </div>
+            <div class="summary-item">
+                <span class="summary-label">Force Majeure Days:</span>
+                <span class="summary-value">{{ timetable.force_majeure_days }} days</span>
+            </div>
+        </div>
+    </div>
+    
+    <div class="daily-timetable">
+        <h3>Daily Study Schedule</h3>
+        <p>This is your recommended daily study schedule based on your preferences and requirements:</p>
+        
+        <div class="timetable-container">
+            <table class="timetable">
+                <thead>
+                    <tr>
+                        <th>Time</th>
+                        <th>Subject</th>
+                        <th>Duration</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for slot in timetable.daily_schedule %}
+                    <tr>
+                        <td>{{ slot.start_time }} - {{ slot.end_time }}</td>
+                        <td>{{ slot.subject }}</td>
+                        <td>{{ slot.duration }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <div class="study-advice">
+        <h3>Study Tips</h3>
+        <ul>
+            <li>Take short breaks between study sessions to maintain focus</li>
+            <li>Prioritize subjects where your preparation level is lower</li>
+            <li>Use active recall techniques rather than passive reading</li>
+            <li>Review your material at regular intervals</li>
+            <li>Stay hydrated and get enough sleep for optimal learning</li>
+        </ul>
+    </div>
+    
+    <div class="action-buttons">
+        <a href="{% url 'timetable_app:questions' %}" class="btn btn-secondary">Adjust Preferences</a>
+        <button onclick="window.print()" class="btn btn-primary">Print Timetable</button>
+    </div>
+</section>
+{% endblock %}

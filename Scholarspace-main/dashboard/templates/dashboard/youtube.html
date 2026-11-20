@@ -1,0 +1,105 @@
+{% extends 'dashboard/scholar_app_base.html' %}
+
+{% load i18n %}
+
+{% block title %}{% trans "ScholarSpace | Discover Knowledge" %}{% endblock %}
+
+{% block content %}
+<main class="scholar-page-fade pt-24 pb-12 px-6 max-w-7xl mx-auto w-full flex-grow">
+  <section class="mb-12 text-center max-w-3xl mx-auto">
+    <h1 class="text-4xl md:text-5xl font-extrabold text-primary mb-6 tracking-tight font-headline">{% trans "Discover Knowledge" %}</h1>
+    <form method="post" action="{% url 'youtube' %}" class="relative group">
+      {% csrf_token %}
+      <div class="absolute inset-y-0 left-5 flex items-center pointer-events-none">
+        <span class="material-symbols-outlined text-outline">search</span>
+      </div>
+      <input
+        class="w-full pl-14 pr-36 py-5 bg-surface-container-high border-none rounded-xl text-lg focus:ring-2 focus:ring-primary focus:bg-surface-container-lowest transition-all shadow-sm group-hover:shadow-md text-on-surface"
+        name="text"
+        type="search"
+        placeholder="{% trans "Search educational videos, lectures, and tutorials..." %}"
+        value="{{ search_query }}"
+        maxlength="100"
+        autocomplete="off"
+      />
+      <button type="submit" class="absolute right-3 top-1/2 -translate-y-1/2 px-6 py-3 bg-gradient-to-br from-primary to-primary-dim text-on-primary rounded-full font-semibold hover:opacity-90 active:scale-95 transition-all">
+        {% trans "Search" %}
+      </button>
+    </form>
+
+    {% if search_error %}
+      <p class="mt-4 text-sm text-error font-medium">{{ search_error }}</p>
+    {% endif %}
+
+    <div class="flex flex-wrap justify-center gap-3 mt-8">
+      <a data-scholar-vt href="{% url 'youtube' %}" class="px-5 py-2 rounded-full {% if not search_query %}bg-primary text-on-primary{% else %}bg-secondary-container text-on-secondary-container hover:bg-primary-container{% endif %} text-sm font-semibold transition-all no-underline">{% trans "All Topics" %}</a>
+      <a data-scholar-vt href="{% url 'youtube' %}?q=computer+science+tutorial" class="px-5 py-2 rounded-full bg-secondary-container text-on-secondary-container text-sm font-medium hover:bg-primary-container transition-all no-underline">{% trans "Computer Science" %}</a>
+      <a data-scholar-vt href="{% url 'youtube' %}?q=mathematics+calculus+lecture" class="px-5 py-2 rounded-full bg-secondary-container text-on-secondary-container text-sm font-medium hover:bg-primary-container transition-all no-underline">{% trans "Mathematics" %}</a>
+      <a data-scholar-vt href="{% url 'youtube' %}?q=history+documentary" class="px-5 py-2 rounded-full bg-secondary-container text-on-secondary-container text-sm font-medium hover:bg-primary-container transition-all no-underline">{% trans "History" %}</a>
+      <a data-scholar-vt href="{% url 'youtube' %}?q=physics+lecture" class="px-5 py-2 rounded-full bg-secondary-container text-on-secondary-container text-sm font-medium hover:bg-primary-container transition-all no-underline">{% trans "Physics" %}</a>
+      <span class="px-5 py-2 rounded-full bg-surface-container-highest text-on-surface-variant text-sm font-medium flex items-center gap-1 cursor-default">
+        <span class="material-symbols-outlined text-sm">tune</span> {% trans "Filters" %}
+      </span>
+    </div>
+  </section>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    {% for result in results %}
+    <a href="{% if result.video_id %}{% url 'youtube_watch' video_id=result.video_id %}{% if search_query %}?from_q={{ search_query|urlencode }}{% endif %}{% else %}{{ result.link }}{% endif %}" {% if not result.video_id %}target="_blank" rel="noopener noreferrer"{% endif %} class="group flex flex-col bg-surface-container-lowest rounded-xl overflow-hidden transition-all hover:-translate-y-1 hover:shadow-xl border border-outline-variant/10 no-underline text-inherit">
+      <div class="relative aspect-video overflow-hidden bg-surface-container">
+        {% if result.thumbnail %}
+          <img alt="" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="{{ result.thumbnail }}"/>
+        {% else %}
+          <div class="w-full h-full flex items-center justify-center text-on-surface-variant text-sm">No thumbnail</div>
+        {% endif %}
+        {% if result.duration %}
+          <div class="absolute bottom-3 right-3 bg-black/70 text-white text-xs font-bold px-2 py-1 rounded">{{ result.duration }}</div>
+        {% endif %}
+      </div>
+      <div class="p-5 flex-grow flex flex-col">
+        <div class="flex gap-4 mb-3">
+          <div class="w-10 h-10 rounded-full {% cycle 'bg-tertiary-fixed-dim' 'bg-primary-fixed-dim' 'bg-secondary-fixed' 'bg-tertiary-container' 'bg-primary-container' 'bg-tertiary-fixed-dim' %} flex items-center justify-center shrink-0">
+            <span class="material-symbols-outlined {% cycle 'text-on-tertiary-fixed' 'text-on-primary-fixed' 'text-on-secondary-fixed' 'text-on-tertiary-container' 'text-on-primary-container' 'text-on-tertiary-fixed' %} text-xl">play_circle</span>
+          </div>
+          <div class="min-w-0">
+            <h3 class="font-bold text-lg leading-snug text-on-surface group-hover:text-primary transition-colors">{{ result.title }}</h3>
+            <p class="text-sm text-on-surface-variant mt-1">{{ result.channel }}{% if result.views %} • {{ result.views }} views{% endif %}</p>
+            {% if result.published %}
+              <p class="text-xs text-on-surface-variant/80 mt-0.5">{{ result.published }}</p>
+            {% endif %}
+          </div>
+        </div>
+        {% if result.description %}
+          <p class="text-xs text-on-surface-variant line-clamp-2 mb-2">{{ result.description }}</p>
+        {% endif %}
+        <div class="mt-auto pt-4 flex items-center justify-between">
+          <span class="px-3 py-1 rounded-full {% cycle 'bg-tertiary-fixed text-on-tertiary-fixed' 'bg-secondary-fixed-dim text-on-secondary-fixed-variant' 'bg-tertiary-fixed text-on-tertiary-fixed' 'bg-secondary-fixed-dim text-on-secondary-fixed-variant' 'bg-tertiary-fixed text-on-tertiary-fixed' 'bg-secondary-fixed-dim text-on-secondary-fixed-variant' %} text-[10px] font-bold uppercase tracking-wider">{% trans "YouTube" %}</span>
+          <span class="flex items-center gap-2 text-primary font-semibold text-sm">
+            <span class="material-symbols-outlined text-sm">{% if result.video_id %}play_arrow{% else %}open_in_new{% endif %}</span>
+            {% if result.video_id %}{% trans "Play here" %}{% else %}{% trans "Open YouTube" %}{% endif %}
+          </span>
+        </div>
+      </div>
+    </a>
+    {% empty %}
+    <div class="col-span-full text-center py-16 px-4 rounded-xl bg-surface-container-low border border-outline-variant/10">
+      {% if search_query %}
+        <p class="text-on-surface-variant text-lg mb-2">{% trans "No videos found for" %} "{{ search_query }}"</p>
+        <p class="text-sm text-on-surface-variant/80">{% trans "Try different keywords or use the topic chips." %}</p>
+      {% else %}
+        <p class="text-on-surface-variant text-lg mb-2">{% trans "Search YouTube for lectures and tutorials" %}</p>
+        <p class="text-sm text-on-surface-variant/80">{% trans "Use the bar above or pick a topic chip to load results." %}</p>
+      {% endif %}
+    </div>
+    {% endfor %}
+  </div>
+
+  {% if search_query and results %}
+  <div class="mt-16 text-center">
+    <a href="https://www.youtube.com/results?search_query={{ search_query|urlencode }}" target="_blank" rel="noopener noreferrer" class="inline-block px-10 py-4 bg-surface-container-high text-primary font-bold rounded-full hover:bg-surface-container-highest transition-all active:scale-95 no-underline">
+      {% trans "More results on YouTube" %}
+    </a>
+  </div>
+  {% endif %}
+</main>
+{% endblock content %}

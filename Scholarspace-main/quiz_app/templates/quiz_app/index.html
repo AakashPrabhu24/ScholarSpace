@@ -1,0 +1,13 @@
+{% extends 'quiz_app/base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Quiz App - Home" %}{% endblock %}
+
+{% block content %}
+    <div class="quiz-box">
+        <h2>{% trans "Welcome to Test Series" %}</h2>
+        
+        <a href="{% url 'quiz_app:quiz_list' %}" class="btn">{% trans "View Test" %}</a>
+        <a href="{% url 'quiz_app:create_quiz' %}" class="btn">{% trans "Create New Quiz" %}</a>
+    </div>
+{% endblock %}

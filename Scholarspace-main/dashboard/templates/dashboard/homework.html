@@ -1,0 +1,318 @@
+{% extends 'dashboard/scholar_app_base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}{% trans "ScholarSpace | Homework" %}{% endblock %}
+
+{% block scholar_floating_shapes %}
+<div class="fixed top-20 left-10 w-64 h-64 bg-primary/5 rounded-full blur-3xl pointer-events-none" style="z-index:-1" aria-hidden="true"></div>
+<div class="fixed bottom-20 right-10 w-96 h-96 bg-tertiary/5 rounded-full blur-3xl pointer-events-none" style="z-index:-1" aria-hidden="true"></div>
+{% endblock %}
+
+{% block main_class %}flex-grow w-full px-0 py-0 pt-0 pb-24 md:pb-0{% endblock %}
+
+{% block content %}
+<div class="pt-24 pb-12 px-4 md:px-8 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8">
+
+  <!-- ═══════════════════════════════════════════
+       LEFT COLUMN — Active Homework Table
+  ═══════════════════════════════════════════ -->
+  <div class="lg:col-span-8 space-y-8">
+
+    <!-- Page Header -->
+    <header class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+      <div>
+        <span class="text-primary font-bold tracking-widest text-xs uppercase mb-2 block">{% trans "Student Workspace" %}</span>
+        <h1 class="text-4xl font-extrabold text-on-surface font-headline tracking-tight">{% trans "Active Homework" %}</h1>
+      </div>
+      <!-- Live search filter -->
+      <div class="relative group">
+        <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline group-focus-within:text-primary transition-colors pointer-events-none">search</span>
+        <input
+          id="hw-search"
+          class="pl-12 pr-6 py-3 bg-surface-container-high border-none rounded-full w-full md:w-64 focus:ring-2 focus:ring-primary focus:bg-surface-container-lowest transition-all outline-none"
+          placeholder="{% trans 'Search assignments...' %}"
+          type="text"
+          oninput="filterHomework(this.value)"
+        />
+      </div>
+    </header>
+
+    <!-- Homework Table Card -->
+    <section class="bg-surface-container-lowest rounded-xl p-6 shadow-sm overflow-hidden border border-outline-variant/10">
+      {% if not homeworks_done %}
+      <div class="overflow-x-auto">
+        <table class="w-full text-left border-separate border-spacing-y-3" id="hw-table">
+          <thead>
+            <tr class="text-on-surface-variant text-xs font-bold uppercase tracking-wider">
+              <th class="pb-3 px-4">{% trans "Subject" %}</th>
+              <th class="pb-3 px-4">{% trans "Assignment" %}</th>
+              <th class="pb-3 px-4">{% trans "Due Date" %}</th>
+              <th class="pb-3 px-4">{% trans "Status" %}</th>
+              <th class="pb-3 px-4">{% trans "Action" %}</th>
+            </tr>
+          </thead>
+          <tbody class="text-sm">
+            {% for homework in homeworks %}
+            <tr class="group hover:bg-surface-container-low transition-colors hw-row">
+              <!-- Subject badge — cycles through 3 colour sets -->
+              <td class="py-4 px-4 align-middle">
+                {% if forloop.counter|divisibleby:3 %}
+                <span class="px-4 py-1.5 rounded-full bg-tertiary-container text-on-tertiary-container font-bold text-xs whitespace-nowrap">
+                  {{ homework.subject }}
+                </span>
+                {% elif forloop.counter0|divisibleby:2 %}
+                <span class="px-4 py-1.5 rounded-full bg-secondary-container text-on-secondary-container font-bold text-xs whitespace-nowrap">
+                  {{ homework.subject }}
+                </span>
+                {% else %}
+                <span class="px-4 py-1.5 rounded-full bg-primary-container text-on-primary-container font-bold text-xs whitespace-nowrap">
+                  {{ homework.subject }}
+                </span>
+                {% endif %}
+              </td>
+
+              <!-- Title + description -->
+              <td class="py-4 px-4">
+                <div class="font-bold text-on-surface text-base leading-snug hw-title">{{ homework.title }}</div>
+                <div class="text-on-surface-variant text-xs mt-0.5 hw-desc">{{ homework.description|truncatechars:60 }}</div>
+              </td>
+
+              <!-- Due date -->
+              <td class="py-4 px-4 whitespace-nowrap">
+                <div class="flex items-center gap-2 text-on-surface-variant">
+                  <span class="material-symbols-outlined text-lg shrink-0">calendar_today</span>
+                  <span>{{ homework.due|date:"M d, Y" }}</span>
+                </div>
+              </td>
+
+              <!-- Status — click to toggle -->
+              <td class="py-4 px-4">
+                <a href="{% url 'update-homework' homework.id %}" class="no-underline" title="Click to toggle status">
+                  {% if homework.is_finished %}
+                  <span class="px-3 py-1 rounded-full bg-tertiary-fixed text-on-tertiary-fixed font-semibold text-xs border border-tertiary-container cursor-pointer hover:opacity-80 transition-opacity whitespace-nowrap">
+                    {% trans "Completed" %}
+                  </span>
+                  {% else %}
+                  <span class="px-3 py-1 rounded-full bg-secondary-fixed text-on-secondary-fixed font-semibold text-xs border border-secondary-container cursor-pointer hover:opacity-80 transition-opacity whitespace-nowrap">
+                    {% trans "In Progress" %}
+                  </span>
+                  {% endif %}
+                </a>
+              </td>
+
+              <!-- Delete -->
+              <td class="py-4 px-4">
+                <a href="{% url 'delete-homework' homework.id %}"
+                   onclick="return confirm('{% trans 'Delete this assignment?' %}')"
+                   class="inline-flex items-center justify-center p-2 text-error hover:bg-error/10 rounded-full transition-colors no-underline">
+                  <span class="material-symbols-outlined text-[20px]">delete</span>
+                </a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        <!-- No results state (shown by JS when search yields nothing) -->
+        <div id="hw-empty-search" class="hidden py-12 flex flex-col items-center text-center gap-3">
+          <span class="material-symbols-outlined text-4xl text-outline">search_off</span>
+          <p class="text-on-surface-variant font-medium">{% trans "No assignments match your search." %}</p>
+        </div>
+      </div>
+
+      {% else %}
+      <!-- Empty state — no homework at all -->
+      <div class="py-16 flex flex-col items-center text-center gap-4">
+        <div class="w-16 h-16 bg-tertiary-container rounded-full flex items-center justify-center">
+          <span class="material-symbols-outlined text-tertiary text-3xl" style="font-variation-settings:'FILL' 1">check_circle</span>
+        </div>
+        <h3 class="text-xl font-bold font-headline text-on-surface">{% trans "All clear!" %}</h3>
+        <p class="text-on-surface-variant max-w-xs">{% trans "No homework assignments yet. Create one using the form on the right." %}</p>
+      </div>
+      {% endif %}
+    </section>
+
+  </div><!-- /left column -->
+
+  <!-- ═══════════════════════════════════════════
+       RIGHT COLUMN — Create Form + Cards
+  ═══════════════════════════════════════════ -->
+  <div class="lg:col-span-4 space-y-6">
+
+    <!-- ── Create Assignment Card ── -->
+    <section class="bg-surface-container-lowest rounded-xl p-8 shadow-sm relative overflow-hidden border border-outline-variant/10">
+      <!-- Decorative blob -->
+      <div class="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -translate-y-12 translate-x-12 pointer-events-none"></div>
+
+      <h2 class="text-2xl font-extrabold text-on-surface font-headline mb-6 relative z-10">{% trans "Create Assignment" %}</h2>
+
+      <form method="POST" class="space-y-5 relative z-10">
+        {% csrf_token %}
+
+        <!-- Subject -->
+        <div class="space-y-2">
+          <label class="text-sm font-bold text-on-surface-variant ml-2" for="id_subject">{% trans "Subject" %}</label>
+          <input
+            class="w-full bg-surface-container-high border-none rounded-full px-6 py-3.5 focus:ring-2 focus:ring-primary transition-all outline-none text-on-surface placeholder:text-outline"
+            id="id_subject"
+            name="subject"
+            type="text"
+            placeholder="{% trans 'e.g. Mathematics' %}"
+            maxlength="50"
+            required
+            value="{{ form.subject.value|default:'' }}"
+          />
+        </div>
+
+        <!-- Title -->
+        <div class="space-y-2">
+          <label class="text-sm font-bold text-on-surface-variant ml-2" for="id_title">{% trans "Title" %}</label>
+          <input
+            class="w-full bg-surface-container-high border-none rounded-full px-6 py-3.5 focus:ring-2 focus:ring-primary transition-all outline-none text-on-surface placeholder:text-outline"
+            id="id_title"
+            name="title"
+            type="text"
+            placeholder="{% trans 'e.g. History Final Essay' %}"
+            maxlength="50"
+            required
+            value="{{ form.title.value|default:'' }}"
+          />
+        </div>
+
+        <!-- Description -->
+        <div class="space-y-2">
+          <label class="text-sm font-bold text-on-surface-variant ml-2" for="id_description">{% trans "Description" %}</label>
+          <textarea
+            class="w-full bg-surface-container-high border-none rounded-2xl px-6 py-4 focus:ring-2 focus:ring-primary transition-all resize-none outline-none text-on-surface placeholder:text-outline"
+            id="id_description"
+            name="description"
+            placeholder="{% trans 'Describe the task details...' %}"
+            rows="3"
+          >{{ form.description.value|default:'' }}</textarea>
+        </div>
+
+        <!-- Due Date -->
+        <div class="space-y-2">
+          <label class="text-sm font-bold text-on-surface-variant ml-2" for="id_due">{% trans "Due Date" %}</label>
+          <div class="relative">
+            <span class="material-symbols-outlined absolute right-5 top-1/2 -translate-y-1/2 text-primary pointer-events-none">event</span>
+            <input
+              class="w-full bg-surface-container-high border-none rounded-full px-6 py-3.5 focus:ring-2 focus:ring-primary transition-all outline-none text-on-surface"
+              id="id_due"
+              name="due"
+              type="date"
+              value="{{ form.due.value|default:'' }}"
+            />
+          </div>
+        </div>
+
+        <!-- Already finished toggle -->
+        <div class="flex items-center justify-between p-4 bg-surface-container rounded-xl border border-outline-variant/10">
+          <div class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-primary">check_circle</span>
+            <span class="font-semibold text-on-surface text-sm">{% trans "Already finished?" %}</span>
+          </div>
+          <label class="relative inline-flex items-center cursor-pointer">
+            <input class="sr-only peer" type="checkbox" name="is_finished" id="id_is_finished" value="on" />
+            <div class="w-11 h-6 bg-outline-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+          </label>
+        </div>
+
+        <!-- Submit -->
+        <button
+          type="submit"
+          class="w-full bg-gradient-to-br from-primary to-primary-dim text-on-primary font-bold py-4 rounded-full shadow-lg shadow-primary/20 hover:shadow-xl hover:scale-[1.02] active:scale-95 transition-all mt-2 font-headline tracking-wide"
+        >
+          {% trans "Create Assignment" %}
+        </button>
+      </form>
+    </section>
+
+    <!-- ── Email Notifications Card ── -->
+    <section class="bg-primary-container/30 backdrop-blur-sm rounded-xl p-6 border border-primary-container/50">
+      <form method="POST" action="{% url 'setup-email-notification' %}" id="email-notif-form">
+        {% csrf_token %}
+        <div class="flex items-center justify-between mb-5">
+          <div class="flex items-center gap-4">
+            <div class="bg-white p-3 rounded-full text-primary shadow-sm shrink-0">
+              <span class="material-symbols-outlined">mail</span>
+            </div>
+            <div>
+              <h3 class="font-bold text-on-primary-container font-headline">{% trans "Email Reminders" %}</h3>
+              <p class="text-xs text-on-primary-container/70">{% trans "Get notified every minute" %}</p>
+            </div>
+          </div>
+          <!-- Toggle shows/hides the email input -->
+          <label class="relative inline-flex items-center cursor-pointer shrink-0">
+            <input id="notif-toggle" class="sr-only peer" type="checkbox" onchange="toggleEmailForm(this.checked)" />
+            <div class="w-11 h-6 bg-outline-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+          </label>
+        </div>
+
+        <!-- Email input — revealed when toggle is on -->
+        <div id="email-input-area" class="hidden space-y-3">
+          <input
+            type="email"
+            name="email"
+            id="id_email"
+            required
+            placeholder="your@email.com"
+            class="w-full bg-white/70 border-none rounded-full px-5 py-3 text-sm focus:ring-2 focus:ring-primary outline-none text-on-surface placeholder:text-outline"
+          />
+          <button
+            type="submit"
+            class="w-full bg-primary text-on-primary font-bold py-3 rounded-full text-sm hover:opacity-90 active:scale-95 transition-all"
+          >
+            {% trans "Activate Notifications" %}
+          </button>
+        </div>
+      </form>
+    </section>
+
+    <!-- ── Focus Tip Card ── -->
+    <section class="bg-tertiary-container/20 rounded-xl p-6 border border-tertiary-container/30">
+      <h4 class="font-bold text-on-tertiary-container font-headline flex items-center gap-2 mb-3">
+        <span class="material-symbols-outlined text-base" style="font-variation-settings:'FILL' 1">lightbulb</span>
+        {% trans "Focus Tip" %}
+      </h4>
+      <p class="text-sm text-on-tertiary-container/80 leading-relaxed">
+        {% trans "Try the Pomodoro technique today. Focus for 25 minutes, then take a 5-minute breather. Your brain will thank you!" %}
+      </p>
+    </section>
+
+  </div><!-- /right column -->
+
+</div><!-- /grid -->
+
+<script>
+/* ── Search filter ── */
+function filterHomework(query) {
+  var q = query.toLowerCase().trim();
+  var rows = document.querySelectorAll('#hw-table .hw-row');
+  var visible = 0;
+  rows.forEach(function(row) {
+    var title = (row.querySelector('.hw-title') || {}).textContent || '';
+    var desc  = (row.querySelector('.hw-desc')  || {}).textContent || '';
+    var subj  = row.querySelector('td:first-child span') ? row.querySelector('td:first-child span').textContent : '';
+    var match = (title + desc + subj).toLowerCase().indexOf(q) !== -1;
+    row.style.display = match ? '' : 'none';
+    if (match) visible++;
+  });
+  var empty = document.getElementById('hw-empty-search');
+  if (empty) empty.classList.toggle('hidden', visible > 0 || q === '');
+}
+
+/* ── Email notification toggle ── */
+function toggleEmailForm(on) {
+  var area = document.getElementById('email-input-area');
+  if (!area) return;
+  if (on) {
+    area.classList.remove('hidden');
+    area.classList.add('flex', 'flex-col');
+  } else {
+    area.classList.add('hidden');
+    area.classList.remove('flex', 'flex-col');
+  }
+}
+</script>
+{% endblock %}

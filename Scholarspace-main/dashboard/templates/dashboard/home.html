@@ -1,0 +1,940 @@
+{% extends 'dashboard/scholar_app_base.html' %}
+
+{% load i18n %}
+
+{% block title %}ScholarSpace | Your Learning Hub{% endblock %}
+
+{% block scholar_extra_head %}
+<script>
+    (function () {
+        try {
+            if (localStorage.getItem("scholarspace-dark") === "1") {
+                document.documentElement.classList.remove("light");
+                document.documentElement.classList.add("dark");
+            } else {
+                document.documentElement.classList.remove("dark");
+                document.documentElement.classList.add("light");
+            }
+        } catch (e) {}
+    })();
+</script>
+{% endblock %}
+
+{% block scholar_floating_shapes %}
+<style>
+    .floating-shape {
+        position: absolute;
+        z-index: -1;
+        filter: blur(60px);
+        opacity: 0.4;
+    }
+</style>
+<div
+    class="floating-shape bg-primary-container w-96 h-96 rounded-full top-[-10%] left-[-5%] pointer-events-none"
+    aria-hidden="true"
+></div>
+<div
+    class="floating-shape bg-tertiary-container w-[500px] h-[500px] rounded-full bottom-[-10%] right-[-5%] pointer-events-none"
+    aria-hidden="true"
+></div>
+{% endblock %}
+
+{% block content %}
+<header
+    class="scholar-page-fade pt-28 md:pt-32 pb-12 md:pb-16 px-6 max-w-7xl mx-auto text-center"
+>
+    <h1
+        class="text-4xl sm:text-5xl md:text-7xl font-extrabold font-headline tracking-tighter text-on-surface mb-4"
+    >
+        {% trans "Welcome back," %}
+        <span class="text-primary italic"
+            >{% if user.first_name %}{{ user.first_name }}{% elif user.username
+            %}{{ user.username }}{% else %}{% trans "Scholar" %}{% endif %}</span
+        >
+    </h1>
+    <p
+        class="text-on-surface-variant text-base md:text-lg lg:text-xl font-medium max-w-2xl mx-auto"
+    >
+        {% trans "Your ScholarSpace dashboard is ready. Plan, learn, and explore in one place." %}
+    </p>
+</header>
+
+<div class="scholar-page-fade px-6 pb-24 max-w-screen-2xl mx-auto">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <!-- Homework (featured) -->
+        <a
+            data-scholar-vt
+            href="{% url 'homework' %}"
+            class="dashboard-card-link lg:col-span-2 lg:row-span-2 group bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-outline-variant/10"
+        >
+            <div class="relative h-56 md:h-64 overflow-hidden shrink-0">
+                <img
+                    class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    alt=""
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuCLs-8Ih7eDC2wcEZ_JgQVB4Gx_-_b05BCC2e0fpG24VFPUajypZRBREG0K41bGPNbk2noBT1bKV7QrECwqtQlYeiptiPj_TO0VcN4XBaKkNPNF795vXUXa-eTF960GOUVNiJbaNt0wew06GF82VrOFPcXpW8rbvFRb4gV0JeGvA3AiZeKrRzsIXa5D_zQ9psfpkQgRXkVvfC5mMqCUC_N8bvHleOj1oSCv_RF3rDlIDY2p3-RATBmIe86qVdVVcCn_jKh0ICFahOw"
+                />
+                <div
+                    class="absolute inset-0 bg-gradient-to-t from-primary/80 to-transparent"
+                ></div>
+                <div class="absolute bottom-6 left-6 text-white">
+                    <span class="material-symbols-outlined text-4xl mb-2"
+                        >assignment</span
+                    >
+                    <h3 class="text-3xl font-bold font-headline">{% trans "Homework" %}</h3>
+                </div>
+            </div>
+            <div class="p-6 flex flex-col flex-1">
+                <p class="text-on-surface-variant leading-relaxed mb-6">
+                    {% trans "Track assignments and deadlines with ease." %}
+                </p>
+                <span
+                    class="inline-flex items-center gap-2 bg-primary-container text-on-primary-container px-6 py-3 rounded-full font-bold w-fit hover:bg-primary-fixed-dim transition-colors"
+                >
+                    {% trans "Open homework" %}
+                    <span class="material-symbols-outlined text-sm"
+                        >arrow_forward</span
+                    >
+                </span>
+            </div>
+        </a>
+
+        <!-- YouTube -->
+        <a
+            data-scholar-vt
+            href="{% url 'youtube' %}"
+            class="dashboard-card-link group bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-outline-variant/10"
+        >
+            <div class="relative h-32 overflow-hidden shrink-0">
+                <img
+                    class="w-full h-full object-cover"
+                    alt=""
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuBbESPRimfDfM6a96Zx5xctHzgg2kQqhjs70Sd_YrBYEaxCmhK-wahzNd7c6kljM3zIxIAQ19q3wOAIdnI2aSWxhuej4L93X54N9wwGUohpjDH-UwxWE9ysLbJ7scaFQaS4Qa7wPQANsMqfMO50oqGNAj4xkMtsWNrzn5dApfXLgmgIlPFE4gRWzar29J5L-PSrOd8WV729fsyuLsK8WdlCYBHPPFOKJ9_iu-uaU1DtWWQAVr4z-Yoxq3VFX_fVKRAAy11DB8oDvUs"
+                />
+                <div class="absolute inset-0 bg-red-600/20"></div>
+            </div>
+            <div class="p-6 flex-1">
+                <div class="flex items-center gap-2 mb-2">
+                    <span class="material-symbols-outlined text-red-600"
+                        >video_library</span
+                    >
+                    <h3 class="font-bold font-headline">{% trans "YouTube" %}</h3>
+                </div>
+                <p class="text-sm text-on-surface-variant">
+                    {% trans "Curated video content for visual learning." %}
+                </p>
+            </div>
+        </a>
+
+        <!-- Books -->
+        <a
+            data-scholar-vt
+            href="{% url 'books' %}"
+            class="dashboard-card-link group bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-outline-variant/10"
+        >
+            <div class="p-6 flex-1">
+                <div class="flex items-center gap-2 mb-2">
+                    <span class="material-symbols-outlined text-amber-700"
+                        >menu_book</span
+                    >
+                    <h3 class="font-bold font-headline">{% trans "Books" %}</h3>
+                </div>
+                <p class="text-sm text-on-surface-variant">
+                    {% trans "A vast digital library of textbooks and journals." %}
+                </p>
+            </div>
+            <img
+                class="h-32 w-full object-cover mt-auto"
+                alt=""
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuDIUFLGHj60967AkulNor9Cawdw_6m3utn3WpldQy6BRO3NMujwtpbGs6mE9uX0fB_UFO7YJxbHJGFsUyQSNwOAT7CmuMVeFHYNLxi1u2NjnuBZBxXFSpyQ4U5pZ6omIoUMU31nXZA_FBjQ_Kl5zKXs3InzzIU4c9Hr1e5tkA3Lu9o-en3Pena8L2l6U2uGJOpmAyr_m0X11IuvUFJQVjRH9JhZZBEzkUhrWKKeh_QRLI1wHinkvas4QbToaRm58fVz1pRzSJEHwkU"
+            />
+        </a>
+
+        <!-- Wikipedia -->
+        <a
+            data-scholar-vt
+            href="{% url 'wiki' %}"
+            class="dashboard-card-link group bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-outline-variant/10"
+        >
+            <div class="p-6 flex-1">
+                <div class="flex items-center gap-2 mb-2">
+                    <span class="material-symbols-outlined text-slate-700"
+                        >language</span
+                    >
+                    <h3 class="font-bold font-headline">{% trans "Wikipedia" %}</h3>
+                </div>
+                <p class="text-sm text-on-surface-variant">
+                    {% trans "Instant access to world's encyclopedia." %}
+                </p>
+            </div>
+            <img
+                class="h-32 w-full object-cover mt-auto"
+                alt=""
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuAjtP8JQbryAFZgZwS1nGDWwWohfLUJ8XHNIXxb2tT2InE7zcvrUXEkiOCESgpyBaMfYFgZPaDuF8ytcAHLPGWsCK2y_vwYJEj1zQ4jsZFLt4_3ivcQp579w7dLm3zZVTXk4bY35qLkh2rnrDM8SQUOVv3473-1JZ3nLwZCMijdpwtz7IlgwlY_-c70lxmVX-tpYmXwW7ft4YBBeSTAWrG74DsVQRYxEVkXYm7i-GY7TPA5_6PSb5eM2SypxT3rpNhgXFYe5MKlm1o"
+            />
+        </a>
+
+        <!-- My Goals (todo) -->
+        <a
+            data-scholar-vt
+            href="{% url 'todo' %}"
+            class="dashboard-card-link group bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-outline-variant/10"
+        >
+            <div class="p-6 flex flex-col h-full flex-1">
+                <div
+                    class="w-12 h-12 bg-tertiary-container rounded-2xl flex items-center justify-center text-tertiary mb-4"
+                >
+                    <span class="material-symbols-outlined text-2xl"
+                        >ads_click</span
+                    >
+                </div>
+                <h3 class="font-bold text-xl font-headline mb-2">{% trans "My Goals" %}</h3>
+                <p class="text-sm text-on-surface-variant mb-4">
+                    {% trans "Set milestones and track your academic progress." %}
+                </p>
+                <div class="mt-auto pt-4 border-t border-surface-variant">
+                    <div
+                        class="w-full bg-surface-container h-2 rounded-full overflow-hidden"
+                    >
+                        <div
+                            class="bg-tertiary w-3/4 h-full rounded-full"
+                        ></div>
+                    </div>
+                    <p
+                        class="text-[10px] uppercase font-bold mt-2 text-tertiary"
+                    >
+                        {% trans "Stay on track" %}
+                    </p>
+                </div>
+            </div>
+        </a>
+
+        <!-- Notes -->
+        <a
+            data-scholar-vt
+            href="{% url 'notes' %}"
+            class="dashboard-card-link group bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-outline-variant/10 lg:col-span-2"
+        >
+            <div
+                class="relative h-44 md:h-52 overflow-hidden shrink-0 bg-gradient-to-br from-[#eef0ff] to-[#d4d8ff]"
+            >
+                <!-- Inline SVG notepad illustration -->
+                <svg
+                    class="absolute inset-0 w-full h-full transition-transform duration-700 group-hover:scale-105"
+                    viewBox="0 0 640 230"
+                    xmlns="http://www.w3.org/2000/svg"
+                    preserveAspectRatio="xMidYMid slice"
+                    aria-hidden="true"
+                >
+                    <!-- dot-grid background -->
+                    <defs>
+                        <pattern
+                            id="notedots"
+                            x="0"
+                            y="0"
+                            width="22"
+                            height="22"
+                            patternUnits="userSpaceOnUse"
+                        >
+                            <circle
+                                cx="2"
+                                cy="2"
+                                r="1.4"
+                                fill="#a5abdf"
+                                opacity="0.35"
+                            />
+                        </pattern>
+                    </defs>
+                    <rect width="640" height="230" fill="url(#notedots)" />
+
+                    <!-- ── Back page (slight offset) ── -->
+                    <rect
+                        x="106"
+                        y="24"
+                        width="318"
+                        height="192"
+                        rx="7"
+                        fill="#f0f1ff"
+                        stroke="#c8ccf0"
+                        stroke-width="1.2"
+                    />
+
+                    <!-- ── Main notebook page ── -->
+                    <rect
+                        x="98"
+                        y="18"
+                        width="318"
+                        height="192"
+                        rx="7"
+                        fill="white"
+                        stroke="#c5c9ec"
+                        stroke-width="1.5"
+                    />
+
+                    <!-- spiral binding strip -->
+                    <rect
+                        x="88"
+                        y="18"
+                        width="20"
+                        height="192"
+                        rx="5"
+                        fill="#8892d4"
+                        opacity="0.2"
+                    />
+
+                    <!-- spiral coils -->
+                    <circle
+                        cx="98"
+                        cy="38"
+                        r="6"
+                        fill="white"
+                        stroke="#6c75c2"
+                        stroke-width="1.8"
+                    />
+                    <circle
+                        cx="98"
+                        cy="62"
+                        r="6"
+                        fill="white"
+                        stroke="#6c75c2"
+                        stroke-width="1.8"
+                    />
+                    <circle
+                        cx="98"
+                        cy="86"
+                        r="6"
+                        fill="white"
+                        stroke="#6c75c2"
+                        stroke-width="1.8"
+                    />
+                    <circle
+                        cx="98"
+                        cy="110"
+                        r="6"
+                        fill="white"
+                        stroke="#6c75c2"
+                        stroke-width="1.8"
+                    />
+                    <circle
+                        cx="98"
+                        cy="134"
+                        r="6"
+                        fill="white"
+                        stroke="#6c75c2"
+                        stroke-width="1.8"
+                    />
+                    <circle
+                        cx="98"
+                        cy="158"
+                        r="6"
+                        fill="white"
+                        stroke="#6c75c2"
+                        stroke-width="1.8"
+                    />
+                    <circle
+                        cx="98"
+                        cy="182"
+                        r="6"
+                        fill="white"
+                        stroke="#6c75c2"
+                        stroke-width="1.8"
+                    />
+                    <circle
+                        cx="98"
+                        cy="202"
+                        r="6"
+                        fill="white"
+                        stroke="#6c75c2"
+                        stroke-width="1.8"
+                    />
+
+                    <!-- red margin line -->
+                    <line
+                        x1="128"
+                        y1="28"
+                        x2="128"
+                        y2="202"
+                        stroke="#fc8181"
+                        stroke-width="1.6"
+                        opacity="0.65"
+                    />
+
+                    <!-- ruled lines -->
+                    <line
+                        x1="118"
+                        y1="48"
+                        x2="404"
+                        y2="48"
+                        stroke="#dde0f4"
+                        stroke-width="1.1"
+                    />
+                    <line
+                        x1="118"
+                        y1="66"
+                        x2="404"
+                        y2="66"
+                        stroke="#dde0f4"
+                        stroke-width="1.1"
+                    />
+                    <line
+                        x1="118"
+                        y1="84"
+                        x2="404"
+                        y2="84"
+                        stroke="#dde0f4"
+                        stroke-width="1.1"
+                    />
+                    <line
+                        x1="118"
+                        y1="102"
+                        x2="404"
+                        y2="102"
+                        stroke="#dde0f4"
+                        stroke-width="1.1"
+                    />
+                    <line
+                        x1="118"
+                        y1="120"
+                        x2="404"
+                        y2="120"
+                        stroke="#dde0f4"
+                        stroke-width="1.1"
+                    />
+                    <line
+                        x1="118"
+                        y1="138"
+                        x2="404"
+                        y2="138"
+                        stroke="#dde0f4"
+                        stroke-width="1.1"
+                    />
+                    <line
+                        x1="118"
+                        y1="156"
+                        x2="404"
+                        y2="156"
+                        stroke="#dde0f4"
+                        stroke-width="1.1"
+                    />
+                    <line
+                        x1="118"
+                        y1="174"
+                        x2="404"
+                        y2="174"
+                        stroke="#dde0f4"
+                        stroke-width="1.1"
+                    />
+
+                    <!-- "written" text lines (varying widths for realism) -->
+                    <rect
+                        x="136"
+                        y="42"
+                        width="210"
+                        height="7"
+                        rx="3.5"
+                        fill="#545c8c"
+                        opacity="0.75"
+                    />
+                    <rect
+                        x="136"
+                        y="60"
+                        width="178"
+                        height="7"
+                        rx="3.5"
+                        fill="#545c8c"
+                        opacity="0.55"
+                    />
+                    <rect
+                        x="136"
+                        y="78"
+                        width="225"
+                        height="7"
+                        rx="3.5"
+                        fill="#545c8c"
+                        opacity="0.60"
+                    />
+                    <rect
+                        x="136"
+                        y="96"
+                        width="155"
+                        height="7"
+                        rx="3.5"
+                        fill="#545c8c"
+                        opacity="0.50"
+                    />
+                    <rect
+                        x="136"
+                        y="114"
+                        width="200"
+                        height="7"
+                        rx="3.5"
+                        fill="#545c8c"
+                        opacity="0.65"
+                    />
+                    <rect
+                        x="136"
+                        y="132"
+                        width="130"
+                        height="7"
+                        rx="3.5"
+                        fill="#71557c"
+                        opacity="0.45"
+                    />
+                    <rect
+                        x="136"
+                        y="150"
+                        width="190"
+                        height="7"
+                        rx="3.5"
+                        fill="#545c8c"
+                        opacity="0.40"
+                    />
+
+                    <!-- highlight strip (yellow sticky-note feel) -->
+                    <rect
+                        x="136"
+                        y="39"
+                        width="210"
+                        height="13"
+                        rx="4"
+                        fill="#fef08a"
+                        opacity="0.35"
+                    />
+
+                    <!-- pencil -->
+                    <g transform="translate(450,30) rotate(38)">
+                        <!-- body -->
+                        <rect
+                            x="0"
+                            y="0"
+                            width="14"
+                            height="110"
+                            rx="2"
+                            fill="#fbbf24"
+                        />
+                        <!-- eraser ferrule -->
+                        <rect
+                            x="0"
+                            y="0"
+                            width="14"
+                            height="14"
+                            rx="2"
+                            fill="#d1d5db"
+                        />
+                        <!-- eraser tip -->
+                        <rect
+                            x="2"
+                            y="0"
+                            width="10"
+                            height="7"
+                            rx="2"
+                            fill="#fca5a5"
+                        />
+                        <!-- tip cone -->
+                        <polygon points="0,110 14,110 7,128" fill="#fde68a" />
+                        <!-- graphite tip -->
+                        <polygon points="5,122 9,122 7,128" fill="#374151" />
+                        <!-- centre stripe -->
+                        <rect
+                            x="6"
+                            y="14"
+                            width="2"
+                            height="96"
+                            fill="#f59e0b"
+                            opacity="0.5"
+                        />
+                    </g>
+
+                    <!-- small check-box bullets -->
+                    <rect
+                        x="136"
+                        y="165"
+                        width="10"
+                        height="10"
+                        rx="2"
+                        fill="none"
+                        stroke="#6c75c2"
+                        stroke-width="1.5"
+                    />
+                    <polyline
+                        points="138,170 140,173 145,167"
+                        stroke="#22c55e"
+                        stroke-width="1.8"
+                        fill="none"
+                        stroke-linecap="round"
+                    />
+                    <rect
+                        x="136"
+                        y="181"
+                        width="10"
+                        height="10"
+                        rx="2"
+                        fill="none"
+                        stroke="#6c75c2"
+                        stroke-width="1.5"
+                    />
+                    <rect
+                        x="152"
+                        y="165"
+                        width="80"
+                        height="7"
+                        rx="3.5"
+                        fill="#545c8c"
+                        opacity="0.40"
+                    />
+                    <rect
+                        x="152"
+                        y="181"
+                        width="60"
+                        height="7"
+                        rx="3.5"
+                        fill="#545c8c"
+                        opacity="0.35"
+                    />
+
+                    <!-- floating mini sticky note -->
+                    <g transform="translate(440,130) rotate(-8)">
+                        <rect
+                            width="80"
+                            height="70"
+                            rx="4"
+                            fill="#fef08a"
+                            filter="drop-shadow(2px 3px 6px rgba(0,0,0,0.12))"
+                        />
+                        <rect
+                            x="8"
+                            y="16"
+                            width="64"
+                            height="5"
+                            rx="2.5"
+                            fill="#ca8a04"
+                            opacity="0.4"
+                        />
+                        <rect
+                            x="8"
+                            y="28"
+                            width="50"
+                            height="5"
+                            rx="2.5"
+                            fill="#ca8a04"
+                            opacity="0.4"
+                        />
+                        <rect
+                            x="8"
+                            y="40"
+                            width="58"
+                            height="5"
+                            rx="2.5"
+                            fill="#ca8a04"
+                            opacity="0.4"
+                        />
+                        <rect
+                            x="8"
+                            y="52"
+                            width="40"
+                            height="5"
+                            rx="2.5"
+                            fill="#ca8a04"
+                            opacity="0.4"
+                        />
+                        <!-- fold corner -->
+                        <polygon
+                            points="60,70 80,70 80,50"
+                            fill="#fde047"
+                            opacity="0.6"
+                        />
+                    </g>
+
+                    <!-- gradient overlay so text on top is readable -->
+                    <defs>
+                        <linearGradient
+                            id="noteoverlay"
+                            x1="0"
+                            y1="0"
+                            x2="0"
+                            y2="1"
+                        >
+                            <stop
+                                offset="0%"
+                                stop-color="#eef0ff"
+                                stop-opacity="0"
+                            />
+                            <stop
+                                offset="70%"
+                                stop-color="#545c8c"
+                                stop-opacity="0.05"
+                            />
+                            <stop
+                                offset="100%"
+                                stop-color="#3b3f6e"
+                                stop-opacity="0.72"
+                            />
+                        </linearGradient>
+                    </defs>
+                    <rect width="640" height="230" fill="url(#noteoverlay)" />
+                </svg>
+
+                <div
+                    class="absolute bottom-5 left-6 right-6 text-white flex items-end gap-3"
+                >
+                    <span
+                        class="material-symbols-outlined text-4xl shrink-0"
+                        style="font-variation-settings: &quot;FILL&quot; 1"
+                        >note_alt</span
+                    >
+                    <h3 class="text-2xl md:text-3xl font-bold font-headline">
+                        {% trans "Notes" %}
+                    </h3>
+                </div>
+            </div>
+            <div class="p-6 flex flex-col h-full flex-1">
+                <p class="text-sm text-on-surface-variant leading-snug mb-4">
+                    {% trans "Create and organize your study notes with quick access." %}
+                </p>
+                <div
+                    class="mt-auto h-2 w-full rounded-full bg-primary-container/40 overflow-hidden"
+                >
+                    <div
+                        class="h-full w-2/5 rounded-full bg-primary transition-all group-hover:w-3/5"
+                    ></div>
+                </div>
+            </div>
+        </a>
+
+        <!-- Time Table (calendar) -->
+        <a
+            data-scholar-vt
+            href="{% url 'timetable_app:timetable_home' %}"
+            class="dashboard-card-link group bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-outline-variant/10"
+        >
+            <div class="p-6 flex flex-col h-full flex-1">
+                <div
+                    class="w-12 h-12 bg-secondary-container rounded-2xl flex items-center justify-center text-secondary mb-4"
+                >
+                    <span class="material-symbols-outlined text-2xl"
+                        >calendar_month</span
+                    >
+                </div>
+                <h3 class="font-bold text-xl font-headline mb-2">{% trans "Time Table" %}</h3>
+                <p class="text-sm text-on-surface-variant leading-snug">
+                    {% trans "Generate optimized study schedules that fit your lifestyle." %}
+                </p>
+            </div>
+            <img
+                class="h-24 w-full object-cover mt-auto"
+                alt=""
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuB95ilg3FDIs7tcNPHArh4FoFwaZ1Eq02rxZM3qQp4Tc0qkRO9219ozyRm-SahEijnbN0xNT2a5eUq4tY3lJ0pchIj0XCzGhCXU2F88UcK4cQNf3TT25fmlciCgO-TjJhutr8lcMgTWLMtGNR95AI_iu2Dyd3ixe-LZre3fKLCWAAx56sBc3mwgEH7IODvwVc1rua20WhPIoUwrQlWhsTDt4YA2txgosD8Qx5RFIghIXKRoyIPXCFhXh8rknS51VjWWvGgEcWDbI7k"
+            />
+        </a>
+
+        <!-- Google Calendar -->
+        <a
+            data-scholar-vt
+            href="{% url 'google_calendar' %}"
+            class="dashboard-card-link group bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-outline-variant/10"
+        >
+            <div class="relative h-36 overflow-hidden shrink-0">
+                <img
+                    class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    alt=""
+                    loading="lazy"
+                    src="https://images.unsplash.com/photo-1611224923853-80b023f02d71?auto=format&amp;fit=crop&amp;w=900&amp;q=80"
+                />
+                <div
+                    class="absolute inset-0 bg-gradient-to-t from-slate-900/70 to-transparent"
+                ></div>
+                <div
+                    class="absolute bottom-3 left-4 text-white flex items-center gap-2"
+                >
+                    <span class="material-symbols-outlined text-2xl"
+                        >event</span
+                    >
+                    <h3 class="font-bold font-headline text-lg">
+                        {% trans "Google Calendar" %}
+                    </h3>
+                </div>
+            </div>
+            <div class="p-6 flex flex-col h-full flex-1">
+                <p class="text-sm text-on-surface-variant leading-snug">
+                    {% trans "Open ScholarSpace calendar page with embed and Calendar API data (key used on server only)." %}
+                </p>
+                <span
+                    class="mt-auto pt-4 inline-flex items-center gap-1 text-sm font-bold text-primary"
+                >
+                    {% trans "Open calendar" %}
+                    <span class="material-symbols-outlined text-base"
+                        >arrow_forward</span
+                    >
+                </span>
+            </div>
+        </a>
+
+        {% if manage_work_url %}
+        <a
+            data-scholar-vt
+            href="{{ manage_work_url }}"
+            class="dashboard-card-link group bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-outline-variant/10 lg:col-span-2"
+        >
+            <div class="relative h-44 md:h-48 overflow-hidden shrink-0">
+                <img
+                    class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    alt=""
+                    loading="lazy"
+                    src="https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?auto=format&amp;fit=crop&amp;w=1200&amp;q=80"
+                />
+                <div
+                    class="absolute inset-0 bg-gradient-to-t from-tertiary/85 to-transparent"
+                ></div>
+                <div
+                    class="absolute bottom-5 left-6 right-6 text-white flex items-end gap-3"
+                >
+                    <span class="material-symbols-outlined text-4xl shrink-0"
+                        >event_available</span
+                    >
+                    <h3 class="text-2xl md:text-3xl font-bold font-headline">
+                        {% trans "Manage Work" %}
+                    </h3>
+                </div>
+            </div>
+            <div class="p-6 flex flex-col h-full flex-1">
+                <p class="text-sm text-on-surface-variant leading-snug mb-4">
+                    {% trans "Open the Deadline module: add tasks, spot conflicts, and see reminders — same stack as your Jarvis and other modules." %}
+                </p>
+                <span
+                    class="mt-auto pt-2 inline-flex items-center gap-2 bg-primary-container text-on-primary-container px-6 py-3 rounded-full font-bold w-fit hover:bg-primary-fixed-dim transition-colors"
+                >
+                    {% trans "Open deadlines" %}
+                    <span class="material-symbols-outlined text-sm"
+                        >arrow_forward</span
+                    >
+                </span>
+            </div>
+        </a>
+        {% endif %}
+
+        <!-- Dictionary -->
+        <a
+            data-scholar-vt
+            href="{% url 'dictionary' %}"
+            class="dashboard-card-link group bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-outline-variant/10"
+        >
+            <div class="p-6 flex-1">
+                <div class="flex items-center gap-2 mb-2">
+                    <span
+                        class="material-symbols-outlined text-on-surface-variant"
+                        >dictionary</span
+                    >
+                    <h3 class="font-bold font-headline">{% trans "Dictionary" %}</h3>
+                </div>
+                <p class="text-sm text-on-surface-variant">
+                    {% trans "Expand your vocabulary and master new languages." %}
+                </p>
+            </div>
+            <img
+                class="h-32 w-full object-cover mt-auto transition-transform duration-500 group-hover:scale-105"
+                alt=""
+                loading="lazy"
+                src="https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?auto=format&amp;fit=crop&amp;w=900&amp;q=80"
+            />
+        </a>
+
+        <!-- AI Calculator -->
+        <a
+            data-scholar-vt
+            href="{% url 'calculator:index' %}"
+            class="dashboard-card-link group bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-outline-variant/10"
+        >
+            <div class="p-6 flex-1">
+                <div class="flex items-center gap-2 mb-2">
+                    <span
+                        class="material-symbols-outlined text-primary"
+                        >calculate</span
+                    >
+                    <h3 class="font-bold font-headline">{% trans "AI Calculator" %}</h3>
+                </div>
+                <p class="text-sm text-on-surface-variant">
+                    {% trans "Draw math problems and solve them instantly with AI." %}
+                </p>
+            </div>
+            <img
+                class="h-32 w-full object-cover mt-auto transition-transform duration-500 group-hover:scale-105"
+                alt=""
+                loading="lazy"
+                src="/static/images/ai-calculator.jpg"
+            />
+        </a>
+
+        <!-- Quiz -->
+        <a
+            data-scholar-vt
+            href="{% url 'quiz_app:index' %}"
+            class="dashboard-card-link group bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-outline-variant/10"
+        >
+            <div class="p-6 flex-1">
+                <div class="flex items-center gap-2 mb-2">
+                    <span class="material-symbols-outlined text-indigo-600">quiz</span>
+                    <h3 class="font-bold font-headline">{% trans "Quiz" %}</h3>
+                </div>
+                <p class="text-sm text-on-surface-variant">
+                    {% trans "Test your knowledge with adaptive study quizzes." %}
+                </p>
+            </div>
+            <img
+                class="h-32 w-full object-cover mt-auto transition-transform duration-500 group-hover:scale-105"
+                alt=""
+                loading="lazy"
+                src="/static/images/test.jpg"
+            />
+        </a>
+
+        <!-- AI Bot -->
+        {% comment %}
+        <a
+            data-scholar-vt
+            href="#"
+            class="dashboard-card-link group bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-outline-variant/10"
+        >
+            <div class="p-6 flex-1">
+                <div class="flex items-center gap-2 mb-2">
+                    <span class="material-symbols-outlined text-teal-600">smart_toy</span>
+                    <h3 class="font-bold font-headline">AI Bot</h3>
+                </div>
+                <p class="text-sm text-on-surface-variant">
+                    Your personal AI tutor for instant academic help.
+                </p>
+            </div>
+            <img
+                class="h-32 w-full object-cover mt-auto transition-transform duration-500 group-hover:scale-105"
+                alt=""
+                loading="lazy"
+                src="/static/images/ai_bot.jpg"
+            />
+        </a>
+        {% endcomment %}
+
+        <!-- Courses -->
+        <a
+            data-scholar-vt
+            href="{% url 'portal:home' %}"
+            class="dashboard-card-link group bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-outline-variant/10"
+        >
+            <div class="p-6 flex-1">
+                <div class="flex items-center gap-2 mb-2">
+                    <span class="material-symbols-outlined text-rose-600">school</span>
+                    <h3 class="font-bold font-headline">{% trans "Courses" %}</h3>
+                </div>
+                <p class="text-sm text-on-surface-variant">
+                    {% trans "Browse and manage your enrolled academic courses." %}
+                </p>
+            </div>
+            <img
+                class="h-32 w-full object-cover mt-auto transition-transform duration-500 group-hover:scale-105"
+                alt=""
+                loading="lazy"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuA9WAX9NSeifQEKQrYCo8fCvYbDTcuK2_uLMwkLIrNpOQEMzFHoQozdISTSClLnhgS6xOUMuuhFEzUJjqaa7H_vQmFiAGgQRRqp4ROIqoqhMhKM6vIhBnXW-GCgFp9AYrxydqYiM0S2vuV8XiTRyLRrIF0WnUgTn7GwNBDvw21rkmOphbLMTZaNeOYDe-uGP81IEy21Gcq8qkmgkslIG8C5Szd1UoI1Pt1VWlVKlqxWqvjdjnndWbE2vHtjLb8ey926tGZvXeo-ZPY"
+            />
+        </a>
+    </div>
+</div>
+
+{% include 'dashboard/includes/home_settings_panel.html' %}
+{% endblock content %}

@@ -1,0 +1,12 @@
+Django>=4.2,<6.0
+django-crispy-forms>=2.0
+crispy-bootstrap4>=2024.1
+requests>=2.28.0
+wikipedia>=1.4.0
+polib>=1.2.0
+google-api-python-client>=2.100.0
+google-auth-httplib2>=0.2.0
+google-auth-oauthlib>=1.2.0
+Pillow>=10.0.0
+youtubesearchpython>=1.6.2
+sympy>=1.12

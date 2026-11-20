@@ -1,0 +1,152 @@
+{% extends 'dashboard/scholar_app_base.html' %}
+{% load i18n %}
+{% load static %}
+
+{% block title %}{% trans "ScholarSpace | Dictionary" %}{% endblock %}
+
+{% block scholar_floating_shapes %}
+<div class="absolute top-[15%] left-[8%] w-72 h-72 bg-secondary-container/15 rounded-full blur-[110px] pointer-events-none" aria-hidden="true"></div>
+<div class="absolute bottom-[10%] right-[5%] w-80 h-80 bg-tertiary-container/10 rounded-full blur-[120px] pointer-events-none" aria-hidden="true"></div>
+{% endblock %}
+
+{% block main_class %}flex-grow w-full max-w-full px-0 py-0 pt-0 pb-24 md:pb-0 flex flex-col{% endblock %}
+
+{% block content %}
+<div class="relative z-10 flex flex-col items-center w-full px-6 pb-12 pt-10 min-h-[calc(100vh-4rem)]">
+
+  <!-- Hero -->
+  <div class="flex flex-col items-center w-full max-w-3xl {% if not input and not error %}justify-center flex-1{% endif %}">
+
+    <!-- Branding -->
+    <div class="text-center mb-10">
+      <div class="w-16 h-16 bg-surface-container-lowest rounded-2xl mx-auto mb-4 shadow-sm border border-outline-variant/10 flex items-center justify-center">
+        <span class="material-symbols-outlined text-primary text-3xl" style="font-variation-settings:'FILL' 1">dictionary</span>
+      </div>
+      <h1 class="text-5xl md:text-6xl font-black font-headline tracking-tighter text-on-surface">
+        {% trans "Define " %}<span class="text-primary italic">{% trans "Anything." %}</span>
+      </h1>
+      <p class="text-on-surface-variant font-medium text-lg mt-3 max-w-sm mx-auto leading-relaxed">
+        {% trans "Definitions, phonetics, examples, and synonyms - instantly." %}
+      </p>
+    </div>
+
+    <!-- Search form -->
+    <div class="w-full bg-white/70 backdrop-blur-xl rounded-xl shadow-[0_8px_24px_rgba(0,0,0,0.06)] p-2 md:p-3 border border-white/50 mb-6">
+      <form method="post" action="" id="dict-form">
+        {% csrf_token %}
+        <div class="flex flex-col md:flex-row gap-3">
+          <div class="relative flex-1">
+            <div class="absolute inset-y-0 left-5 flex items-center pointer-events-none text-outline">
+              <span class="material-symbols-outlined">search</span>
+            </div>
+            <input
+              id="dict-input" name="text" type="text" autocomplete="off"
+              value="{{ input|default:'' }}"
+              placeholder="{% trans 'Enter a word…' %}"
+              class="w-full pl-14 pr-6 py-5 bg-surface-container-high border-none rounded-lg text-lg font-medium text-on-surface placeholder:text-outline focus:ring-2 focus:ring-primary/20 focus:bg-white transition-all duration-300 outline-none"
+            />
+          </div>
+          <button type="submit"
+                  class="bg-gradient-to-br from-primary to-primary-dim text-on-primary font-headline font-bold text-sm tracking-widest uppercase px-10 py-5 rounded-lg flex items-center justify-center gap-2 hover:shadow-lg hover:shadow-primary/20 active:scale-95 transition-all">
+            {% trans "Look Up" %}
+            <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1">auto_stories</span>
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Error -->
+    {% if error %}
+    <div class="w-full mb-6 p-4 bg-error-container/30 border border-error/20 rounded-xl flex items-start gap-3">
+      <span class="material-symbols-outlined text-error mt-0.5 shrink-0">error_outline</span>
+      <p class="text-on-surface font-medium">{{ error }}</p>
+    </div>
+    {% endif %}
+
+    <!-- Results -->
+    {% if input and not error %}
+    <div class="w-full space-y-4">
+
+      <!-- Word header -->
+      <div class="bg-surface-container-lowest rounded-xl border border-outline-variant/10 shadow-sm p-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <h2 class="text-4xl font-black font-headline text-on-surface tracking-tight">{{ input }}</h2>
+            {% if phonetics %}
+            <p class="text-on-surface-variant text-lg mt-1 font-medium">{{ phonetics }}</p>
+            {% endif %}
+          </div>
+          {% if audio %}
+          <div class="flex items-center gap-3 shrink-0">
+            <audio id="word-audio" src="{{ audio }}" preload="none"></audio>
+            <button onclick="document.getElementById('word-audio').play()"
+                    class="flex items-center gap-2 px-5 py-2.5 bg-primary-container text-on-primary-container font-bold rounded-full text-sm hover:bg-primary-fixed-dim transition-all active:scale-95 border-0 cursor-pointer">
+              <span class="material-symbols-outlined text-[18px]" style="font-variation-settings:'FILL' 1">volume_up</span>
+              {% trans "Pronounce" %}
+            </button>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Definition + Example -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="bg-surface-container-lowest rounded-xl border border-outline-variant/10 shadow-sm p-5">
+          <div class="flex items-center gap-2 mb-3">
+            <span class="material-symbols-outlined text-primary text-[20px]">format_quote</span>
+            <h3 class="font-bold font-headline text-on-surface">{% trans "Definition" %}</h3>
+          </div>
+          <p class="text-on-surface text-sm leading-relaxed">{{ definition }}</p>
+        </div>
+        <div class="bg-surface-container-lowest rounded-xl border border-outline-variant/10 shadow-sm p-5">
+          <div class="flex items-center gap-2 mb-3">
+            <span class="material-symbols-outlined text-secondary text-[20px]">chat_bubble</span>
+            <h3 class="font-bold font-headline text-on-surface">{% trans "Example" %}</h3>
+          </div>
+          <p class="text-on-surface-variant text-sm leading-relaxed italic">"{{ example }}"</p>
+        </div>
+      </div>
+
+      <!-- Synonyms -->
+      {% if synonyms %}
+      <div class="bg-surface-container-lowest rounded-xl border border-outline-variant/10 shadow-sm p-5">
+        <div class="flex items-center gap-2 mb-4">
+          <span class="material-symbols-outlined text-tertiary text-[20px]">join_inner</span>
+          <h3 class="font-bold font-headline text-on-surface">{% trans "Synonyms" %}</h3>
+        </div>
+        <div class="flex flex-wrap gap-2">
+          {% for synonym in synonyms %}
+          {% if synonym != "No synonyms available." %}
+          <button onclick="document.getElementById('dict-input').value='{{ synonym }}'; document.getElementById('dict-form').submit();"
+                  class="px-4 py-1.5 rounded-full bg-secondary-container text-on-secondary-container text-xs font-bold hover:bg-secondary/20 transition-colors cursor-pointer border-0">
+            {{ synonym }}
+          </button>
+          {% else %}
+          <span class="text-sm text-on-surface-variant italic">{% trans "No synonyms available." %}</span>
+          {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+
+    </div>
+    {% endif %}
+
+    <!-- Suggestion chips (shown when no search yet) -->
+    {% if not input and not error %}
+    <div class="mt-8 w-full">
+      <p class="text-xs font-bold uppercase tracking-[0.2em] text-on-surface-variant mb-4 text-center">{% trans "Try these words" %}</p>
+      <div class="flex flex-wrap justify-center gap-3">
+        {% for word in suggestion_words %}
+        <button onclick="document.getElementById('dict-input').value='{{ word }}'; document.getElementById('dict-form').submit();"
+                class="px-5 py-2 rounded-full bg-surface-container-low hover:bg-surface-container-lowest border border-outline-variant/10 text-sm font-semibold text-on-surface hover:text-primary transition-all cursor-pointer border-0 shadow-sm">
+          {{ word }}
+        </button>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+
+  </div>
+</div>
+{% endblock %}

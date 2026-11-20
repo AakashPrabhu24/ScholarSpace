@@ -1,0 +1,15 @@
+{% extends 'dashboard/scholar_app_base.html' %}
+{% load static %}
+
+{% block title %}ScholarSpace | Study Timetable{% endblock %}
+
+{% block scholar_extra_head %}
+<link rel="stylesheet" href="{% static 'timetable_app/css/style.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="timetable-app scholar-page-fade max-w-5xl mx-auto px-4 pb-16 pt-24">
+  {% block timetable_body %}{% endblock %}
+</div>
+<script src="{% static 'timetable_app/js/main.js' %}"></script>
+{% endblock %}

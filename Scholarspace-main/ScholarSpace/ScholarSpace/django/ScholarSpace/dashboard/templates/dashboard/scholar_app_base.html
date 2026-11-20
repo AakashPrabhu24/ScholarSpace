@@ -1,0 +1,68 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+{% block html_class %}light{% endblock %}
+{% block body_class %}bg-surface font-body text-on-surface bg-scholar-gradient min-h-screen relative overflow-x-hidden flex flex-col{% endblock %}
+{% block dashboard_ambient %}{% endblock %}
+
+{% block extra_head %}
+{% include 'dashboard/includes/tailwind_theme_head.html' %}
+{% block scholar_extra_head %}{% endblock %}
+<style>
+  .bg-scholar-gradient {
+    background: radial-gradient(circle at 10% 20%, rgba(191, 198, 253, 0.15) 0%, rgba(255, 255, 255, 0) 40%),
+                radial-gradient(circle at 90% 80%, rgba(241, 206, 252, 0.15) 0%, rgba(255, 255, 255, 0) 40%);
+  }
+  main > .messages { width: 100%; max-width: 80rem; margin-left: auto; margin-right: auto; padding: 0 1rem 1rem; padding-top: 6.5rem; }
+  main .messages .alert { border-radius: 1rem; padding: 0.75rem 1rem; margin-bottom: 0.75rem; font-size: 0.875rem; border: none; }
+  main .messages .alert-success { background: #bfc6fd; color: #373f6d; }
+  main .messages .alert-error, main .messages .alert-danger { background: #f97386; color: #6e0523; }
+  .dashboard-card-link { display: flex; flex-direction: column; height: 100%; text-decoration: none; color: inherit; }
+</style>
+{% endblock extra_head %}
+
+{% block navbar %}
+{% block scholar_floating_shapes %}{% endblock %}
+{% include 'dashboard/includes/scholar_nav.html' %}
+{% endblock navbar %}
+
+{% block main_class %}flex-grow w-full max-w-full px-0 py-0 pt-0 pb-24 md:pb-0{% endblock %}
+
+{% block footer %}
+{% block scholar_footer_inner %}
+<footer class="py-12 border-t border-surface-container-high bg-surface-container-low mt-auto">
+  <div class="max-w-7xl mx-auto px-6 flex flex-col items-center">
+    <div class="flex items-center gap-2 mb-6">
+      <a data-scholar-vt href="{% url 'dashboard_home' %}" class="text-xl font-black font-headline text-indigo-700 no-underline">ScholarSpace</a>
+    </div>
+    <p class="text-on-surface-variant text-sm font-medium text-center">
+      © 2026 ScholarSpace. All rights reserved.<br/>
+      <span class="opacity-50 text-[10px] mt-2 block">CRAFTED FOR ACADEMIC EXCELLENCE</span>
+    </p>
+  </div>
+</footer>
+{% endblock scholar_footer_inner %}
+<nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl flex justify-between items-center py-2.5 px-2 z-[55] shadow-[0_-1px_10px_rgba(0,0,0,0.06)] border-t border-outline-variant/10 safe-area-pb" aria-label="Mobile">
+  {% with u=request.resolver_match.url_name %}
+  <a data-scholar-vt href="{% url 'dashboard_home' %}" class="flex flex-col items-center gap-0.5 no-underline min-w-0 flex-1 {% if u == 'dashboard_home' %}text-primary font-bold{% else %}text-slate-500{% endif %}">
+    <span class="material-symbols-outlined text-[20px]"{% if u == 'dashboard_home' %} style="font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24"{% endif %}>home</span>
+    <span class="text-[9px] font-medium truncate max-w-[3.5rem] text-center">Home</span>
+  </a>
+  <a data-scholar-vt href="{% url 'youtube' %}" class="flex flex-col items-center gap-0.5 no-underline min-w-0 flex-1 {% if u == 'youtube' or u == 'youtube_watch' %}text-primary font-bold{% else %}text-slate-500{% endif %}">
+    <span class="material-symbols-outlined text-[20px]">smart_display</span>
+    <span class="text-[9px] font-medium text-center">YouTube</span>
+  </a>
+  <a data-scholar-vt href="{% url 'timetable_app:timetable_home' %}" class="flex flex-col items-center gap-0.5 no-underline min-w-0 flex-1 {% if u == 'timetable_home' or u == 'questions' or u == 'generate_timetable' %}text-primary font-bold{% else %}text-slate-500{% endif %}">
+    <span class="material-symbols-outlined text-[20px]">calendar_month</span>
+    <span class="text-[9px] font-medium text-center">Timetable</span>
+  </a>
+  <a data-scholar-vt href="{% url 'books' %}" class="flex flex-col items-center gap-0.5 no-underline min-w-0 flex-1 {% if u == 'books' %}text-primary font-bold{% else %}text-slate-500{% endif %}">
+    <span class="material-symbols-outlined text-[20px]">menu_book</span>
+    <span class="text-[9px] font-medium text-center">Books</span>
+  </a>
+  <a data-scholar-vt href="{% url 'profile' %}" class="flex flex-col items-center gap-0.5 no-underline min-w-0 flex-1 {% if u == 'profile' %}text-primary font-bold{% else %}text-slate-500{% endif %}">
+    <span class="material-symbols-outlined text-[20px]">account_circle</span>
+    <span class="text-[9px] font-medium text-center">Profile</span>
+  </a>
+  {% endwith %}
+</nav>
+{% endblock footer %}

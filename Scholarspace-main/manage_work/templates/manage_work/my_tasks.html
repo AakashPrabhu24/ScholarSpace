@@ -1,0 +1,149 @@
+{% extends 'manage_work/base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "ScholarSpace | My Tasks" %}{% endblock %}
+{% block nav_tasks %}mw-active{% endblock %}
+{% block page_title %}My Tasks{% endblock %}
+
+{% block header_actions %}
+<a href="{% url 'manage_work:add_deadline' %}"
+   class="px-5 py-1.5 rounded-full bg-primary text-white text-xs font-bold hover:brightness-110 transition-all no-underline">
+  + Add Deadline
+</a>
+<form method="POST" action="{% url 'manage_work:load_sample' %}" class="inline">{% csrf_token %}
+  <button type="submit" class="px-4 py-1.5 rounded-full border border-outline-variant text-xs font-bold hover:bg-surface-variant/30 transition-colors">{% trans "Load sample" %}</button>
+</form>
+<form method="POST" action="{% url 'manage_work:clear_all' %}" class="inline"
+      onsubmit='return confirm("{% trans "Delete ALL deadlines?" %}")'>{% csrf_token %}
+  <button type="submit" class="px-4 py-1.5 rounded-full bg-red-50 text-red-600 text-xs font-bold hover:bg-red-100 transition-colors">{% trans "Clear all" %}</button>
+</form>
+{% endblock %}
+
+{% block mw_content %}
+<!-- Filters -->
+<form method="GET" class="flex flex-wrap items-center gap-3 bg-white rounded-2xl px-5 py-3 border border-outline-variant/30 mb-6">
+  <span class="material-symbols-outlined text-on-surface-variant text-[20px]">filter_list</span>
+  <select name="type" onchange="this.form.submit()"
+          class="border-none bg-surface-variant/30 rounded-full px-4 py-1.5 text-xs font-semibold text-on-surface outline-none cursor-pointer appearance-none">
+    <option value="">{% trans "All Types" %}</option>
+    <option value="assignment" {% if type_filter == 'assignment' %}selected{% endif %}>{% trans "Assignment" %}</option>
+    <option value="exam"       {% if type_filter == 'exam' %}selected{% endif %}>{% trans "Exam" %}</option>
+    <option value="hackathon"  {% if type_filter == 'hackathon' %}selected{% endif %}>{% trans "Hackathon" %}</option>
+    <option value="project"    {% if type_filter == 'project' %}selected{% endif %}>{% trans "Project" %}</option>
+  </select>
+  <select name="priority" onchange="this.form.submit()"
+          class="border-none bg-surface-variant/30 rounded-full px-4 py-1.5 text-xs font-semibold text-on-surface outline-none cursor-pointer appearance-none">
+    <option value="">{% trans "All Priorities" %}</option>
+    <option value="critical" {% if priority_filter == 'critical' %}selected{% endif %}>{% trans "Critical" %}</option>
+    <option value="high"     {% if priority_filter == 'high' %}selected{% endif %}>{% trans "High" %}</option>
+    <option value="medium"   {% if priority_filter == 'medium' %}selected{% endif %}>{% trans "Medium" %}</option>
+    <option value="low"      {% if priority_filter == 'low' %}selected{% endif %}>{% trans "Low" %}</option>
+  </select>
+  <select name="sort" onchange="this.form.submit()"
+          class="border-none bg-surface-variant/30 rounded-full px-4 py-1.5 text-xs font-semibold text-on-surface outline-none cursor-pointer appearance-none">
+    <option value="date"     {% if sort == 'date' %}selected{% endif %}>{% trans "Sort: Date" %}</option>
+    <option value="priority" {% if sort == 'priority' %}selected{% endif %}>{% trans "Sort: Priority" %}</option>
+  </select>
+  {% if type_filter or priority_filter %}
+  <a href="{% url 'manage_work:my_tasks' %}" class="text-xs font-bold text-red-500 hover:underline no-underline ml-auto">{% trans "Clear filters" %}</a>
+  {% endif %}
+</form>
+
+{% if deadlines %}
+<div class="bg-white rounded-2xl border border-outline-variant/30 overflow-hidden">
+  <table class="w-full text-left text-sm">
+    <thead>
+      <tr class="border-b border-outline-variant/30 bg-[#f8f9ff]">
+        <th class="px-6 py-3 text-[10px] font-bold uppercase tracking-wider text-on-surface-variant">{% trans "Task" %}</th>
+        <th class="px-4 py-3 text-[10px] font-bold uppercase tracking-wider text-on-surface-variant">{% trans "Type" %}</th>
+        <th class="px-4 py-3 text-[10px] font-bold uppercase tracking-wider text-on-surface-variant">{% trans "Priority" %}</th>
+        <th class="px-4 py-3 text-[10px] font-bold uppercase tracking-wider text-on-surface-variant">Deadline</th>
+        <th class="px-4 py-3 text-[10px] font-bold uppercase tracking-wider text-on-surface-variant">{% trans "Hrs" %}</th>
+        <th class="px-4 py-3 text-[10px] font-bold uppercase tracking-wider text-on-surface-variant">{% trans "Status" %}</th>
+        <th class="px-4 py-3 text-[10px] font-bold uppercase tracking-wider text-on-surface-variant">{% trans "Actions" %}</th>
+      </tr>
+    </thead>
+    <tbody class="divide-y divide-outline-variant/20">
+      {% for d in deadlines %}
+      <tr class="hover:bg-[#f8f9ff] transition-colors {% if d.is_completed %}opacity-50{% endif %}">
+        <td class="px-6 py-4">
+          <div class="flex items-start gap-2">
+            {% if d.id in conflicted_ids %}<span class="material-symbols-outlined text-red-500 text-[16px] mt-0.5" title="{% trans 'Conflict' %}">warning</span>{% endif %}
+            <div>
+              <p class="font-semibold text-on-surface {% if d.is_completed %}line-through{% endif %}">{{ d.title }}</p>
+              {% if d.notes %}<p class="text-xs text-on-surface-variant">{{ d.notes|truncatechars:40 }}</p>{% endif %}
+            </div>
+          </div>
+        </td>
+        <td class="px-4 py-4">
+          <span class="px-2.5 py-1 rounded-full text-[11px] font-bold
+            {% if d.type == 'exam' %}bg-red-100 text-red-700
+            {% elif d.type == 'hackathon' %}bg-purple-100 text-purple-700
+            {% elif d.type == 'project' %}bg-blue-100 text-blue-700
+            {% else %}bg-primary-container text-on-primary-container{% endif %}">
+            {{ d.get_type_display }}
+          </span>
+        </td>
+        <td class="px-4 py-4">
+          <span class="px-2.5 py-1 rounded-full text-[11px] font-bold
+            {% if d.priority == 'critical' %}bg-red-600 text-white
+            {% elif d.priority == 'high' %}bg-red-100 text-red-700
+            {% elif d.priority == 'medium' %}bg-blue-100 text-blue-700
+            {% else %}bg-gray-100 text-gray-600{% endif %}">
+            {{ d.get_priority_display }}
+          </span>
+        </td>
+        <td class="px-4 py-4 whitespace-nowrap">
+          <p class="text-xs {% if d.is_overdue %}text-red-600 font-semibold{% else %}text-on-surface{% endif %}">{{ d.deadline_at|date:"M d, Y" }}</p>
+          <p class="text-[11px] text-on-surface-variant">{{ d.deadline_at|time:"H:i" }} UTC</p>
+        </td>
+        <td class="px-4 py-4 text-xs text-on-surface-variant whitespace-nowrap">{{ d.est_hours }}h</td>
+        <td class="px-4 py-4">
+          {% if d.is_completed %}
+          <span class="px-2.5 py-1 rounded-full text-[11px] font-bold bg-green-100 text-green-700">{% trans "Done" %}</span>
+          {% elif d.is_overdue %}
+          <span class="px-2.5 py-1 rounded-full text-[11px] font-bold bg-red-100 text-red-700">{% trans "Overdue" %}</span>
+          {% elif d.is_due_within_72h %}
+          <span class="px-2.5 py-1 rounded-full text-[11px] font-bold bg-orange-100 text-orange-700">{% trans "Due Soon" %}</span>
+          {% else %}
+          <span class="px-2.5 py-1 rounded-full text-[11px] font-bold bg-surface-variant text-on-surface-variant">{% trans "Upcoming" %}</span>
+          {% endif %}
+        </td>
+        <td class="px-4 py-4">
+          <div class="flex items-center gap-1">
+            {% if not d.is_completed %}
+            <form method="POST" action="{% url 'manage_work:complete_deadline' d.pk %}">{% csrf_token %}
+              <button type="submit" title="{% trans 'Mark complete' %}" class="p-1.5 text-primary hover:bg-primary-container rounded-full transition-colors">
+                <span class="material-symbols-outlined text-[18px]">check_circle</span>
+              </button>
+            </form>
+            {% else %}
+            <span class="p-1.5 text-green-500"><span class="material-symbols-outlined text-[18px]" style="font-variation-settings:'FILL' 1">check_circle</span></span>
+            {% endif %}
+            <form method="POST" action="{% url 'manage_work:delete_deadline' d.pk %}"
+                  onsubmit='return confirm("{% trans "Delete" %} {{ d.title|escapejs }}?")'>{% csrf_token %}
+              <button type="submit" title="{% trans 'Delete' %}" class="p-1.5 text-red-500 hover:bg-red-50 rounded-full transition-colors">
+                <span class="material-symbols-outlined text-[18px]">delete</span>
+              </button>
+            </form>
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% else %}
+<div class="bg-white rounded-2xl border border-outline-variant/30 py-20 flex flex-col items-center text-center gap-4">
+  <div class="w-14 h-14 bg-primary-container rounded-full flex items-center justify-center">
+    <span class="material-symbols-outlined text-primary text-2xl">checklist</span>
+  </div>
+  <h3 class="text-lg font-bold font-headline text-on-surface">{% trans "No tasks yet" %}</h3>
+  <p class="text-sm text-on-surface-variant">{% if type_filter or priority_filter %}{% trans "No tasks match your filters." %}{% else %}{% trans "Add your first deadline to get started." %}{% endif %}</p>
+  <a href="{% url 'manage_work:add_deadline' %}"
+     class="mt-2 px-6 py-2.5 bg-primary text-white rounded-full font-bold text-sm hover:brightness-110 active:scale-95 transition-all no-underline">
+    Add Deadline
+  </a>
+</div>
+{% endif %}
+{% endblock %}

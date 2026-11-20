@@ -1,0 +1,55 @@
+{% extends 'manage_work/base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "ScholarSpace | Smart Plan" %}{% endblock %}
+{% block nav_plan %}mw-active{% endblock %}
+{% block page_title %}Smart Plan{% endblock %}
+
+{% block mw_content %}
+<div class="space-y-6">
+  <div>
+    <h2 class="text-xl font-bold font-headline text-on-surface">{% trans "Optimised Task Order" %}</h2>
+    <p class="text-sm text-on-surface-variant mt-1">{% trans "Tasks ranked by a weighted score: priority (40%), urgency (30%), conflict involvement (20%), and estimated effort (10%)." %}</p>
+  </div>
+
+  {% if scored_deadlines %}
+  <div class="space-y-3">
+    {% for deadline, score in scored_deadlines %}
+    <div class="bg-white rounded-2xl border border-outline-variant/30 p-5 flex flex-col sm:flex-row sm:items-center gap-4 hover:shadow-sm transition-shadow">
+      <div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center font-black font-headline text-primary text-lg shrink-0">
+        {{ forloop.counter }}
+      </div>
+      <div class="flex-1 min-w-0">
+        <div class="flex flex-wrap items-center gap-2 mb-1">
+          <p class="font-bold text-on-surface font-headline">{{ deadline.title }}</p>
+          <span class="px-2 py-0.5 rounded-full text-[11px] font-bold
+            {% if deadline.priority == 'critical' %}bg-red-600 text-white
+            {% elif deadline.priority == 'high' %}bg-red-100 text-red-700
+            {% elif deadline.priority == 'medium' %}bg-blue-100 text-blue-700
+            {% else %}bg-gray-100 text-gray-600{% endif %}">{{ deadline.get_priority_display }}</span>
+          {% if deadline.is_due_within_72h %}<span class="px-2 py-0.5 rounded-full text-[11px] font-bold bg-orange-100 text-orange-700">{% trans "Due Soon" %}</span>{% endif %}
+        </div>
+        <p class="text-xs text-on-surface-variant">Due {{ deadline.deadline_at|date:"M d, Y" }} &bull; {{ deadline.est_hours }}h estimated &bull; {{ deadline.get_type_display }}</p>
+      </div>
+      <div class="sm:w-36 shrink-0">
+        <div class="flex items-center justify-between mb-1">
+          <span class="text-[10px] font-bold text-on-surface-variant uppercase">{% trans "Score" %}</span>
+          <span class="text-sm font-black text-primary font-headline">{{ score }}</span>
+        </div>
+        <div class="w-full bg-surface-variant rounded-full h-2 overflow-hidden">
+          <div class="h-full bg-primary rounded-full" style="width: {% widthratio score 1 100 %}%"></div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="bg-white rounded-2xl border border-outline-variant/30 py-20 flex flex-col items-center text-center gap-4">
+    <span class="material-symbols-outlined text-primary text-4xl">auto_awesome</span>
+    <h3 class="text-lg font-bold font-headline text-on-surface">{% trans "No tasks to plan" %}</h3>
+    <p class="text-sm text-on-surface-variant">{% trans "Add deadlines first, then the smart plan will rank them automatically." %}</p>
+    <a href="{% url 'manage_work:add_deadline' %}" class="mt-2 px-6 py-2.5 bg-primary text-white rounded-full font-bold text-sm hover:brightness-110 no-underline">{% trans "Add Deadline" %}</a>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

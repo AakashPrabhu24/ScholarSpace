@@ -1,0 +1,692 @@
+{% load i18n %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% trans "COURSES - Home" %}</title>
+    <link rel="stylesheet" href="{% static 'css/portal_styles.css' %}">
+    <style>
+    /* Advanced Futuristic Design System - Bright Divine Edition - Light Theme */
+:root {
+    /* Celestial Color Palette - Light Variant */
+    --celestial-base: #f8f8ff;       /* Lightest base, almost white */
+    --celestial-light: #f0f0ff;     /* Very light background */
+    --celestial-mid: #e0e0ff;       /* Light mid-tone */
+    --celestial-accent: #b084ff;    /* Muted, light accent */
+    --celestial-vibrant: #8a63d2;  /* Slightly more vibrant accent */
+    --celestial-deep: #6649b8;      /* Deep, but not too dark */
+    --celestial-rich: #523a8e;      /* Rich, but still within light range */
+    --celestial-contrast: #ffb89d;  /* Light, warm contrast */
+    
+    /* Divine Gradients - Light Variant */
+    --gradient-celestial: linear-gradient(135deg, #e0e0ff, #b084ff);
+    --gradient-transcendent: linear-gradient(135deg, #8a63d2, #ffb89d, #f8e0b0);
+    --gradient-ethereal: linear-gradient(to right, #e0e0ff, #b084ff, #8a63d2);
+    
+    /* Enlightened Typography */
+    --font-primary: 'Poppins', 'Inter', sans-serif;
+    --font-secondary: 'Quicksand', 'Montserrat', sans-serif;
+    
+    /* Divine Spacing */
+    --space-quantum: 0.25rem;
+    --space-nano: 0.5rem;
+    --space-micro: 1rem;
+    --space-milli: 1.5rem;
+    --space-base: 2rem;
+    --space-macro: 3rem;
+    --space-mega: 5rem;
+    
+    /* Ethereal Effects - Light Variant */
+    --glow-soft: 0 0 12px rgba(176, 132, 255, 0.2);      /* Subtler glow */
+    --glow-medium: 0 0 20px rgba(176, 132, 255, 0.3);    /* Medium glow */
+    --glow-strong: 0 0 30px rgba(176, 132, 255, 0.4);      /* Stronger glow, still light */
+    
+    /* Transcendent Transitions */
+    --transition-fast: 0.2s cubic-bezier(0.19, 1, 0.22, 1);
+    --transition-medium: 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+    --transition-slow: 0.8s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+/* Universal Reset with Divine Defaults */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: var(--font-primary);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--celestial-light);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--celestial-accent);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--celestial-vibrant);
+}
+
+/* Celestial Body */
+body {
+    background: var(--celestial-base);
+    color: var(--celestial-rich);
+    line-height: 1.6;
+    overflow-x: hidden;
+    background-image: 
+        radial-gradient(circle at 10% 20%, rgba(176, 132, 255, 0.1) 0%, transparent 25%), /* Lighter */
+        radial-gradient(circle at 90% 80%, rgba(255, 184, 157, 0.1) 0%, transparent 25%); /* Lighter */
+    background-attachment: fixed;
+    min-height: 100vh;
+}
+
+/* Enlightened Container */
+.container {
+    width: 90%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 var(--space-micro);
+    position: relative;
+}
+
+/* Transcendent Header - UPDATED FOR FULL WIDTH */
+header {
+    background: var(--gradient-celestial);
+    padding: var(--space-milli) 0;
+    color: var(--celestial-base);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    backdrop-filter: blur(12px); /* Slightly stronger blur */
+    border-bottom: 1px solid rgba(176, 132, 255, 0.3); /* Lighter border */
+    box-shadow: var(--glow-soft);
+    width: 100%;
+    left: 0;
+}
+
+/* Added header container to maintain content alignment */
+.header-container {
+    width: 90%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 var(--space-micro);
+}
+
+header h1 {
+    margin-bottom: var(--space-micro);
+    font-weight: 700;
+    font-size: 2rem;
+    letter-spacing: 0.5px;
+    color: var(--celestial-rich);
+    text-shadow: 0 0 5px rgba(248, 248, 255, 0.5);
+    position: relative;
+}
+
+header h1::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 50px;
+    height: 3px;
+    background: var(--celestial-vibrant);
+    border-radius: 3px;
+}
+
+header a {
+    color: var(--celestial-rich);
+    text-decoration: none;
+    transition: all var(--transition-fast);
+}
+
+/* Cosmic Navigation */
+nav {
+    position: relative;
+}
+
+nav ul {
+    display: flex;
+    list-style: none;
+    align-items: center;
+    gap: var(--space-milli);
+}
+
+nav ul li a {
+    position: relative;
+    padding: var(--space-nano) var(--space-micro);
+    border-radius: 4px;
+    transition: all var(--transition-medium);
+}
+
+nav ul li a::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 50%;
+    transform: translateX(-50%) scaleX(0);
+    width: 100%;
+    height: 2px;
+    background: var(--gradient-transcendent);
+    transition: transform var(--transition-medium);
+}
+
+nav ul li a:hover {
+    color: var(--celestial-vibrant);
+    text-shadow: 0 0 5px rgba(138, 99, 210, 0.3);
+}
+
+nav ul li a:hover::after {
+    transform: translateX(-50%) scaleX(1);
+}
+
+/* Enlightened Main Content */
+main {
+    padding: var(--space-base) 0;
+    min-height: 80vh;
+    position: relative;
+    z-index: 1;
+}
+
+h2 {
+    margin-bottom: var(--space-milli);
+    color: var(--celestial-deep);
+    font-size: 2.5rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    position: relative;
+    display: inline-block;
+}
+
+h2::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    width: 60px;
+    height: 3px;
+    background: var(--gradient-transcendent);
+    border-radius: 2px;
+}
+
+p {
+    margin-bottom: var(--space-micro);
+    font-size: 1.05rem;
+    max-width: 800px;
+    line-height: 1.8;
+    color: var(--celestial-rich); /* Ensure text is readable on light background */
+}
+
+/* Hierarchy Grid Layouts */
+.domain-grid,
+.category-grid,
+.subject-grid,
+.video-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: var(--space-milli);
+    margin: var(--space-base) 0;
+}
+
+.domain-card,
+.category-card,
+.subject-card,
+.video-card {
+    background: rgba(224, 224, 255, 0.2); /* Lighter background */
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: var(--glow-soft);
+    padding: var(--space-milli);
+    transition: all var(--transition-medium);
+    border: 1px solid rgba(176, 132, 255, 0.2); /* Lighter border */
+    position: relative;
+    z-index: 1;
+    backdrop-filter: blur(7px); /* Slightly stronger blur */
+}
+
+/* Domain-specific styling */
+.domain-card {
+    background: rgba(224, 224, 255, 0.3); /* Lighter */
+    border-width: 2px;
+    box-shadow: var(--glow-medium);
+}
+
+.domain-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: var(--space-micro);
+}
+
+.domain-icon {
+    width: 48px;
+    height: 48px;
+    margin-bottom: var(--space-nano);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--gradient-celestial);
+    border-radius: 50%;
+    box-shadow: var(--glow-soft);
+}
+
+/* Card hover effects */
+.domain-card::before,
+.category-card::before,
+.subject-card::before,
+.video-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, rgba(176, 132, 255, 0.1), rgba(255, 184, 157, 0.05)); /* Lighter */
+    z-index: -1;
+    transition: opacity var(--transition-medium);
+    opacity: 0;
+}
+
+.domain-card:hover,
+.category-card:hover,
+.subject-card:hover,
+.video-card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--glow-medium);
+    border-color: rgba(176, 132, 255, 0.4); /* Lighter border hover */
+}
+
+.domain-card:hover::before,
+.category-card:hover::before,
+.subject-card:hover::before,
+.video-card:hover::before {
+    opacity: 1;
+}
+
+.domain-card a,
+.category-card a,
+.subject-card a,
+.video-card a {
+    color: var(--celestial-deep);
+    text-decoration: none;
+    display: block;
+}
+
+.domain-card h3,
+.category-card h3,
+.subject-card h3,
+.video-card h3 {
+    color: var(--celestial-vibrant);
+    margin-bottom: var(--space-nano);
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+/* Hierarchical navigation styles */
+.breadcrumb {
+    display: flex;
+    gap: var(--space-nano);
+    margin-bottom: var(--space-milli);
+    font-size: 0.9rem;
+    align-items: center;
+}
+
+.breadcrumb-item {
+    color: var(--celestial-deep);
+}
+
+.breadcrumb-separator {
+    color: var(--celestial-accent);
+}
+
+.breadcrumb-item.active {
+    color: var(--celestial-vibrant);
+    font-weight: 600;
+}
+
+/* Dimensional Card Content */
+.card-content {
+    padding: var(--space-nano) 0;
+}
+
+.card-meta {
+    display: flex;
+    align-items: center;
+    gap: var(--space-nano);
+    margin-top: var(--space-nano);
+    color: var(--celestial-deep);
+    font-size: 0.9rem;
+}
+
+/* Domain badges */
+.domain-badge {
+    display: inline-block;
+    padding: var(--space-quantum) var(--space-nano);
+    background: rgba(138, 99, 210, 0.2); /* Lighter badge */
+    color: var(--celestial-deep);
+    border-radius: 4px;
+    font-size: 0.8rem;
+    margin-right: var(--space-nano);
+    margin-bottom: var(--space-nano);
+}
+
+/* Hierarchy count indicators */
+.item-count {
+    font-size: 0.8rem;
+    color: var(--celestial-deep);
+    background: rgba(176, 132, 255, 0.15); /* Lighter count background */
+    padding: 2px 8px;
+    border-radius: 12px;
+    display: inline-flex;
+    align-items: center;
+    margin-left: var(--space-nano);
+}
+
+/* Cosmic Video Player */
+.video-container {
+    margin: var(--space-base) 0;
+    width: 100%;
+    position: relative;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: var(--glow-medium);
+    background: var(--celestial-light);
+}
+
+.video-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(176, 132, 255, 0.1), transparent); /* Lighter overlay */
+    pointer-events: none;
+}
+
+.video-container video {
+    width: 100%;
+    max-width: 900px;
+    display: block;
+    margin: 0 auto;
+    border-radius: 8px;
+    transition: all var(--transition-medium);
+}
+
+.video-controls {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: var(--space-micro);
+    background: linear-gradient(to top, rgba(224, 224, 255, 0.7), transparent); /* Lighter controls background */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    opacity: 0;
+    transition: opacity var(--transition-medium);
+}
+
+.video-container:hover .video-controls {
+    opacity: 1;
+}
+
+.video-description {
+    background: rgba(224, 224, 255, 0.2); /* Lighter description background */
+    padding: var(--space-milli);
+    border-radius: 12px;
+    box-shadow: var(--glow-soft);
+    margin: var(--space-base) 0;
+    border: 1px solid rgba(176, 132, 255, 0.2); /* Lighter description border */
+    backdrop-filter: blur(7px);
+}
+
+/* Transcendent Buttons */
+.btn {
+    display: inline-block;
+    background: var(--gradient-celestial);
+    color: var(--celestial-rich);
+    padding: var(--space-nano) var(--space-micro);
+    border-radius: 6px;
+    text-decoration: none;
+    transition: all var(--transition-medium);
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    box-shadow: var(--glow-soft);
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--gradient-transcendent);
+    z-index: -1;
+    transition: opacity var(--transition-medium);
+    opacity: 0;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--glow-medium);
+    color: var(--celestial-base);
+}
+
+.btn:hover::before {
+    opacity: 1;
+}
+
+/* Enlightened Footer */
+footer {
+    background: var(--gradient-celestial);
+    color: var(--celestial-rich);
+    padding: var(--space-milli) 0;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    border-top: 1px solid rgba(176, 132, 255, 0.3); /* Lighter footer border */
+}
+
+footer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(176, 132, 255, 0.05), transparent); /* Very light overlay */
+    pointer-events: none;
+}
+
+.footer-content {
+    position: relative;
+    z-index: 1;
+}
+
+.footer-links {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-milli);
+    margin: var(--space-micro) 0;
+}
+
+.footer-links a {
+    color: var(--celestial-deep);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+}
+
+.footer-links a:hover {
+    color: var(--celestial-vibrant);
+    text-shadow: 0 0 5px rgba(138, 99, 210, 0.3);
+}
+
+/* Ethereal Animations */
+@keyframes pulse {
+    0% { box-shadow: 0 0 12px rgba(176, 132, 255, 0.2); }
+    50% { box-shadow: 0 0 20px rgba(176, 132, 255, 0.3); }
+    100% { box-shadow: 0 0 12px rgba(176, 132, 255, 0.2); }
+}
+
+.pulse {
+    animation: pulse 3s infinite;
+}
+
+/* Additional Divine Elements */
+.crystal-orb {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    background: linear-gradient(145deg, rgba(224, 224, 255, 0.5), rgba(176, 132, 255, 0.3)); /* Lighter orb */
+    border-radius: 50%;
+    margin: 0 auto;
+    box-shadow: var(--glow-medium);
+    overflow: hidden;
+}
+
+.crystal-orb::before {
+    content: '';
+    position: absolute;
+    top: -10%;
+    left: -10%;
+    width: 120%;
+    height: 120%;
+    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.2), transparent); /* Lighter shine */
+    transform: rotate(45deg);
+    animation: shine 3s infinite;
+}
+
+@keyframes shine {
+    0% { transform: rotate(45deg) translateY(-100%); }
+    100% { transform: rotate(45deg) translateY(100%); }
+}
+
+.floating-element {
+    animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); } /* Less floating */
+    100% { transform: translateY(0px); }
+}
+
+/* Cosmic Responsive Design */
+@media (max-width: 1024px) {
+    :root {
+        --space-base: 1.5rem;
+        --space-macro: 2.5rem;
+    }
+    
+    .domain-grid,
+    .category-grid,
+    .subject-grid,
+    .video-grid {
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    :root {
+        --space-milli: 1.25rem;
+        --space-base: 1.5rem;
+    }
+    
+    header h1 {
+        font-size: 1.75rem;
+    }
+    
+    nav ul {
+        gap: var(--space-nano);
+    }
+    
+    h2 {
+        font-size: 2rem;
+    }
+    
+    .domain-grid,
+    .category-grid,
+    .subject-grid,
+    .video-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    }
+}
+
+@media (max-width: 480px) {
+    :root {
+        --space-nano: 0.4rem;
+        --space-micro: 0.8rem;
+        --space-milli: 1rem;
+    }
+    
+    header h1 {
+        font-size: 1.5rem;
+    }
+    
+    nav ul {
+        flex-wrap: wrap;
+    }
+    
+    h2 {
+        font-size: 1.75rem;
+    }
+    
+    p {
+        font-size: 1rem;
+    }
+    
+    .domain-grid,
+    .category-grid,
+    .subject-grid,
+    .video-grid {
+        grid-template-columns: 1fr;
+    }
+}
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <h1>{% trans "COURSES" %}</h1>
+            <nav>
+                <a href="{% url 'portal:home' %}">{% trans "Home" %}</a>
+                <a href="{% url 'dashboard_home' %}">{% trans "Back to Dashboard" %}</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <main>
+            <h2>{% trans "Welcome to the ScholarSpace Courses" %}</h2>
+            <p>{% trans "Choose a domain to explore educational videos:" %}</p>
+            
+            <div class="domain-grid">
+                {% for domain in domains %}
+                    <a href="{% url 'portal:domain_detail' domain.slug %}" class="domain-card">
+                        <h3>{{ domain.name }}</h3>
+                        <p>{{ domain.description }}</p>
+                    </a>
+                {% endfor %}
+            </div>
+        </main>
+
+        
+    </div>
+</body>
+</html>

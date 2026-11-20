@@ -1,0 +1,69 @@
+{% extends 'manage_work/base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "ScholarSpace | Calendar" %}{% endblock %}
+{% block nav_calendar %}mw-active{% endblock %}
+{% block page_title %}Calendar{% endblock %}
+
+{% block header_actions %}
+<a href="?year={{ prev_year }}&month={{ prev_month }}" class="p-2 rounded-full border border-outline-variant hover:bg-surface-variant/30 transition-colors no-underline text-on-surface">
+  <span class="material-symbols-outlined text-[20px]">chevron_left</span>
+</a>
+<span class="font-bold font-headline text-on-surface min-w-[160px] text-center">{{ month_name }} {{ year }}</span>
+<a href="?year={{ next_year }}&month={{ next_month }}" class="p-2 rounded-full border border-outline-variant hover:bg-surface-variant/30 transition-colors no-underline text-on-surface">
+  <span class="material-symbols-outlined text-[20px]">chevron_right</span>
+</a>
+{% endblock %}
+
+{% block mw_content %}
+<div class="space-y-6">
+  <!-- Calendar grid -->
+  <div class="bg-white rounded-2xl border border-outline-variant/30 overflow-hidden">
+    <div class="grid grid-cols-7 border-b border-outline-variant/20 bg-[#f8f9ff]">
+      <div class="py-3 text-center text-[11px] font-bold uppercase tracking-wider text-on-surface-variant">{% trans "Mon" %}</div>
+      <div class="py-3 text-center text-[11px] font-bold uppercase tracking-wider text-on-surface-variant">{% trans "Tue" %}</div>
+      <div class="py-3 text-center text-[11px] font-bold uppercase tracking-wider text-on-surface-variant">{% trans "Wed" %}</div>
+      <div class="py-3 text-center text-[11px] font-bold uppercase tracking-wider text-on-surface-variant">{% trans "Thu" %}</div>
+      <div class="py-3 text-center text-[11px] font-bold uppercase tracking-wider text-on-surface-variant">{% trans "Fri" %}</div>
+      <div class="py-3 text-center text-[11px] font-bold uppercase tracking-wider text-on-surface-variant">{% trans "Sat" %}</div>
+      <div class="py-3 text-center text-[11px] font-bold uppercase tracking-wider text-on-surface-variant">{% trans "Sun" %}</div>
+    </div>
+    <div class="grid grid-cols-7">
+      {% for week in calendar_weeks %}{% for day in week %}
+      {% if day == 0 %}
+      <div class="min-h-[80px] border border-outline-variant/10 bg-[#f8f9ff]/50"></div>
+      {% else %}
+      <div class="min-h-[80px] border border-outline-variant/10 p-1.5
+                  {% if day == today.day and month == today.month and year == today.year %}bg-primary-container/20{% endif %}">
+        <span class="text-xs font-bold inline-flex items-center justify-center w-6 h-6 rounded-full mb-1
+                     {% if day == today.day and month == today.month and year == today.year %}bg-primary text-white{% else %}text-on-surface-variant{% endif %}">{{ day }}</span>
+      </div>
+      {% endif %}
+      {% endfor %}{% endfor %}
+    </div>
+  </div>
+
+  <!-- Deadlines this month list -->
+  <div class="bg-white rounded-2xl border border-outline-variant/30 overflow-hidden">
+    <div class="px-6 py-4 border-b border-outline-variant/20 bg-[#f8f9ff]">
+      <h2 class="font-bold font-headline text-on-surface">{% trans "Deadlines This Month" %}</h2>
+    </div>
+    {% if deadlines_by_date %}
+    <ul class="divide-y divide-outline-variant/10">
+      {% for date_key, dl_list in deadlines_by_date.items %}{% for dl in dl_list %}
+      <li class="flex items-center gap-4 px-6 py-3 hover:bg-[#f8f9ff] transition-colors">
+        <span class="material-symbols-outlined text-[18px] {% if date_key in conflict_dates %}text-red-500{% else %}text-primary{% endif %}">event</span>
+        <div class="flex-1 min-w-0">
+          <p class="font-semibold text-on-surface text-sm truncate">{{ dl.title }}</p>
+          <p class="text-xs text-on-surface-variant">{{ date_key }} &bull; {{ dl.get_priority_display }} &bull; {{ dl.est_hours }}h</p>
+        </div>
+        {% if date_key in conflict_dates %}<span class="text-[11px] font-bold text-red-600 bg-red-50 px-2 py-0.5 rounded-full shrink-0">{% trans "conflict" %}</span>{% endif %}
+      </li>
+      {% endfor %}{% endfor %}
+    </ul>
+    {% else %}
+    <div class="py-12 text-center text-on-surface-variant text-sm">{% trans "No deadlines this month." %}</div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

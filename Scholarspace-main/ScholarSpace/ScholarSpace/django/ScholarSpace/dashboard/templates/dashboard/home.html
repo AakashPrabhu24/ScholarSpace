@@ -1,0 +1,152 @@
+{% extends 'dashboard/scholar_app_base.html' %}
+
+{% block title %}ScholarSpace | Your Learning Hub{% endblock %}
+
+{% block scholar_floating_shapes %}
+<style>
+  .floating-shape { position: absolute; z-index: -1; filter: blur(60px); opacity: 0.4; }
+</style>
+<div class="floating-shape bg-primary-container w-96 h-96 rounded-full top-[-10%] left-[-5%] pointer-events-none" aria-hidden="true"></div>
+<div class="floating-shape bg-tertiary-container w-[500px] h-[500px] rounded-full bottom-[-10%] right-[-5%] pointer-events-none" aria-hidden="true"></div>
+{% endblock %}
+
+{% block content %}
+<header class="scholar-page-fade pt-28 md:pt-32 pb-12 md:pb-16 px-6 max-w-7xl mx-auto text-center">
+  <h1 class="text-4xl sm:text-5xl md:text-7xl font-extrabold font-headline tracking-tighter text-on-surface mb-4">
+    Welcome back, <span class="text-primary italic">{% if user.first_name %}{{ user.first_name }}{% elif user.username %}{{ user.username }}{% else %}Scholar{% endif %}</span>
+  </h1>
+  <p class="text-on-surface-variant text-base md:text-lg lg:text-xl font-medium max-w-2xl mx-auto">
+    Your ScholarSpace dashboard is ready. Plan, learn, and explore in one place.
+  </p>
+</header>
+
+<div class="scholar-page-fade px-6 pb-24 max-w-screen-2xl mx-auto">
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+    <!-- Homework (featured) -->
+    <a data-scholar-vt href="{% url 'homework' %}" class="dashboard-card-link lg:col-span-2 lg:row-span-2 group bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-outline-variant/10">
+      <div class="relative h-56 md:h-64 overflow-hidden shrink-0">
+        <img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" alt="" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCLs-8Ih7eDC2wcEZ_JgQVB4Gx_-_b05BCC2e0fpG24VFPUajypZRBREG0K41bGPNbk2noBT1bKV7QrECwqtQlYeiptiPj_TO0VcN4XBaKkNPNF795vXUXa-eTF960GOUVNiJbaNt0wew06GF82VrOFPcXpW8rbvFRb4gV0JeGvA3AiZeKrRzsIXa5D_zQ9psfpkQgRXkVvfC5mMqCUC_N8bvHleOj1oSCv_RF3rDlIDY2p3-RATBmIe86qVdVVcCn_jKh0ICFahOw"/>
+        <div class="absolute inset-0 bg-gradient-to-t from-primary/80 to-transparent"></div>
+        <div class="absolute bottom-6 left-6 text-white">
+          <span class="material-symbols-outlined text-4xl mb-2">assignment</span>
+          <h3 class="text-3xl font-bold font-headline">Homework</h3>
+        </div>
+      </div>
+      <div class="p-6 flex flex-col flex-1">
+        <p class="text-on-surface-variant leading-relaxed mb-6">Track assignments and deadlines with ease.</p>
+        <span class="inline-flex items-center gap-2 bg-primary-container text-on-primary-container px-6 py-3 rounded-full font-bold w-fit hover:bg-primary-fixed-dim transition-colors">
+          Open homework <span class="material-symbols-outlined text-sm">arrow_forward</span>
+        </span>
+      </div>
+    </a>
+
+    <!-- YouTube -->
+    <a data-scholar-vt href="{% url 'youtube' %}" class="dashboard-card-link group bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-outline-variant/10">
+      <div class="relative h-32 overflow-hidden shrink-0">
+        <img class="w-full h-full object-cover" alt="" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBbESPRimfDfM6a96Zx5xctHzgg2kQqhjs70Sd_YrBYEaxCmhK-wahzNd7c6kljM3zIxIAQ19q3wOAIdnI2aSWxhuej4L93X54N9wwGUohpjDH-UwxWE9ysLbJ7scaFQaS4Qa7wPQANsMqfMO50oqGNAj4xkMtsWNrzn5dApfXLgmgIlPFE4gRWzar29J5L-PSrOd8WV729fsyuLsK8WdlCYBHPPFOKJ9_iu-uaU1DtWWQAVr4z-Yoxq3VFX_fVKRAAy11DB8oDvUs"/>
+        <div class="absolute inset-0 bg-red-600/20"></div>
+      </div>
+      <div class="p-6 flex-1">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="material-symbols-outlined text-red-600">video_library</span>
+          <h3 class="font-bold font-headline">YouTube</h3>
+        </div>
+        <p class="text-sm text-on-surface-variant">Curated video content for visual learning.</p>
+      </div>
+    </a>
+
+    <!-- Books -->
+    <a data-scholar-vt href="{% url 'books' %}" class="dashboard-card-link group bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-outline-variant/10">
+      <div class="p-6 flex-1">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="material-symbols-outlined text-amber-700">menu_book</span>
+          <h3 class="font-bold font-headline">Books</h3>
+        </div>
+        <p class="text-sm text-on-surface-variant">A vast digital library of textbooks and journals.</p>
+      </div>
+      <img class="h-32 w-full object-cover mt-auto" alt="" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDIUFLGHj60967AkulNor9Cawdw_6m3utn3WpldQy6BRO3NMujwtpbGs6mE9uX0fB_UFO7YJxbHJGFsUyQSNwOAT7CmuMVeFHYNLxi1u2NjnuBZBxXFSpyQ4U5pZ6omIoUMU31nXZA_FBjQ_Kl5zKXs3InzzIU4c9Hr1e5tkA3Lu9o-en3Pena8L2l6U2uGJOpmAyr_m0X11IuvUFJQVjRH9JhZZBEzkUhrWKKeh_QRLI1wHinkvas4QbToaRm58fVz1pRzSJEHwkU"/>
+    </a>
+
+    <!-- Wikipedia -->
+    <a data-scholar-vt href="{% url 'wiki' %}" class="dashboard-card-link group bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-outline-variant/10">
+      <div class="p-6 flex-1">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="material-symbols-outlined text-slate-700">language</span>
+          <h3 class="font-bold font-headline">Wikipedia</h3>
+        </div>
+        <p class="text-sm text-on-surface-variant">Instant access to the world's encyclopedia.</p>
+      </div>
+      <img class="h-32 w-full object-cover mt-auto" alt="" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAjtP8JQbryAFZgZwS1nGDWwWohfLUJ8XHNIXxb2tT2InE7zcvrUXEkiOCESgpyBaMfYFgZPaDuF8ytcAHLPGWsCK2y_vwYJEj1zQ4jsZFLt4_3ivcQp579w7dLm3zZVTXk4bY35qLkh2rnrDM8SQUOVv3473-1JZ3nLwZCMijdpwtz7IlgwlY_-c70lxmVX-tpYmXwW7ft4YBBeSTAWrG74DsVQRYxEVkXYm7i-GY7TPA5_6PSb5eM2SypxT3rpNhgXFYe5MKlm1o"/>
+    </a>
+
+    <!-- My Goals (todo) -->
+    <a data-scholar-vt href="{% url 'todo' %}" class="dashboard-card-link group bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-outline-variant/10">
+      <div class="p-6 flex flex-col h-full flex-1">
+        <div class="w-12 h-12 bg-tertiary-container rounded-2xl flex items-center justify-center text-tertiary mb-4">
+          <span class="material-symbols-outlined text-2xl">ads_click</span>
+        </div>
+        <h3 class="font-bold text-xl font-headline mb-2">My Goals</h3>
+        <p class="text-sm text-on-surface-variant mb-4">Set milestones and track your academic progress.</p>
+        <div class="mt-auto pt-4 border-t border-surface-variant">
+          <div class="w-full bg-surface-container h-2 rounded-full overflow-hidden">
+            <div class="bg-tertiary w-3/4 h-full rounded-full"></div>
+          </div>
+          <p class="text-[10px] uppercase font-bold mt-2 text-tertiary">Stay on track</p>
+        </div>
+      </div>
+    </a>
+
+    <!-- Notes -->
+    <a data-scholar-vt href="{% url 'notes' %}" class="dashboard-card-link group bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-outline-variant/10 lg:col-span-2">
+      <div class="p-6 flex flex-col h-full flex-1">
+        <div class="w-12 h-12 bg-primary-container rounded-2xl flex items-center justify-center text-primary mb-4">
+          <span class="material-symbols-outlined text-2xl">note_alt</span>
+        </div>
+        <h3 class="font-bold text-xl font-headline mb-2">Notes</h3>
+        <p class="text-sm text-on-surface-variant leading-snug mb-4">Create and organize your study notes with quick access.</p>
+        <div class="mt-auto h-2 w-full rounded-full bg-primary-container/40 overflow-hidden">
+          <div class="h-full w-2/5 rounded-full bg-primary transition-all group-hover:w-3/5"></div>
+        </div>
+      </div>
+    </a>
+
+    <!-- Time Table (calendar) -->
+    <a data-scholar-vt href="{% url 'timetable_app:timetable_home' %}" class="dashboard-card-link group bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-outline-variant/10">
+      <div class="p-6 flex flex-col h-full flex-1">
+        <div class="w-12 h-12 bg-secondary-container rounded-2xl flex items-center justify-center text-secondary mb-4">
+          <span class="material-symbols-outlined text-2xl">calendar_month</span>
+        </div>
+        <h3 class="font-bold text-xl font-headline mb-2">Time Table</h3>
+        <p class="text-sm text-on-surface-variant leading-snug">Generate optimized study schedules that fit your lifestyle.</p>
+      </div>
+      <img class="h-24 w-full object-cover mt-auto" alt="" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB95ilg3FDIs7tcNPHArh4FoFwaZ1Eq02rxZM3qQp4Tc0qkRO9219ozyRm-SahEijnbN0xNT2a5eUq4tY3lJ0pchIj0XCzGhCXU2F88UcK4cQNf3TT25fmlciCgO-TjJhutr8lcMgTWLMtGNR95AI_iu2Dyd3ixe-LZre3fKLCWAAx56sBc3mwgEH7IODvwVc1rua20WhPIoUwrQlWhsTDt4YA2txgosD8Qx5RFIghIXKRoyIPXCFhXh8rknS51VjWWvGgEcWDbI7k"/>
+    </a>
+
+    <!-- Google Calendar -->
+    <a data-scholar-vt href="{% url 'google_calendar' %}" class="dashboard-card-link group bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-outline-variant/10">
+      <div class="p-6 flex flex-col h-full flex-1">
+        <div class="w-12 h-12 bg-primary-container rounded-2xl flex items-center justify-center text-primary mb-4">
+          <span class="material-symbols-outlined text-2xl">event</span>
+        </div>
+        <h3 class="font-bold text-xl font-headline mb-2">Google Calendar</h3>
+        <p class="text-sm text-on-surface-variant leading-snug">Open the ScholarSpace calendar page with embed and Calendar API data (key used on server only).</p>
+        <span class="mt-auto pt-4 inline-flex items-center gap-1 text-sm font-bold text-primary">
+          Open calendar
+          <span class="material-symbols-outlined text-base">arrow_forward</span>
+        </span>
+      </div>
+    </a>
+
+    <!-- Dictionary -->
+    <a data-scholar-vt href="{% url 'dictionary' %}" class="dashboard-card-link group bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-outline-variant/10">
+      <div class="p-6 flex-1">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="material-symbols-outlined text-on-surface-variant">dictionary</span>
+          <h3 class="font-bold font-headline">Dictionary</h3>
+        </div>
+        <p class="text-sm text-on-surface-variant">Expand your vocabulary and master new languages.</p>
+      </div>
+    </a>
+  </div>
+</div>
+{% endblock content %}

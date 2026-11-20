@@ -1,0 +1,266 @@
+{# Right slide-over settings panel — only included on dashboard home. #}
+{% load i18n %}
+<div
+  id="home-settings-root"
+  class="home-settings-layer fixed inset-0 z-40 flex justify-end pointer-events-none"
+  aria-hidden="true"
+>
+  <div
+    id="home-settings-backdrop"
+    class="absolute inset-0 bg-on-background/20 backdrop-blur-sm opacity-0 transition-opacity duration-200 pointer-events-none dark:bg-black/60"
+    tabindex="-1"
+  ></div>
+  <aside
+    id="home-settings-dialog"
+    class="relative z-10 h-full w-full max-w-md bg-white dark:bg-slate-900 shadow-[0_-8px_40px_rgba(84,92,140,0.12)] dark:shadow-[0_-8px_40px_rgba(0,0,0,0.3)] flex flex-col transform transition-transform duration-300 ease-out translate-x-full text-on-surface rounded-l-[2.25rem] overflow-hidden border-l border-t border-b border-outline-variant/15 dark:border-white/10"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="home-settings-title"
+  >
+    <div class="px-8 pt-10 pb-6 flex items-center justify-between shrink-0 bg-white dark:bg-slate-900 border-b border-outline-variant/10 dark:border-white/10">
+      <h2 id="home-settings-title" class="text-2xl font-black font-headline text-primary tracking-tight">{% trans "Settings" %}</h2>
+      <button
+        type="button"
+        id="home-settings-close"
+        class="p-2.5 hover:bg-surface-container dark:hover:bg-slate-800 rounded-full transition-colors border-0 bg-surface-container-high/80 dark:bg-slate-800 cursor-pointer shadow-sm"
+        aria-label="{% trans 'Close settings' %}"
+      >
+        <span class="material-symbols-outlined text-on-surface text-[22px]">close</span>
+      </button>
+    </div>
+    <div class="flex-1 overflow-y-auto px-6 sm:px-8 py-6 space-y-8 min-h-0">
+      <div>
+        <h3 class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-4 pl-1">{% trans "Appearance" %}</h3>
+        <div class="space-y-3.5">
+          <div class="bg-surface-container-high/90 dark:bg-slate-800/90 rounded-[1.75rem] p-5 flex items-center justify-between gap-4 shadow-sm border border-white/60 dark:border-white/5">
+            <div class="flex items-center gap-4 min-w-0">
+              <div class="w-11 h-11 rounded-full bg-white dark:bg-slate-700 flex items-center justify-center shadow-md shrink-0 ring-1 ring-black/[0.06] dark:ring-white/10">
+                <span class="material-symbols-outlined text-secondary text-[22px]">dark_mode</span>
+              </div>
+              <div class="min-w-0">
+                <p class="font-bold text-sm">{% trans "Dark Mode" %}</p>
+                <p class="text-xs text-on-surface-variant">{% trans "Adjust for low light environments" %}</p>
+              </div>
+            </div>
+            <button
+              type="button"
+              id="home-settings-dark-toggle"
+              role="switch"
+              aria-checked="false"
+              class="home-settings-switch w-12 h-6 rounded-full relative flex items-center px-1 shrink-0 transition-colors bg-outline-variant"
+              data-on-class="bg-primary"
+              data-off-class="bg-outline-variant"
+            >
+              <span class="home-settings-switch-knob w-4 h-4 bg-white rounded-full shadow transition-transform translate-x-0"></span>
+            </button>
+          </div>
+          <div class="bg-surface-container-high/90 dark:bg-slate-800/90 rounded-[1.75rem] p-5 shadow-sm border border-white/60 dark:border-white/5">
+            <div class="flex items-center gap-4 min-w-0 mb-4">
+              <div class="w-11 h-11 rounded-full bg-white dark:bg-slate-700 flex items-center justify-center shadow-md shrink-0 ring-1 ring-black/[0.06] dark:ring-white/10">
+                <span class="material-symbols-outlined text-secondary text-[22px]">language</span>
+              </div>
+              <div class="min-w-0">
+                <p class="font-bold text-sm">{% trans "Language" %}</p>
+                <p class="text-xs text-on-surface-variant">{% trans "Choose your preferred language" %}</p>
+              </div>
+            </div>
+            <form action="{% url 'set_language' %}" method="post" id="language-form">
+              {% csrf_token %}
+              <select name="language" class="w-full px-4 py-3 rounded-xl border border-outline-variant/50 bg-surface dark:bg-slate-700 text-on-surface focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none" onchange="this.form.submit()">
+                {% get_current_language as LANGUAGE_CODE %}
+                {% get_available_languages as LANGUAGES %}
+                {% for lang_code, lang_name in LANGUAGES %}
+                  <option value="{{ lang_code }}" {% if lang_code == LANGUAGE_CODE %}selected{% endif %}>
+                    {{ lang_name }}
+                  </option>
+                {% endfor %}
+              </select>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div>
+        <h3 class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-4 pl-1">Notifications</h3>
+        <div class="space-y-3.5">
+          <div class="bg-surface-container-high/90 dark:bg-slate-800/90 rounded-[1.75rem] py-4 pl-4 pr-5 flex items-center justify-between gap-3 shadow-sm border border-white/60 dark:border-white/5 min-h-[3.5rem]">
+            <div class="flex items-center gap-3.5 min-w-0">
+              <div class="w-11 h-11 rounded-full bg-white dark:bg-slate-700 flex items-center justify-center shadow-md shrink-0 ring-1 ring-black/[0.06] dark:ring-white/10">
+                <span class="material-symbols-outlined text-secondary text-[22px]">notifications</span>
+              </div>
+              <p class="font-bold text-sm text-on-surface leading-snug">Push Notifications</p>
+            </div>
+            <button type="button" class="home-settings-switch w-12 h-6 bg-outline-variant rounded-full relative flex items-center px-1 shrink-0 transition-colors" aria-pressed="false" data-default-off>
+              <span class="home-settings-switch-knob w-4 h-4 bg-white rounded-full shadow transition-transform translate-x-0"></span>
+            </button>
+          </div>
+          <div class="bg-surface-container-high/90 dark:bg-slate-800/90 rounded-[1.75rem] py-4 pl-4 pr-5 flex items-center justify-between gap-3 shadow-sm border border-white/60 dark:border-white/5 min-h-[3.5rem]">
+            <div class="flex items-center gap-3.5 min-w-0">
+              <div class="w-11 h-11 rounded-full bg-white dark:bg-slate-700 flex items-center justify-center shadow-md shrink-0 ring-1 ring-black/[0.06] dark:ring-white/10">
+                <span class="material-symbols-outlined text-secondary text-[22px]">volume_up</span>
+              </div>
+              <p class="font-bold text-sm text-on-surface leading-snug">Play Sound for Notifications</p>
+            </div>
+            <button type="button" class="home-settings-switch w-12 h-6 bg-outline-variant rounded-full relative flex items-center px-1 shrink-0 transition-colors" aria-pressed="false" data-default-off>
+              <span class="home-settings-switch-knob w-4 h-4 bg-white rounded-full shadow transition-transform translate-x-0"></span>
+            </button>
+          </div>
+          <div class="bg-surface-container-high/90 dark:bg-slate-800/90 rounded-[1.75rem] py-4 pl-4 pr-5 flex items-center justify-between gap-3 shadow-sm border border-white/60 dark:border-white/5 min-h-[3.5rem]">
+            <div class="flex items-center gap-3.5 min-w-0">
+              <div class="w-11 h-11 rounded-full bg-white dark:bg-slate-700 flex items-center justify-center shadow-md shrink-0 ring-1 ring-black/[0.06] dark:ring-white/10">
+                <span class="material-symbols-outlined text-secondary text-[22px]">notifications_off</span>
+              </div>
+              <p class="font-bold text-sm text-on-surface leading-snug">Mute All Notifications</p>
+            </div>
+            <button type="button" class="home-settings-switch w-12 h-6 bg-outline-variant rounded-full relative flex items-center px-1 shrink-0 transition-colors" aria-pressed="false" data-default-off>
+              <span class="home-settings-switch-knob w-4 h-4 bg-white rounded-full shadow transition-transform translate-x-0"></span>
+            </button>
+          </div>
+          <div class="bg-surface-container-high/90 dark:bg-slate-800/90 rounded-[1.75rem] py-4 pl-4 pr-5 flex items-center justify-between gap-3 shadow-sm border border-white/60 dark:border-white/5 min-h-[3.5rem]">
+            <div class="flex items-center gap-3.5 min-w-0">
+              <div class="w-11 h-11 rounded-full bg-white dark:bg-slate-700 flex items-center justify-center shadow-md shrink-0 ring-1 ring-black/[0.06] dark:ring-white/10">
+                <span class="material-symbols-outlined text-secondary text-[22px]">sms_failed</span>
+              </div>
+              <p class="font-bold text-sm text-on-surface leading-snug">Mute Phone SMS Notifications</p>
+            </div>
+            <button type="button" class="home-settings-switch w-12 h-6 bg-outline-variant rounded-full relative flex items-center px-1 shrink-0 transition-colors" aria-pressed="false" data-default-off>
+              <span class="home-settings-switch-knob w-4 h-4 bg-white rounded-full shadow transition-transform translate-x-0"></span>
+            </button>
+          </div>
+          <div class="bg-surface-container-high/90 dark:bg-slate-800/90 rounded-[1.75rem] py-4 pl-4 pr-5 flex items-center justify-between gap-3 shadow-sm border border-white/60 dark:border-white/5 min-h-[3.5rem]">
+            <div class="flex items-center gap-3.5 min-w-0">
+              <div class="w-11 h-11 rounded-full bg-white dark:bg-slate-700 flex items-center justify-center shadow-md shrink-0 ring-1 ring-black/[0.06] dark:ring-white/10">
+                <span class="material-symbols-outlined text-secondary text-[22px]">desktop_access_disabled</span>
+              </div>
+              <p class="font-bold text-sm text-on-surface leading-snug">Mute Desktop Notifications</p>
+            </div>
+            <button type="button" class="home-settings-switch w-12 h-6 bg-outline-variant rounded-full relative flex items-center px-1 shrink-0 transition-colors" aria-pressed="false" data-default-off>
+              <span class="home-settings-switch-knob w-4 h-4 bg-white rounded-full shadow transition-transform translate-x-0"></span>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div>
+        <h3 class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-4 pl-1">Account</h3>
+        <div class="bg-surface-container-high/90 dark:bg-slate-800/90 rounded-[1.75rem] overflow-hidden shadow-sm border border-white/60 dark:border-white/5 divide-y divide-outline-variant/15">
+          <a class="p-5 flex items-center justify-between hover:bg-surface-container dark:hover:bg-slate-700/40 transition-colors no-underline text-inherit rounded-t-[1.75rem]" href="{% url 'profile' %}">
+            <div class="flex items-center gap-4">
+              <div class="w-11 h-11 rounded-full bg-white dark:bg-slate-700 flex items-center justify-center shadow-md ring-1 ring-black/[0.06] dark:ring-white/10">
+                <span class="material-symbols-outlined text-secondary text-[22px]">person_outline</span>
+              </div>
+              <p class="font-bold text-sm text-on-surface">Profile Details</p>
+            </div>
+            <span class="material-symbols-outlined text-on-surface-variant">chevron_right</span>
+          </a>
+          <a class="p-5 flex items-center justify-between hover:bg-surface-container dark:hover:bg-slate-700/40 transition-colors no-underline text-inherit rounded-b-[1.75rem]" href="{% url 'profile' %}">
+            <div class="flex items-center gap-4">
+              <div class="w-11 h-11 rounded-full bg-white dark:bg-slate-700 flex items-center justify-center shadow-md ring-1 ring-black/[0.06] dark:ring-white/10">
+                <span class="material-symbols-outlined text-secondary text-[22px]">security</span>
+              </div>
+              <p class="font-bold text-sm text-on-surface">Security &amp; Privacy</p>
+            </div>
+            <span class="material-symbols-outlined text-on-surface-variant">chevron_right</span>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="p-6 sm:p-8 pt-4 shrink-0 bg-white dark:bg-slate-900 border-t border-outline-variant/10 dark:border-white/10">
+      <a
+        href="{% url 'logout' %}"
+        class="w-full py-3.5 text-error font-bold rounded-full hover:bg-error-container/15 transition-colors flex items-center justify-center gap-2 no-underline bg-surface-container-high/70 dark:bg-slate-800/80 border border-error/15 shadow-sm"
+      >
+        <span class="material-symbols-outlined text-[22px]">logout</span>
+        Sign Out
+      </a>
+    </div>
+  </aside>
+</div>
+<script>
+(function () {
+  const root = document.getElementById('home-settings-root');
+  const backdrop = document.getElementById('home-settings-backdrop');
+  const dialog = document.getElementById('home-settings-dialog');
+  const closeBtn = document.getElementById('home-settings-close');
+  const trigger = document.getElementById('scholar-settings-trigger');
+  const darkToggle = document.getElementById('home-settings-dark-toggle');
+  if (!root || !backdrop || !dialog || !trigger) return;
+
+  function setSwitchVisual(btn, on) {
+    const knob = btn.querySelector('.home-settings-switch-knob');
+    if (!knob) return;
+    btn.classList.toggle('bg-primary', on);
+    btn.classList.toggle('bg-outline-variant', !on);
+    knob.classList.toggle('translate-x-6', on);
+    knob.classList.toggle('translate-x-0', !on);
+    if (btn === darkToggle) {
+      btn.setAttribute('aria-checked', on ? 'true' : 'false');
+    } else {
+      btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+    }
+  }
+
+  function syncDarkFromStorage() {
+    const on = document.documentElement.classList.contains('dark');
+    setSwitchVisual(darkToggle, on);
+  }
+
+  function openPanel() {
+    root.classList.remove('pointer-events-none');
+    root.style.zIndex = '90';
+    root.setAttribute('aria-hidden', 'false');
+    backdrop.classList.remove('opacity-0', 'pointer-events-none');
+    backdrop.classList.add('opacity-100');
+    dialog.classList.remove('translate-x-full');
+    trigger.setAttribute('aria-expanded', 'true');
+    syncDarkFromStorage();
+    closeBtn.focus();
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closePanel() {
+    dialog.classList.add('translate-x-full');
+    backdrop.classList.add('opacity-0', 'pointer-events-none');
+    backdrop.classList.remove('opacity-100');
+    root.setAttribute('aria-hidden', 'true');
+    trigger.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+    window.setTimeout(function () {
+      if (root.getAttribute('aria-hidden') === 'true') {
+        root.classList.add('pointer-events-none');
+        root.style.zIndex = '';
+      }
+    }, 300);
+    trigger.focus();
+  }
+
+  trigger.addEventListener('click', function (e) {
+    e.preventDefault();
+    if (root.getAttribute('aria-hidden') === 'false') closePanel();
+    else openPanel();
+  });
+  closeBtn.addEventListener('click', closePanel);
+  backdrop.addEventListener('click', closePanel);
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && root.getAttribute('aria-hidden') === 'false') closePanel();
+  });
+
+  darkToggle.addEventListener('click', function () {
+    const next = !document.documentElement.classList.contains('dark');
+    document.documentElement.classList.toggle('dark', next);
+    document.documentElement.classList.toggle('light', !next);
+    try {
+      localStorage.setItem('scholarspace-dark', next ? '1' : '0');
+    } catch (err) {}
+    setSwitchVisual(darkToggle, next);
+  });
+
+  root.querySelectorAll('.home-settings-switch').forEach(function (btn) {
+    if (btn === darkToggle) return;
+    btn.addEventListener('click', function () {
+      const on = btn.getAttribute('aria-pressed') !== 'true';
+      setSwitchVisual(btn, on);
+    });
+  });
+
+  syncDarkFromStorage();
+})();
+</script>

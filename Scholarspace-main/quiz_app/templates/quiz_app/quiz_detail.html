@@ -1,0 +1,30 @@
+{% extends 'quiz_app/base.html' %}
+
+{% block title %}{{ quiz.title }}{% endblock %}
+
+{% block content %}
+    <div class="quiz-box">
+        <h2>{{ quiz.title }}</h2>
+        <p>{{ quiz.description }}</p>
+        <p>Total Questions: {{ quiz.get_total_questions }}</p>
+        
+        <a href="{% url 'quiz_app:take_quiz' quiz.id %}" class="btn">Take Test</a>
+        <a href="{% url 'quiz_app:add_question' quiz.id %}" class="btn">Add Question</a>
+    </div>
+    
+    <h3>Preview Questions</h3>
+    
+    {% for question in quiz.get_questions %}
+        <div class="quiz-box">
+            <h4>{{ forloop.counter }}. {{ question.text }}</h4>
+            
+            <ul>
+                {% for answer in question.get_answers %}
+                    <li>{{ answer.text }} {% if answer.is_correct %}(Correct){% endif %}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% empty %}
+        <p>No questions added yet.</p>
+    {% endfor %}
+{% endblock %}

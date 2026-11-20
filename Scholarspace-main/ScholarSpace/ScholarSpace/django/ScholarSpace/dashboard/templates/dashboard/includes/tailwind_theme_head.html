@@ -1,0 +1,131 @@
+{# Shared Tailwind CDN, theme tokens, fonts, page-enter fade. Include inside {% block extra_head %}. #}
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      colors: {
+        "on-background": "#31323b",
+        "secondary": "#5b5e72",
+        "primary": "#545c8c",
+        "surface-dim": "#dad9e4",
+        "tertiary-container": "#f1cefc",
+        "on-surface": "#31323b",
+        "surface-bright": "#fbf8fe",
+        "on-primary-fixed": "#232b57",
+        "error-container": "#f97386",
+        "primary-container": "#bfc6fd",
+        "on-tertiary-container": "#5d4368",
+        "on-surface-variant": "#5e5e68",
+        "on-secondary-fixed-variant": "#585a6f",
+        "inverse-primary": "#bfc6fd",
+        "error-dim": "#6b0221",
+        "surface-container-high": "#e9e7f1",
+        "on-secondary-container": "#4e5065",
+        "secondary-dim": "#4f5266",
+        "on-tertiary": "#fff7fc",
+        "tertiary-fixed": "#f1cefc",
+        "surface-container-highest": "#e3e1ed",
+        "on-error-container": "#6e0523",
+        "primary-fixed-dim": "#b1b8ee",
+        "primary-dim": "#48507f",
+        "surface-variant": "#e3e1ed",
+        "on-primary-container": "#373f6d",
+        "primary-fixed": "#bfc6fd",
+        "on-tertiary-fixed-variant": "#674c72",
+        "tertiary-dim": "#64496f",
+        "outline": "#7a7a84",
+        "surface": "#fbf8fe",
+        "inverse-surface": "#0d0e12",
+        "tertiary-fixed-dim": "#e2c0ee",
+        "on-error": "#fff7f7",
+        "surface-tint": "#545c8c",
+        "tertiary": "#71557c",
+        "inverse-on-surface": "#9e9ca2",
+        "on-secondary-fixed": "#3c3e51",
+        "on-tertiary-fixed": "#493055",
+        "on-primary-fixed-variant": "#404876",
+        "on-primary": "#faf8ff",
+        "error": "#a8364b",
+        "surface-container-lowest": "#ffffff",
+        "secondary-fixed": "#e0e1f9",
+        "background": "#fbf8fe",
+        "outline-variant": "#b2b1bc",
+        "secondary-container": "#e0e1f9",
+        "secondary-fixed-dim": "#d1d3eb",
+        "on-secondary": "#faf8ff",
+        "surface-container": "#efedf6",
+        "surface-container-low": "#f5f2fb"
+      },
+      borderRadius: {
+        DEFAULT: "1rem",
+        lg: "2rem",
+        xl: "3rem",
+        full: "9999px"
+      },
+      fontFamily: {
+        headline: ["Plus Jakarta Sans", "sans-serif"],
+        body: ["Inter", "sans-serif"],
+        label: ["Inter", "sans-serif"]
+      }
+    },
+  },
+};
+</script>
+<style>
+  body { font-family: 'Inter', sans-serif; }
+  h1, h2, h3, .brand-font { font-family: 'Plus Jakarta Sans', sans-serif; }
+  .material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  }
+  .text-editorial-label {
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  .scrollbar-hide::-webkit-scrollbar { display: none; }
+  .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+  @keyframes scholar-page-fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  .scholar-page-fade {
+    animation: scholar-page-fade-in 0.38s ease-out;
+  }
+  @supports (view-transition-name: none) {
+    ::view-transition-old(root),
+    ::view-transition-new(root) {
+      animation-duration: 0.35s;
+      animation-timing-function: ease-out;
+    }
+    ::view-transition-old(root) { animation-name: scholar-vt-fade-out; }
+    ::view-transition-new(root) { animation-name: scholar-vt-fade-in; }
+  }
+  @keyframes scholar-vt-fade-in { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes scholar-vt-fade-out { from { opacity: 1; } to { opacity: 0; } }
+</style>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!document.startViewTransition) return;
+    document.querySelectorAll('a[data-scholar-vt]').forEach(function (a) {
+      a.addEventListener('click', function (e) {
+        if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+        if (a.getAttribute('target') === '_blank') return;
+        var href = a.getAttribute('href');
+        if (!href || href.startsWith('#') || a.hasAttribute('download')) return;
+        try {
+          var u = new URL(href, window.location.href);
+          if (u.origin !== window.location.origin) return;
+        } catch (err) { return; }
+        e.preventDefault();
+        document.startViewTransition(function () { window.location.href = href; });
+      });
+    });
+  });
+</script>

@@ -1,0 +1,21 @@
+{% extends 'quiz_app/base.html' %}
+
+{% block title %}Available Test{% endblock %}
+
+{% block content %}
+    <h2>Available Test</h2>
+    
+    {% if quizzes %}
+        {% for quiz in quizzes %}
+            <div class="quiz-box">
+                <h3>{{ quiz.title }}</h3>
+                <p>{{ quiz.description }}</p>
+                <p>Questions: {{ quiz.get_total_questions }}</p>
+                <a href="{% url 'quiz_app:quiz_detail' quiz.id %}" class="btn">View Details</a>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No quizzes available.</p>
+        <a href="{% url 'quiz_app:create_quiz' %}" class="btn">Create New Quiz</a>
+    {% endif %}
+{% endblock %}

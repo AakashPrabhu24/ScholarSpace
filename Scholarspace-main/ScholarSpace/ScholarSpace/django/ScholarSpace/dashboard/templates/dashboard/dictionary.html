@@ -1,0 +1,1166 @@
+{% extends 'dashboard/base.html' %} 
+{% load static %} 
+{% block content %}
+<div class="dictionary-container">
+    <!-- Dictionary Cover Design -->
+    <div class="dictionary-cover">
+        <div class="spine-decoration left"></div>
+        <div class="cover-content">
+            <div class="emblem">
+                <i class="fa fa-book"></i>
+            </div>
+            <h1 class="dictionary-title">Student Dictionary</h1>
+            <p class="dictionary-tagline">Expanding minds, one word at a time</p>
+        </div>
+        <div class="spine-decoration right"></div>
+    </div>
+    
+    <!-- Search Section -->
+    <div class="search-wrapper">
+        <div class="search-section">
+            <form action="" method="post" class="dictionary-form">
+                {% csrf_token %}
+                <div class="input-group">
+                    {{ form }}
+                    <div class="search-buttons">
+                        <button type="submit" class="search-btn">
+                            <i class="fa fa-search"></i> <span>Look Up</span>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Dictionary Content -->
+    <div class="dictionary-content">
+        {% if input %}
+            <div class="word-entry">
+                <!-- Word Header -->
+                <div class="word-header">
+                    <div class="word-main">
+                        <div class="word-badge">ENTRY</div>
+                        <h2 class="word">{{ input }}</h2>
+                    </div>
+                    <div class="pronunciation-box">
+                        <div class="phonetics">
+                            <span class="phonetic-label">PHONETICS</span>
+                            <span class="phonetic-text">{{ phonetics }}</span>
+                        </div>
+                        <audio id="player" src="{{ audio }}"></audio>
+                        <button class="audio-btn" onclick="document.getElementById('player').play()">
+                            <i class="fa fa-volume-up"></i>
+                            <span class="audio-tooltip">Listen</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Decorative Elements -->
+                <div class="page-decoration">
+                    <div class="corner-decoration top-left"></div>
+                    <div class="corner-decoration top-right"></div>
+                    <div class="corner-decoration bottom-left"></div>
+                    <div class="corner-decoration bottom-right"></div>
+                </div>
+                
+                <!-- Definition Content -->
+                <div class="definition-section">
+                    <!-- Definition Block -->
+                    <div class="definition-block">
+                        <div class="section-header">
+                            <div class="section-icon"><i class="fa fa-info-circle"></i></div>
+                            <h3>Definition</h3>
+                        </div>
+                        <div class="content-box">
+                            {% if definitions %}
+                                {% for def in definitions %}
+                                    <div class="definition-item">
+                                        <span class="part-of-speech">{{ def.part_of_speech }}</span>
+                                        <p>{{ def.definition }}</p>
+                                    </div>
+                                {% endfor %}
+                            {% else %}
+                                <p>{{ definition }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <!-- Example Block -->
+                    <div class="example-block">
+                        <div class="section-header">
+                            <div class="section-icon"><i class="fa fa-quote-right"></i></div>
+                            <h3>Example</h3>
+                        </div>
+                        <div class="content-box example-content">
+                            {% if examples %}
+                                {% for example in examples %}
+                                    <p class="example-item"><i class="fa fa-quote-left quote-mark"></i> {{ example }} <i class="fa fa-quote-right quote-mark"></i></p>
+                                {% endfor %}
+                            {% else %}
+                                <p><i class="fa fa-quote-left quote-mark"></i> {{ example }} <i class="fa fa-quote-right quote-mark"></i></p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <!-- Meaning Block -->
+                    <div class="meaning-block">
+                        <div class="section-header">
+                            <div class="section-icon"><i class="fa fa-lightbulb-o"></i></div>
+                            <h3>Meaning</h3>
+                        </div>
+                        <div class="content-box meaning-content">
+                            {% if meanings %}
+                                <ul class="meaning-list">
+                                    {% for meaning in meanings %}
+                                        <li class="meaning-item">{{ meaning }}</li>
+                                    {% endfor %}
+                                </ul>
+                            {% else %}
+                                <p>{{ meaning|default:"No additional meaning available." }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <!-- Synonyms Block -->
+                    {% if synonyms %}
+                    <div class="synonyms-block">
+                        <div class="section-header">
+                            <div class="section-icon"><i class="fa fa-exchange"></i></div>
+                            <h3>Synonyms</h3>
+                        </div>
+                        <div class="content-box">
+                            <div class="synonym-tags">
+                                {% for synonym in synonyms %}
+                                    <span class="synonym-tag">{{ synonym }}</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                    
+                    <!-- Antonyms Block -->
+                    {% if antonyms %}
+                    <div class="antonyms-block">
+                        <div class="section-header">
+                            <div class="section-icon"><i class="fa fa-arrows-h"></i></div>
+                            <h3>Antonyms</h3>
+                        </div>
+                        <div class="content-box">
+                            <div class="antonym-tags">
+                                {% for antonym in antonyms %}
+                                    <span class="antonym-tag">{{ antonym }}</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                    
+                    <!-- Etymology Block -->
+                    {% if etymology %}
+                    <div class="etymology-block">
+                        <div class="section-header">
+                            <div class="section-icon"><i class="fa fa-history"></i></div>
+                            <h3>Etymology</h3>
+                        </div>
+                        <div class="content-box etymology-content">
+                            <p>{{ etymology }}</p>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+                
+                <!-- Audio Pronunciation Controls -->
+                <div class="audio-controls">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fa fa-headphones"></i></div>
+                        <h3>Audio Pronunciation</h3>
+                    </div>
+                    <div class="content-box audio-content">
+                        <div class="audio-player">
+                            <audio id="pronunciation-player" src="{{ audio }}" preload="auto"></audio>
+                            <button class="play-btn" onclick="playAudio()">
+                                <i class="fa fa-play"></i>
+                            </button>
+                            <div class="audio-progress">
+                                <div class="progress-bar" id="audio-progress-bar"></div>
+                            </div>
+                            <div class="audio-volume">
+                                <i class="fa fa-volume-up"></i>
+                                <input type="range" id="volume-control" min="0" max="100" value="100">
+                            </div>
+                        </div>
+                        <div class="audio-options">
+                            <button class="audio-option" onclick="setPlaybackRate(0.75)">
+                                <i class="fa fa-backward"></i> Slower
+                            </button>
+                            <button class="audio-option" onclick="setPlaybackRate(1)">
+                                <i class="fa fa-refresh"></i> Normal
+                            </button>
+                            <button class="audio-option" onclick="setPlaybackRate(1.25)">
+                                <i class="fa fa-forward"></i> Faster
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="no-results">
+                <div class="book-animation">
+                    <div class="book">
+                        <div class="book-cover">
+                            <i class="fa fa-search"></i>
+                        </div>
+                        <div class="book-page"></div>
+                        <div class="book-page"></div>
+                        <div class="book-page"></div>
+                    </div>
+                </div>
+                <h2>No definition found</h2>
+                <p>We couldn't find that word in our dictionary.</p>
+                <p class="suggestion">Try checking the spelling or searching for a different word.</p>
+            </div>
+        {% endif %}
+        
+        <!-- Page Footer -->
+        <div class="page-footer">
+            <div class="page-number">Student Dictionary</div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Main Container */
+    .dictionary-container {
+        max-width: 900px;
+        margin: 2rem auto 4rem;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        font-family: 'Bookman Old Style', Georgia, serif;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    /* Dictionary Cover */
+    .dictionary-cover {
+        background: linear-gradient(135deg, #700000, #8B0000, #700000);
+        padding: 2.5rem 1.5rem;
+        color: #fff;
+        text-align: center;
+        position: relative;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    .spine-decoration {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 15px;
+        background: repeating-linear-gradient(
+            90deg,
+            rgba(255, 255, 255, 0.1),
+            rgba(255, 255, 255, 0.1) 2px,
+            transparent 2px,
+            transparent 5px
+        );
+    }
+    
+    .spine-decoration.left {
+        left: 0;
+    }
+    
+    .spine-decoration.right {
+        right: 0;
+    }
+    
+    .cover-content {
+        padding: 0 2rem;
+    }
+    
+    .emblem {
+        width: 80px;
+        height: 80px;
+        margin: 0 auto 1.5rem;
+        background-color: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+        border: 2px solid rgba(255, 255, 255, 0.3);
+    }
+    
+    .emblem i {
+        font-size: 2.5rem;
+    }
+    
+    .dictionary-title {
+        font-size: 2.5rem;
+        margin-bottom: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    }
+    
+    .dictionary-tagline {
+        font-style: italic;
+        opacity: 0.8;
+        font-size: 1.1rem;
+        margin: 0;
+    }
+    
+    /* Search Section */
+    .search-wrapper {
+        background: linear-gradient(to bottom, #f0ebe1, #f9f7f1);
+        padding: 2rem;
+        border-bottom: 1px solid #e5dfd3;
+    }
+    
+    .search-section {
+        max-width: 700px;
+        margin: 0 auto;
+    }
+    
+    .dictionary-form {
+        width: 100%;
+    }
+    
+    .input-group {
+        display: flex;
+        border-radius: 50px;
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        background: #fff;
+        padding: 0.4rem;
+        border: 1px solid #e0d9c9;
+    }
+    
+    .input-group input {
+        flex: 1;
+        border: none;
+        padding: 0.8rem 1.5rem;
+        font-size: 1.1rem;
+        font-family: inherit;
+        outline: none;
+        background: transparent;
+    }
+    
+    .search-buttons {
+        display: flex;
+    }
+    
+    .search-btn {
+        background: linear-gradient(135deg, #8B0000, #5a0000);
+        color: white;
+        border: none;
+        padding: 0.8rem 1.5rem;
+        border-radius: 30px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 1rem;
+    }
+    
+    .search-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 10px rgba(139, 0, 0, 0.3);
+    }
+    
+    .search-btn i {
+        font-size: 1.1rem;
+    }
+    
+    /* Dictionary Content */
+    .dictionary-content {
+        padding: 2rem;
+        background: #f9f7f1;
+        position: relative;
+    }
+    
+    /* Word Entry */
+    .word-entry {
+        background-color: #fff;
+        border-radius: 8px;
+        padding: 2.5rem;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+        position: relative;
+        border: 1px solid #e0d9c9;
+    }
+    
+    /* Word Header */
+    .word-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        margin-bottom: 2.5rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 1px solid #e0d9c9;
+        position: relative;
+    }
+    
+    .word-main {
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .word-badge {
+        background-color: #8B0000;
+        color: white;
+        font-size: 0.75rem;
+        padding: 3px 8px;
+        border-radius: 4px;
+        margin-bottom: 0.5rem;
+        align-self: flex-start;
+        letter-spacing: 1px;
+    }
+    
+    .word {
+        color: #333;
+        font-size: 2.8rem;
+        margin: 0;
+        font-weight: bold;
+        text-transform: capitalize;
+        line-height: 1.1;
+    }
+    
+    .pronunciation-box {
+        display: flex;
+        align-items: center;
+        background-color: #f5f1e6;
+        padding: 0.8rem 1.2rem;
+        border-radius: 6px;
+        border: 1px dashed #d5cbb9;
+    }
+    
+    .phonetics {
+        display: flex;
+        flex-direction: column;
+        margin-right: 1rem;
+    }
+    
+    .phonetic-label {
+        font-size: 0.7rem;
+        color: #8B0000;
+        font-weight: bold;
+        margin-bottom: 0.3rem;
+        letter-spacing: 1px;
+    }
+    
+    .phonetic-text {
+        font-style: italic;
+        color: #555;
+    }
+    
+    .audio-btn {
+        background-color: #8B0000;
+        color: white;
+        border: none;
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+    }
+    
+    .audio-btn:hover {
+        transform: scale(1.1);
+    }
+    
+    .audio-tooltip {
+        position: absolute;
+        background-color: #333;
+        color: white;
+        padding: 3px 8px;
+        border-radius: 3px;
+        font-size: 0.7rem;
+        bottom: -25px;
+        white-space: nowrap;
+        opacity: 0;
+        transition: opacity 0.3s;
+    }
+    
+    .audio-btn:hover .audio-tooltip {
+        opacity: 1;
+    }
+    
+    /* Page Decorations */
+    .page-decoration {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        pointer-events: none;
+    }
+    
+    .corner-decoration {
+        position: absolute;
+        width: 30px;
+        height: 30px;
+        border-color: #e0d9c9;
+    }
+    
+    .top-left {
+        top: 10px;
+        left: 10px;
+        border-top: 2px solid;
+        border-left: 2px solid;
+    }
+    
+    .top-right {
+        top: 10px;
+        right: 10px;
+        border-top: 2px solid;
+        border-right: 2px solid;
+    }
+    
+    .bottom-left {
+        bottom: 10px;
+        left: 10px;
+        border-bottom: 2px solid;
+        border-left: 2px solid;
+    }
+    
+    .bottom-right {
+        bottom: 10px;
+        right: 10px;
+        border-bottom: 2px solid;
+        border-right: 2px solid;
+    }
+    
+    /* Definition Section */
+    .definition-section {
+        position: relative;
+        z-index: 1;
+    }
+    
+    .definition-block, .example-block, .synonyms-block, .antonyms-block, .meaning-block, .etymology-block, .audio-controls {
+        margin-bottom: 2rem;
+    }
+    
+    .section-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 0.8rem;
+    }
+    
+    .section-icon {
+        width: 32px;
+        height: 32px;
+        background-color: #f5f1e6;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 10px;
+        color: #8B0000;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    }
+    
+    .definition-section h3 {
+        color: #333;
+        font-size: 1.4rem;
+        margin: 0;
+        font-weight: 600;
+    }
+    
+    .content-box {
+        background-color: #fcfaf5;
+        border-radius: 6px;
+        padding: 1.2rem 1.5rem;
+        border-left: 3px solid #8B0000;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+    }
+    
+    .definition-section p {
+        font-size: 1.1rem;
+        line-height: 1.7;
+        margin: 0;
+        color: #333;
+    }
+    
+    /* Definition Block */
+    .definition-item {
+        margin-bottom: 1rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px dashed #e0d9c9;
+    }
+    
+    .definition-item:last-child {
+        margin-bottom: 0;
+        padding-bottom: 0;
+        border-bottom: none;
+    }
+    
+    .part-of-speech {
+        display: inline-block;
+        background-color: #8B0000;
+        color: white;
+        font-size: 0.8rem;
+        padding: 2px 8px;
+        border-radius: 3px;
+        margin-bottom: 0.5rem;
+        font-style: italic;
+    }
+    
+    /* Example Block */
+    .example-content {
+        background-color: #f7f5ed;
+        font-style: italic;
+        position: relative;
+    }
+    
+    .example-item {
+        margin-bottom: 1rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px dashed #e0d9c9;
+    }
+    
+    .example-item:last-child {
+        margin-bottom: 0;
+        padding-bottom: 0;
+        border-bottom: none;
+    }
+    
+    .quote-mark {
+        color: #8B0000;
+        opacity: 0.5;
+        font-size: 0.8rem;
+        vertical-align: super;
+    }
+    
+    /* Meaning Block */
+    .meaning-content {
+        background-color: #f0ebe1;
+    }
+    
+    .meaning-list {
+        margin: 0;
+        padding: 0 0 0 1.5rem;
+    }
+    
+    .meaning-item {
+        margin-bottom: 0.7rem;
+        line-height: 1.6;
+    }
+    
+    .meaning-item:last-child {
+        margin-bottom: 0;
+    }
+    
+    /* Synonyms & Antonyms */
+    .synonym-tags, .antonym-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    
+    .synonym-tag, .antonym-tag {
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-size: 0.95rem;
+        display: inline-block;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        border: 1px solid #e0d9c9;
+        transition: all 0.3s ease;
+    }
+    
+    .synonym-tag {
+        background: linear-gradient(to bottom, #f0ebe1, #e5dfd3);
+        color: #5a0000;
+    }
+    
+    .antonym-tag {
+        background: linear-gradient(to bottom, #e8eef0, #d9e2e5);
+        color: #004b5a;
+    }
+    
+    .synonym-tag:hover, .antonym-tag:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    .synonym-tag:hover {
+        background: linear-gradient(to bottom, #e5dfd3, #d9d2c3);
+    }
+    
+    .antonym-tag:hover {
+        background: linear-gradient(to bottom, #d9e2e5, #c5d5db);
+    }
+    
+    /* Etymology Block */
+    .etymology-content {
+        background-color: #f7f5ed;
+        font-style: italic;
+    }
+    
+    /* Audio Controls */
+    .audio-content {
+        background-color: #f0ebe1;
+        padding: 1.5rem;
+    }
+    
+    .audio-player {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 1rem;
+    }
+    
+    .play-btn {
+        background-color: #8B0000;
+        color: white;
+        border: none;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 1rem;
+    }
+    
+    .play-btn:hover {
+        transform: scale(1.1);
+        box-shadow: 0 4px 8px rgba(139, 0, 0, 0.3);
+    }
+    
+    .audio-progress {
+        flex: 1;
+        height: 8px;
+        background-color: #e0d9c9;
+        border-radius: 4px;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .progress-bar {
+        height: 100%;
+        background-color: #8B0000;
+        width: 0;
+        border-radius: 4px;
+        transition: width 0.1s linear;
+    }
+    
+    .audio-volume {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    
+    .audio-volume i {
+        color: #8B0000;
+    }
+    
+    .audio-volume input[type="range"] {
+        width: 80px;
+        height: 5px;
+        -webkit-appearance: none;
+        background: #e0d9c9;
+        border-radius: 5px;
+        outline: none;
+    }
+    
+    .audio-volume input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        width: 15px;
+        height: 15px;
+        border-radius: 50%;
+        background: #8B0000;
+        cursor: pointer;
+    }
+    
+    .audio-options {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+    }
+    
+    .audio-option {
+        background-color: #fff;
+        border: 1px solid #e0d9c9;
+        padding: 8px 12px;
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .audio-option:hover {
+        background-color: #f0ebe1;
+        transform: translateY(-2px);
+    }
+    
+    /* No Results */
+    .no-results {
+        text-align: center;
+        padding: 4rem 2rem;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+        position: relative;
+        border: 1px solid #e0d9c9;
+    }
+    
+    .book-animation {
+        margin-bottom: 2rem;
+        position: relative;
+        height: 120px;
+    }
+    
+    .book {
+        width: 100px;
+        height: 120px;
+        position: relative;
+        margin: 0 auto;
+        perspective: 1000px;
+        transform-style: preserve-3d;
+        animation: float 3s ease-in-out infinite;
+    }
+    
+    @keyframes float {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-10px); }
+    }
+    
+    .book-cover {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #8B0000, #5a0000);
+        border-radius: 5px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 2.5rem;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        transform: rotateY(0deg);
+        z-index: 10;
+        backface-visibility: hidden;
+        transform-origin: left;
+        animation: coverOpen 5s infinite;
+    }
+    
+    .book-page {
+        position: absolute;
+        width: 96%;
+        height: 96%;
+        background-color: #fff;
+        border-radius: 3px;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+        left: 2%;
+        top: 2%;
+        transform-origin: left;
+    }
+    
+    .book-page:nth-child(2) {
+        animation: page1 5s infinite;
+    }
+    
+    .book-page:nth-child(3) {
+        animation: page2 5s infinite;
+    }
+    
+    .book-page:nth-child(4) {
+        animation: page3 5s infinite;
+    }
+    
+    @keyframes coverOpen {
+        0%, 100% { transform: rotateY(0deg); }
+        10%, 90% { transform: rotateY(-30deg); }
+    }
+    
+    @keyframes page1 {
+        0%, 100% { transform: rotateY(0deg); }
+        10%, 80% { transform: rotateY(-30deg); }
+        20%, 70% { transform: rotateY(-60deg); }
+    }
+    
+    @keyframes page2 {
+        0%, 100% { transform: rotateY(0deg); }
+        20%, 70% { transform: rotateY(-30deg); }
+        30%, 60% { transform: rotateY(-60deg); }
+    }
+    
+    @keyframes page3 {
+        0%, 100% { transform: rotateY(0deg); }
+        30%, 60% { transform: rotateY(-30deg); }
+        40%, 50% { transform: rotateY(-60deg); }
+    }
+    
+    .no-results h2 {
+        font-size: 1.8rem;
+        margin-bottom: 1rem;
+        color: #333;
+    }
+    
+    .no-results p {
+        color: #666;
+        margin-bottom: 0.5rem;
+    }
+    
+    .suggestion {
+        font-style: italic;
+        color: #8B0000;
+        margin-top: 1rem;
+    }
+    
+    /* Page Footer */
+    .page-footer {
+        text-align: center;
+        padding: 1.5rem 0 0.5rem;
+        color: #998e79;
+        font-style: italic;
+        font-size: 0.9rem;
+        position: relative;
+    }
+    
+    .page-footer::before {
+        content: "";
+        display: block;
+        width: 50px;
+        height: 1px;
+        background-color: #d5cbb9;
+        margin: 0 auto 1rem;
+    }
+    
+    .page-number {
+        position: relative;
+    }
+    
+    .page-number::before, .page-number::after {
+        content: "•";
+        padding: 0 8px;
+        color: #d5cbb9;
+    }
+    
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+        .dictionary-container {
+            margin: 1rem;
+        }
+        
+        .dictionary-cover {
+            padding: 2rem 1rem;
+        }
+        
+        .dictionary-title {
+            font-size: 2rem;
+        }
+        
+        .word-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        
+        .pronunciation-box {
+            margin-top: 1.5rem;
+            width: 100%;
+            justify-content: space-between;
+        }
+        
+        .word-entry {
+            padding: 1.5rem;
+        }
+        
+        .content-box {
+            padding: 1rem;
+        }
+        
+        .search-btn span {
+            display: none;
+        }
+        
+        .search-btn {
+            padding: 0.8rem;
+        }
+        
+        .audio-player {
+            flex-direction: column;
+            align-items: stretch;
+        }
+        
+        .audio-options {
+            flex-direction: column;
+            gap: 8px;
+        }
+    }
+    
+    /* Animation & Interactions */
+    @media (prefers-reduced-motion: no-preference) {
+        .dictionary-container {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .dictionary-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
+        }
+        
+        .input-group {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .input-group:focus-within {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(139, 0, 0, 0.1);
+        }
+        
+        .content-box {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .content-box:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        }
+    }
+    
+    /* Page Turn Effect on Hover */
+    .word-entry::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 0;
+        height: 0;
+        background: linear-gradient(315deg, #e0d9c9 0%, transparent 50%);
+        border-style: solid;
+        border-width: 0 30px 30px 0;
+        border-color: transparent #e0d9c9 transparent transparent;
+        transition: all 0.3s ease;
+        z-index: 2;
+    }
+    
+    .word-entry:hover::before {
+        border-width: 0 40px 40px 0;
+    }
+    
+    /* Custom Scrollbar */
+    .dictionary-content::-webkit-scrollbar {
+        width: 8px;
+    }
+    
+    .dictionary-content::-webkit-scrollbar-track {
+        background: #f5f1e6;
+    }
+    
+    .dictionary-content::-webkit-scrollbar-thumb {
+        background-color: #8B0000;
+        border-radius: 20px;
+    }
+    
+    /* Highlight Animation */
+    @keyframes highlight {
+        0% { background-color: rgba(139, 0, 0, 0.1); }
+        100% { background-color: transparent; }
+    }
+    
+    .highlight {
+        animation: highlight 2s ease-out;
+    }
+</style>
+
+<script>
+    // Audio player functionality
+    const audioPlayer = document.getElementById('pronunciation-player');
+    const progressBar = document.getElementById('audio-progress-bar');
+    const volumeControl = document.getElementById('volume-control');
+    const playButton = document.querySelector('.play-btn');
+    
+    // Check if audio elements exist before adding event listeners
+    if (audioPlayer && progressBar && volumeControl && playButton) {
+        // Play/Pause functionality
+        function playAudio() {
+            if (audioPlayer.paused) {
+                audioPlayer.play();
+                playButton.innerHTML = '<i class="fa fa-pause"></i>';
+            } else {
+                audioPlayer.pause();
+                playButton.innerHTML = '<i class="fa fa-play"></i>';
+            }
+        }
+        
+        // Update progress bar
+        audioPlayer.addEventListener('timeupdate', () => {
+            const percentage = (audioPlayer.currentTime / audioPlayer.duration) * 100;
+            progressBar.style.width = percentage + '%';
+        });
+        
+        // Reset play button when audio ends
+        audioPlayer.addEventListener('ended', () => {
+            playButton.innerHTML = '<i class="fa fa-play"></i>';
+            progressBar.style.width = '0%';
+        });
+        
+        // Volume control
+        volumeControl.addEventListener('input', () => {
+            audioPlayer.volume = volumeControl.value / 100;
+        });
+        
+        // Click on progress bar to seek
+        const audioProgress = document.querySelector('.audio-progress');
+        audioProgress.addEventListener('click', (e) => {
+            const rect = audioProgress.getBoundingClientRect();
+            const pos = (e.clientX - rect.left) / rect.width;
+            audioPlayer.currentTime = pos * audioPlayer.duration;
+        });
+        
+        // Set playback rate
+        function setPlaybackRate(rate) {
+            audioPlayer.playbackRate = rate;
+            
+            // Highlight the selected button
+            document.querySelectorAll('.audio-option').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Add active class to the clicked button
+            event.currentTarget.classList.add('active');
+        }
+    }
+    
+    // Tooltip functionality for synonym and antonym tags
+    document.addEventListener('DOMContentLoaded', function() {
+        // Add click event to synonym tags
+        const synonymTags = document.querySelectorAll('.synonym-tag');
+        synonymTags.forEach(tag => {
+            tag.addEventListener('click', function() {
+                const form = document.querySelector('.dictionary-form');
+                const input = form.querySelector('input');
+                if (input) {
+                    input.value = this.textContent.trim();
+                    form.submit();
+                }
+            });
+        });
+        
+        // Add click event to antonym tags
+        const antonymTags = document.querySelectorAll('.antonym-tag');
+        antonymTags.forEach(tag => {
+            tag.addEventListener('click', function() {
+                const form = document.querySelector('.dictionary-form');
+                const input = form.querySelector('input');
+                if (input) {
+                    input.value = this.textContent.trim();
+                    form.submit();
+                }
+            });
+        });
+    });
+</script>
+{% endblock content %}

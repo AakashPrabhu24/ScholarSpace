@@ -1,0 +1,291 @@
+{# Shared Tailwind CDN, theme tokens, fonts, page-enter fade. Include inside {% block extra_head %}. #}
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      colors: {
+        "error-container": "var(--c-error-container)",
+        "tertiary-fixed-dim": "var(--c-tertiary-fixed-dim)",
+        "on-surface": "var(--c-on-surface)",
+        "on-surface-variant": "var(--c-on-surface-variant)",
+        "on-primary": "var(--c-on-primary)",
+        "outline": "var(--c-outline)",
+        "on-tertiary": "var(--c-on-tertiary)",
+        "inverse-on-surface": "var(--c-inverse-on-surface)",
+        "on-tertiary-fixed-variant": "var(--c-on-tertiary-fixed-variant)",
+        "on-secondary-fixed": "var(--c-on-secondary-fixed)",
+        "secondary-container": "var(--c-secondary-container)",
+        "error": "var(--c-error)",
+        "on-primary-container": "var(--c-on-primary-container)",
+        "tertiary-fixed": "var(--c-tertiary-fixed)",
+        "inverse-surface": "var(--c-inverse-surface)",
+        "tertiary-container": "var(--c-tertiary-container)",
+        "surface-bright": "var(--c-surface-bright)",
+        "surface-container-low": "var(--c-surface-container-low)",
+        "secondary-dim": "var(--c-secondary-dim)",
+        "surface": "var(--c-surface)",
+        "on-tertiary-fixed": "var(--c-on-tertiary-fixed)",
+        "primary-dim": "var(--c-primary-dim)",
+        "surface-container-lowest": "var(--c-surface-container-lowest)",
+        "on-secondary-fixed-variant": "var(--c-on-secondary-fixed-variant)",
+        "on-secondary-container": "var(--c-on-secondary-container)",
+        "tertiary-dim": "var(--c-tertiary-dim)",
+        "primary-fixed": "var(--c-primary-fixed)",
+        "surface-dim": "var(--c-surface-dim)",
+        "error-dim": "var(--c-error-dim)",
+        "secondary": "var(--c-secondary)",
+        "tertiary": "var(--c-tertiary)",
+        "secondary-fixed": "var(--c-secondary-fixed)",
+        "background": "var(--c-background)",
+        "surface-container-high": "var(--c-surface-container-high)",
+        "primary-fixed-dim": "var(--c-primary-fixed-dim)",
+        "primary-container": "var(--c-primary-container)",
+        "surface-container": "var(--c-surface-container)",
+        "on-tertiary-container": "var(--c-on-tertiary-container)",
+        "on-error-container": "var(--c-on-error-container)",
+        "surface-variant": "var(--c-surface-variant)",
+        "secondary-fixed-dim": "var(--c-secondary-fixed-dim)",
+        "surface-tint": "var(--c-surface-tint)",
+        "on-error": "var(--c-on-error)",
+        "surface-container-highest": "var(--c-surface-container-highest)",
+        "on-primary-fixed": "var(--c-on-primary-fixed)",
+        "on-background": "var(--c-on-background)",
+        "on-secondary": "var(--c-on-secondary)",
+        "on-primary-fixed-variant": "var(--c-on-primary-fixed-variant)",
+        "inverse-primary": "var(--c-inverse-primary)",
+        "outline-variant": "var(--c-outline-variant)",
+        "primary": "var(--c-primary)"
+      },
+      borderRadius: {
+        DEFAULT: "1rem",
+        lg: "2rem",
+        xl: "3rem",
+        full: "9999px"
+      },
+      fontFamily: {
+        headline: ["Plus Jakarta Sans", "sans-serif"],
+        body: ["Inter", "sans-serif"],
+        label: ["Inter", "sans-serif"]
+      }
+    }
+  }
+};
+</script>
+<script>
+  try {
+    if (localStorage.getItem('scholarspace-dark') === '1') {
+      document.documentElement.classList.remove('light');
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+      document.documentElement.classList.add('light');
+    }
+  } catch (err) {}
+</script>
+<style>
+
+:root, html.light {
+  --c-error-container: #f97386;
+  --c-tertiary-fixed-dim: #e2c0ee;
+  --c-on-surface: #31323b;
+  --c-on-surface-variant: #5e5e68;
+  --c-on-primary: #faf8ff;
+  --c-outline: #7a7a84;
+  --c-on-tertiary: #fff7fc;
+  --c-inverse-on-surface: #9e9ca2;
+  --c-on-tertiary-fixed-variant: #674c72;
+  --c-on-secondary-fixed: #3c3e51;
+  --c-secondary-container: #e0e1f9;
+  --c-error: #a8364b;
+  --c-on-primary-container: #373f6d;
+  --c-tertiary-fixed: #f1cefc;
+  --c-inverse-surface: #0d0e12;
+  --c-tertiary-container: #f1cefc;
+  --c-surface-bright: #fbf8fe;
+  --c-surface-container-low: #f5f2fb;
+  --c-secondary-dim: #4f5266;
+  --c-surface: #fbf8fe;
+  --c-on-tertiary-fixed: #493055;
+  --c-primary-dim: #48507f;
+  --c-surface-container-lowest: #ffffff;
+  --c-on-secondary-fixed-variant: #585a6f;
+  --c-on-secondary-container: #4e5065;
+  --c-tertiary-dim: #64496f;
+  --c-primary-fixed: #bfc6fd;
+  --c-surface-dim: #dad9e4;
+  --c-error-dim: #6b0221;
+  --c-secondary: #5b5e72;
+  --c-tertiary: #71557c;
+  --c-secondary-fixed: #e0e1f9;
+  --c-background: #fbf8fe;
+  --c-surface-container-high: #e9e7f1;
+  --c-primary-fixed-dim: #b1b8ee;
+  --c-primary-container: #bfc6fd;
+  --c-surface-container: #efedf6;
+  --c-on-tertiary-container: #5d4368;
+  --c-on-error-container: #6e0523;
+  --c-surface-variant: #e3e1ed;
+  --c-secondary-fixed-dim: #d1d3eb;
+  --c-surface-tint: #545c8c;
+  --c-on-error: #fff7f7;
+  --c-surface-container-highest: #e3e1ed;
+  --c-on-primary-fixed: #232b57;
+  --c-on-background: #31323b;
+  --c-on-secondary: #faf8ff;
+  --c-on-primary-fixed-variant: #404876;
+  --c-inverse-primary: #bfc6fd;
+  --c-outline-variant: #b2b1bc;
+  --c-primary: #545c8c;
+}
+html.dark {
+  --c-error-container: #93000a;
+  --c-tertiary-fixed-dim: #efb8e2;
+  --c-on-surface: #e2e2e9;
+  --c-on-surface-variant: #c4c6d0;
+  --c-on-primary: #262d5d;
+  --c-outline: #8a8c96;
+  --c-on-tertiary: #45273e;
+  --c-inverse-on-surface: #2e3035;
+  --c-on-tertiary-fixed-variant: #5d3c55;
+  --c-on-secondary-fixed: #181a2c;
+  --c-secondary-container: #434759;
+  --c-error: #ffb4ab;
+  --c-on-primary-container: #e0e0ff;
+  --c-tertiary-fixed: #ffd7f1;
+  --c-inverse-surface: #e2e2e9;
+  --c-tertiary-container: #5d3c55;
+  --c-surface-bright: #37393e;
+  --c-surface-container-low: #191a1e;
+  --c-secondary-dim: #5b5e71;
+  --c-surface: #121217;
+  --c-on-tertiary-fixed: #2d1228;
+  --c-primary-dim: #bac3ff;
+  --c-surface-container-lowest: #0a0b0f;
+  --c-on-secondary-fixed-variant: #434759;
+  --c-on-secondary-container: #e0e1f9;
+  --c-tertiary-dim: #efb8e2;
+  --c-primary-fixed: #e0e0ff;
+  --c-surface-dim: #111318;
+  --c-error-dim: #ffb4ab;
+  --c-secondary: #bfc6dc;
+  --c-tertiary: #efb8e2;
+  --c-secondary-fixed: #e0e1f9;
+  --c-background: #0f0f13;
+  --c-surface-container-high: #2b2d31;
+  --c-primary-fixed-dim: #bac3ff;
+  --c-primary-container: #3d4574;
+  --c-surface-container: #1d1f23;
+  --c-on-tertiary-container: #ffd7f1;
+  --c-on-error-container: #ffdad6;
+  --c-surface-variant: #434751;
+  --c-secondary-fixed-dim: #bfc6dc;
+  --c-surface-tint: #bac3ff;
+  --c-on-error: #690005;
+  --c-surface-container-highest: #36383c;
+  --c-on-primary-fixed: #10164c;
+  --c-on-background: #e2e2e9;
+  --c-on-secondary: #2d3042;
+  --c-on-primary-fixed-variant: #262d5d;
+  --c-inverse-primary: #545c8c;
+  --c-outline-variant: #44474e;
+  --c-primary: #bac3ff;
+}
+</style>
+<style>
+  body { font-family: 'Inter', sans-serif; }
+  h1, h2, h3, .brand-font { font-family: 'Plus Jakarta Sans', sans-serif; }
+  .material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  }
+  .text-editorial-label {
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  .scrollbar-hide::-webkit-scrollbar { display: none; }
+  .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+  @keyframes scholar-page-fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  .scholar-page-fade {
+    animation: scholar-page-fade-in 0.38s ease-out;
+  }
+  .scholar-top-nav {
+    view-transition-name: scholar-top-nav;
+  }
+  html.scholar-vt-enabled .scholar-page-fade {
+    animation: none !important;
+  }
+  @supports (view-transition-name: none) {
+    ::view-transition-old(scholar-top-nav),
+    ::view-transition-new(scholar-top-nav) {
+      animation: none !important;
+    }
+    html.scholar-vt-enabled ::view-transition-old(root) {
+      animation: none !important;
+    }
+    html.scholar-vt-enabled ::view-transition-new(root) {
+      animation: scholar-vt-fade-in 0.22s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+    }
+  }
+  @keyframes scholar-vt-fade-in { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes scholar-vt-fade-out { from { opacity: 1; } to { opacity: 0; } }
+
+  /* Options menu: not reliant on Tailwind JIT for group-hover (CDN often misses it) */
+  [data-scholar-options] {
+    position: relative;
+  }
+  [data-scholar-options] .scholar-options-panel {
+    position: absolute;
+    left: 0;
+    top: 100%;
+    z-index: 200;
+    min-width: 13rem;
+    width: 13rem;
+    padding-top: 0.375rem;
+    margin: 0;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.15s ease, visibility 0.15s ease;
+  }
+  [data-scholar-options].is-open .scholar-options-panel {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+</style>
+<script>
+  (function () {
+    if (document.startViewTransition) {
+      document.documentElement.classList.add('scholar-vt-enabled');
+    }
+  })();
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!document.startViewTransition) return;
+    document.querySelectorAll('a[data-scholar-vt]').forEach(function (a) {
+      a.addEventListener('click', function (e) {
+        if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+        if (a.getAttribute('target') === '_blank') return;
+        var href = a.getAttribute('href');
+        if (!href || href.startsWith('#') || a.hasAttribute('download')) return;
+        try {
+          var u = new URL(href, window.location.href);
+          if (u.origin !== window.location.origin) return;
+        } catch (err) { return; }
+        e.preventDefault();
+        document.startViewTransition(function () { window.location.href = href; });
+      });
+    });
+  });
+</script>

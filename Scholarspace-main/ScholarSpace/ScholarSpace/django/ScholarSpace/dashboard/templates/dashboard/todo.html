@@ -1,0 +1,230 @@
+{% extends 'dashboard/scholar_app_base.html' %}
+{% load static %}
+
+{% block title %}ScholarSpace | My Goals{% endblock %}
+
+{% block scholar_floating_shapes %}
+<style>
+  .glass-card {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+  }
+</style>
+{% endblock %}
+
+{% block main_class %}flex-grow w-full max-w-full px-0 py-0 pt-0 pb-24 md:pb-0{% endblock %}
+
+{% block content %}
+<div class="pt-24 pb-12 px-4 md:px-8 max-w-6xl mx-auto space-y-10">
+
+  <!-- Page Header -->
+  <header class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+    <div>
+      <span class="text-on-surface-variant text-sm font-semibold uppercase tracking-widest mb-1 block">Tools / Workspace</span>
+      <h1 class="text-4xl md:text-5xl font-extrabold text-primary tracking-tight font-headline">My Goals</h1>
+    </div>
+    <div class="flex items-center gap-2 text-on-surface-variant bg-surface-container-low px-4 py-2 rounded-full border border-outline-variant/20 w-fit">
+      <span class="material-symbols-outlined text-xl">task_alt</span>
+      <span class="font-medium" id="task-summary">0 tasks</span>
+    </div>
+  </header>
+
+  <!-- Task List Table -->
+  <section class="bg-surface-container-low rounded-xl overflow-hidden shadow-sm border border-outline-variant/10">
+    <div class="p-6 flex items-center justify-between bg-surface-container">
+      <h2 class="text-xl font-bold text-on-surface tracking-tight">Current Task List</h2>
+    </div>
+
+    {% if not todo_done %}
+    <div class="overflow-x-auto">
+      <table class="w-full text-left border-collapse" id="todos-table">
+        <thead>
+          <tr class="text-on-surface-variant border-b border-outline-variant/20">
+            <th class="px-6 py-4 font-bold text-xs uppercase tracking-wider">#</th>
+            <th class="px-6 py-4 font-bold text-xs uppercase tracking-wider">Task</th>
+            <th class="px-6 py-4 font-bold text-xs uppercase tracking-wider">Status</th>
+            <th class="px-6 py-4 font-bold text-xs uppercase tracking-wider">Action</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-outline-variant/10 bg-surface-container-lowest">
+          {% for todo in todos %}
+          <tr class="hover:bg-surface-container-low transition-colors {% if todo.is_finished %}todo-completed{% else %}todo-pending{% endif %}">
+            <td class="px-6 py-5 text-sm text-outline font-medium">{{ forloop.counter|stringformat:"02d" }}</td>
+            <td class="px-6 py-5">
+              <div class="flex flex-col">
+                <span class="font-semibold text-on-surface {% if todo.is_finished %}line-through opacity-50{% endif %}">
+                  {{ todo.title }}
+                </span>
+                <span class="text-xs text-on-surface-variant italic mt-0.5">
+                  {% if todo.is_finished %}Finished{% else %}Pending{% endif %}
+                </span>
+              </div>
+            </td>
+            <td class="px-6 py-5">
+              {% if todo.is_finished %}
+              <span class="bg-tertiary-fixed text-on-tertiary-fixed-variant px-3 py-1 rounded-full text-xs font-bold uppercase">Completed</span>
+              {% else %}
+              <span class="bg-secondary-fixed-dim text-on-secondary-fixed-variant px-3 py-1 rounded-full text-xs font-bold uppercase">In Progress</span>
+              {% endif %}
+            </td>
+            <td class="px-6 py-5">
+              <div class="flex items-center gap-1">
+                <a href="{% url 'update-todo' todo.id %}"
+                   title="{% if todo.is_finished %}Mark as Incomplete{% else %}Mark as Complete{% endif %}"
+                   class="inline-flex items-center justify-center text-primary hover:bg-primary/10 p-2 rounded-full transition-colors">
+                  <span class="material-symbols-outlined text-[20px]">{% if todo.is_finished %}undo{% else %}check_circle{% endif %}</span>
+                </a>
+                <a href="{% url 'delete-todo' todo.id %}"
+                   title="Delete task"
+                   class="inline-flex items-center justify-center text-error hover:bg-error/10 p-2 rounded-full transition-colors"
+                   onclick="return confirm('Delete this goal?')">
+                  <span class="material-symbols-outlined text-[20px]">delete</span>
+                </a>
+              </div>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    {% else %}
+    <div class="p-16 flex flex-col items-center text-center gap-4">
+      <div class="w-16 h-16 bg-tertiary-container rounded-full flex items-center justify-center">
+        <span class="material-symbols-outlined text-tertiary text-3xl" style="font-variation-settings:'FILL' 1">check_circle</span>
+      </div>
+      <h3 class="text-xl font-bold font-headline text-on-surface">All caught up!</h3>
+      <p class="text-on-surface-variant max-w-xs">No goals yet. Add your first academic milestone below to start tracking your progress.</p>
+    </div>
+    {% endif %}
+  </section>
+
+  <!-- Create New Goal Form -->
+  <section class="flex justify-center pt-2">
+    <div class="w-full max-w-2xl bg-surface-container-lowest rounded-xl p-8 shadow-[0_20px_50px_rgba(0,0,0,0.08)] border border-outline-variant/10 relative overflow-hidden">
+      <div class="absolute top-0 right-0 w-40 h-40 bg-primary/5 rounded-full -mr-20 -mt-20 blur-2xl pointer-events-none"></div>
+
+      <div class="flex items-center gap-4 mb-8">
+        <div class="bg-primary p-3 rounded-2xl flex items-center justify-center shadow-lg shadow-primary/20">
+          <span class="material-symbols-outlined text-on-primary">add_task</span>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-on-surface font-headline">Create New Goal</h2>
+          <p class="text-on-surface-variant text-sm">Add a new milestone to your academic path.</p>
+        </div>
+      </div>
+
+      <form method="POST" class="space-y-6">
+        {% csrf_token %}
+
+        <div class="space-y-2">
+          <label class="text-sm font-bold text-on-surface-variant uppercase tracking-wider ml-1" for="id_title">Task Title</label>
+          <input
+            class="w-full bg-surface-container-high border-none rounded-xl py-4 px-5 focus:ring-2 focus:ring-primary/30 focus:bg-white transition-all text-lg font-medium outline-none"
+            id="id_title"
+            name="title"
+            type="text"
+            placeholder="e.g., Biology Essay Draft..."
+            required
+            value="{{ form.title.value|default:'' }}"
+          />
+        </div>
+
+        <div class="flex items-center justify-between p-4 bg-surface-container rounded-xl border border-outline-variant/10">
+          <div class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-primary">check_circle</span>
+            <span class="font-semibold text-on-surface">Already finished?</span>
+          </div>
+          <label class="relative inline-flex items-center cursor-pointer">
+            <input class="sr-only peer" type="checkbox" name="is_finished" id="id_is_finished" value="on" />
+            <div class="w-11 h-6 bg-outline-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+          </label>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <a href="{% url 'dashboard_home' %}"
+             class="w-full py-4 px-6 rounded-full border-2 border-outline-variant/30 text-on-surface-variant font-bold hover:bg-surface-container transition-all active:scale-95 text-center no-underline flex items-center justify-center">
+            Cancel
+          </a>
+          <button type="submit"
+                  class="w-full py-4 px-6 rounded-full bg-gradient-to-br from-primary to-primary-dim text-on-primary font-bold shadow-lg shadow-primary/20 hover:shadow-xl hover:opacity-90 transition-all active:scale-95">
+            Save Goal
+          </button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- Stats Bento -->
+  <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div class="md:col-span-2 bg-surface-container-low rounded-xl p-8 flex items-center justify-between overflow-hidden relative group">
+      <div class="relative z-10">
+        <h3 class="text-primary font-black text-3xl tracking-tighter mb-2 font-headline">Focus Mode</h3>
+        <p class="text-on-surface-variant max-w-xs mb-6" id="focus-desc">Track your academic milestones and stay on target.</p>
+        <button
+          onclick="document.getElementById('id_title').focus(); document.getElementById('id_title').scrollIntoView({behavior:'smooth', block:'center'});"
+          class="bg-primary text-on-primary px-6 py-3 rounded-full font-bold flex items-center gap-2 group-hover:scale-105 transition-transform w-fit">
+          <span class="material-symbols-outlined">add_task</span> Add a Goal
+        </button>
+      </div>
+      <div class="hidden sm:block absolute right-0 top-1/2 -translate-y-1/2 -mr-12 opacity-10 rotate-12 pointer-events-none">
+        <span class="material-symbols-outlined text-[200px]">timer</span>
+      </div>
+    </div>
+
+    <div class="bg-tertiary-container rounded-xl p-8 flex flex-col justify-between text-on-tertiary-container relative overflow-hidden">
+      <div class="absolute top-4 right-4 bg-white/20 p-2 rounded-lg">
+        <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1">star</span>
+      </div>
+      <span class="text-lg font-bold uppercase tracking-wider opacity-80">Progress</span>
+      <div>
+        <div class="text-6xl font-black mb-1" id="progress-pct">0%</div>
+        <p class="text-sm font-semibold">Goals Completed</p>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- Floating Action Button -->
+<button
+  onclick="document.getElementById('id_title').focus(); document.getElementById('id_title').scrollIntoView({behavior:'smooth', block:'center'});"
+  class="fixed bottom-24 right-6 md:bottom-8 md:right-8 h-16 w-16 bg-primary text-on-primary rounded-2xl shadow-2xl flex items-center justify-center hover:scale-110 active:scale-95 transition-all z-40"
+  title="Add new goal"
+  aria-label="Add new goal">
+  <span class="material-symbols-outlined text-3xl">add</span>
+</button>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  var table = document.getElementById('todos-table');
+  var progressEl = document.getElementById('progress-pct');
+  var summaryEl = document.getElementById('task-summary');
+  var focusEl = document.getElementById('focus-desc');
+
+  if (table) {
+    var allRows = table.querySelectorAll('tbody tr');
+    var completedRows = table.querySelectorAll('tbody tr.todo-completed');
+    var total = allRows.length;
+    var completed = completedRows.length;
+    var pending = total - completed;
+    var pct = total > 0 ? Math.round((completed / total) * 100) : 0;
+
+    if (progressEl) progressEl.textContent = pct + '%';
+    if (summaryEl) summaryEl.textContent = total + (total === 1 ? ' task' : ' tasks') + ' · ' + completed + ' done';
+    if (focusEl) {
+      if (pending > 0) {
+        focusEl.textContent = 'You have ' + pending + ' pending ' + (pending === 1 ? 'goal' : 'goals') + '. Keep going and stay on track!';
+      } else {
+        focusEl.textContent = 'All goals completed! Add new milestones to keep growing.';
+      }
+    }
+  } else {
+    if (progressEl) progressEl.textContent = '0%';
+    if (summaryEl) summaryEl.textContent = '0 tasks';
+    if (focusEl) focusEl.textContent = 'No goals yet. Add your first academic milestone below!';
+  }
+});
+</script>
+{% endblock %}

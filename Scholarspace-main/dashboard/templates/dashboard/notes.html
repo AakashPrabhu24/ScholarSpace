@@ -1,0 +1,153 @@
+{% extends 'dashboard/scholar_app_base.html' %}
+{% load i18n %}
+{% load static %}
+
+{% block title %}{% trans "ScholarSpace | Notes" %}{% endblock %}
+
+{% block scholar_floating_shapes %}
+<div class="absolute top-[10%] right-[5%] w-80 h-80 bg-primary-container/10 rounded-full blur-[120px] pointer-events-none" aria-hidden="true"></div>
+<div class="absolute bottom-[15%] left-[5%] w-64 h-64 bg-tertiary-container/10 rounded-full blur-[100px] pointer-events-none" aria-hidden="true"></div>
+{% endblock %}
+
+{% block main_class %}flex-grow w-full max-w-full px-0 py-0 pt-0 pb-24 md:pb-0{% endblock %}
+
+{% block content %}
+<div class="pt-24 pb-12 px-4 md:px-8 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8">
+
+  <!-- ── Left: Notes Grid ──────────────────────────────────────────────── -->
+  <div class="lg:col-span-7 space-y-6">
+
+    <header class="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+      <div>
+        <p class="text-primary font-bold text-xs uppercase tracking-widest mb-1">{% trans "Student Workspace" %}</p>
+        <h1 class="text-4xl font-extrabold font-headline text-on-surface tracking-tight">{% trans "My Notes" %}</h1>
+      </div>
+      <span class="text-sm text-on-surface-variant font-medium">{% trans "notes" %}</span>
+    </header>
+
+    {% if notes %}
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      {% for note in notes %}
+      <div class="group bg-surface-container-lowest rounded-xl border border-outline-variant/10 shadow-sm hover:shadow-md transition-all overflow-hidden flex flex-col">
+
+        <!-- Colour accent strip -->
+        <div class="h-1.5 w-full {% cycle 'bg-primary' 'bg-tertiary' 'bg-secondary' 'bg-error' %}"></div>
+
+        <div class="p-5 flex flex-col flex-1">
+          <div class="flex items-start justify-between gap-3 mb-2">
+            <h3 class="font-bold font-headline text-on-surface text-base leading-snug line-clamp-2">
+              {{ note.title }}
+            </h3>
+            {% if note.pdf_file %}
+            <span class="shrink-0 material-symbols-outlined text-[18px] text-primary" title="{% trans 'Has PDF attachment' %}">attach_file</span>
+            {% endif %}
+          </div>
+
+          <p class="text-sm text-on-surface-variant leading-relaxed line-clamp-3 flex-1">
+            {{ note.description|truncatechars:120 }}
+          </p>
+
+          <div class="flex items-center justify-between mt-4 pt-3 border-t border-outline-variant/10">
+            <a href="{% url 'notes-detail' note.pk %}"
+               class="flex items-center gap-1.5 text-sm font-bold text-primary hover:underline underline-offset-2 no-underline">
+              <span class="material-symbols-outlined text-[16px]">open_in_new</span> {% trans "View" %}
+            </a>
+            <a href="{% url 'delete-note' note.pk %}"
+               onclick='return confirm("{% trans "Delete this note?" %}")'
+               class="flex items-center justify-center p-2 text-error hover:bg-error/10 rounded-full transition-colors no-underline">
+              <span class="material-symbols-outlined text-[18px]">delete</span>
+            </a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    {% else %}
+    <div class="bg-surface-container-lowest rounded-xl border border-outline-variant/10 shadow-sm py-20 flex flex-col items-center text-center gap-4">
+      <div class="w-16 h-16 bg-primary-container rounded-full flex items-center justify-center">
+        <span class="material-symbols-outlined text-primary text-3xl">note_alt</span>
+      </div>
+      <h3 class="text-xl font-bold font-headline text-on-surface">{% trans "No notes yet" %}</h3>
+      <p class="text-on-surface-variant text-sm max-w-xs">{% trans "Create your first note using the form. You can attach a PDF too!" %}</p>
+    </div>
+    {% endif %}
+
+  </div><!-- /left -->
+
+  <!-- ── Right: Create Note Form ───────────────────────────────────────── -->
+  <div class="lg:col-span-5 space-y-6">
+    <section class="bg-surface-container-lowest rounded-xl p-8 border border-outline-variant/10 shadow-sm relative overflow-hidden">
+      <div class="absolute top-0 right-0 w-36 h-36 bg-primary/5 rounded-full -mr-16 -mt-16 blur-2xl pointer-events-none"></div>
+
+      <div class="flex items-center gap-4 mb-7 relative z-10">
+        <div class="bg-primary p-3 rounded-2xl shadow-lg shadow-primary/20">
+          <span class="material-symbols-outlined text-on-primary">note_add</span>
+        </div>
+        <div>
+          <h2 class="text-xl font-bold font-headline text-on-surface">{% trans "New Note" %}</h2>
+          <p class="text-on-surface-variant text-sm">{% trans "Add a title, description, and optional PDF." %}</p>
+        </div>
+      </div>
+
+      <form method="POST" enctype="multipart/form-data" class="space-y-5 relative z-10">
+        {% csrf_token %}
+
+        <!-- Title -->
+        <div class="space-y-1.5">
+          <label class="text-xs font-bold text-on-surface-variant uppercase tracking-wider ml-1" for="id_title">{% trans "Title" %}</label>
+          <input
+            id="id_title" name="title" type="text" maxlength="200" required
+            value="{{ form.title.value|default:'' }}"
+            placeholder="{% trans 'e.g. Chapter 3 Summary' %}"
+            class="w-full bg-surface-container-high border-none rounded-xl px-5 py-3.5 text-on-surface placeholder:text-outline focus:ring-2 focus:ring-primary/30 focus:bg-white transition-all outline-none font-medium text-sm"
+          />
+          {% if form.title.errors %}<p class="text-error text-xs ml-1">{{ form.title.errors|join:", " }}</p>{% endif %}
+        </div>
+
+        <!-- Description -->
+        <div class="space-y-1.5">
+          <label class="text-xs font-bold text-on-surface-variant uppercase tracking-wider ml-1" for="id_description">{% trans "Description" %}</label>
+          <textarea
+            id="id_description" name="description" rows="5" required
+            placeholder="{% trans 'Write your note content here...' %}"
+            class="w-full bg-surface-container-high border-none rounded-xl px-5 py-3.5 text-on-surface placeholder:text-outline focus:ring-2 focus:ring-primary/30 focus:bg-white transition-all outline-none resize-none font-medium text-sm"
+          >{{ form.description.value|default:'' }}</textarea>
+          {% if form.description.errors %}<p class="text-error text-xs ml-1">{{ form.description.errors|join:", " }}</p>{% endif %}
+        </div>
+
+        <!-- PDF Upload -->
+        <div class="space-y-1.5">
+          <label class="text-xs font-bold text-on-surface-variant uppercase tracking-wider ml-1" for="id_pdf_file">
+            {% trans "PDF Attachment" %} <span class="normal-case font-normal text-outline tracking-normal">({% trans "optional" %})</span>
+          </label>
+          <div class="relative">
+            <input
+              id="id_pdf_file" name="pdf_file" type="file" accept=".pdf"
+              class="w-full bg-surface-container-high border-none rounded-xl px-5 py-3 text-sm text-on-surface-variant file:mr-3 file:py-1.5 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-primary-container file:text-on-primary-container hover:file:bg-primary/20 cursor-pointer outline-none"
+            />
+          </div>
+          {% if form.pdf_file.errors %}<p class="text-error text-xs ml-1">{{ form.pdf_file.errors|join:", " }}</p>{% endif %}
+        </div>
+
+        <button type="submit"
+                class="w-full py-4 rounded-full bg-gradient-to-br from-primary to-primary-dim text-on-primary font-bold shadow-lg shadow-primary/20 hover:shadow-xl hover:opacity-90 transition-all active:scale-95 font-headline tracking-wide">
+          {% trans "Save Note" %}
+        </button>
+      </form>
+    </section>
+
+    <!-- Quick tip -->
+    <section class="bg-tertiary-container/20 rounded-xl p-5 border border-tertiary-container/30">
+      <h4 class="font-bold text-on-tertiary-container font-headline flex items-center gap-2 mb-2">
+        <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1">lightbulb</span>
+        {% trans "Study Tip" %}
+      </h4>
+      <p class="text-sm text-on-tertiary-container/80 leading-relaxed">
+        {% trans "Use the Cornell Note method: divide your page into cues, notes, and a summary section for better recall." %}
+      </p>
+    </section>
+  </div><!-- /right -->
+
+</div>
+{% endblock %}

@@ -1,0 +1,275 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+<style>
+  /* Enhanced Futuristic style overrides */
+  @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&display=swap');
+  
+  body {
+    background: linear-gradient(135deg, #121212, #2a3040);
+    color: #e0e6ff;
+    font-family: 'Orbitron', sans-serif;
+  }
+  
+  .futuristic-container {
+    margin: 50px auto;
+    padding: 40px;
+    background: rgba(16, 24, 48, 0.7);
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0, 186, 255, 0.2);
+    border: 1px solid rgba(0, 210, 255, 0.2);
+    backdrop-filter: blur(8px);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .futuristic-container::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+      45deg,
+      transparent 0%,
+      rgba(0, 186, 255, 0.05) 50%,
+      transparent 100%
+    );
+    animation: lightSweep 8s linear infinite;
+    z-index: -1;
+  }
+  
+  @keyframes lightSweep {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  
+  .futuristic-header {
+    font-size: 2.8rem;
+    font-weight: 700;
+    margin-bottom: 30px;
+    color: #00ffea;
+    text-shadow: 0 0 10px rgba(0, 255, 234, 0.5);
+    letter-spacing: 2px;
+    position: relative;
+  }
+  
+  .futuristic-header::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 25%;
+    width: 50%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #00ffea, transparent);
+  }
+  
+  .futuristic-btn {
+    background: linear-gradient(45deg, #00ffea, #006aff);
+    border: none;
+    color: #ffffff;
+    padding: 12px 30px;
+    border-radius: 30px;
+    font-size: 1.2rem;
+    font-weight: 500;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 15px rgba(0, 186, 255, 0.5);
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+  }
+  
+  .futuristic-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s ease;
+    z-index: -1;
+  }
+  
+  .futuristic-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 0 20px rgba(0, 186, 255, 0.7);
+    background: linear-gradient(45deg, #006aff, #00ffea);
+  }
+  
+  .futuristic-btn:hover::before {
+    left: 100%;
+  }
+  
+  .futuristic-form .form-group legend {
+    font-size: 1.6rem;
+    color: #00ffea;
+    position: relative;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .futuristic-form .form-group legend::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 10%;
+    width: 80%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(0, 210, 255, 0.5), transparent);
+  }
+  
+  .futuristic-input input,
+  .futuristic-input select,
+  .futuristic-input textarea,
+  .form-control {
+    background: rgba(16, 24, 48, 0.6) !important;
+    border: 1px solid rgba(0, 210, 255, 0.3) !important;
+    color: #e0e6ff !important;
+    border-radius: 8px !important;
+    padding: 10px 15px !important;
+    transition: all 0.3s ease !important;
+    box-shadow: none !important;
+  }
+  
+  .futuristic-input input:focus,
+  .futuristic-input select:focus,
+  .futuristic-input textarea:focus,
+  .form-control:focus {
+    border-color: #00ffea !important;
+    box-shadow: 0 0 10px rgba(0, 255, 234, 0.3) !important;
+  }
+  
+  /* Add holographic display effect */
+  .conversion-result {
+    background: rgba(0, 37, 84, 0.4);
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 20px;
+    position: relative;
+    border: 1px solid rgba(0, 210, 255, 0.3);
+    box-shadow: inset 0 0 15px rgba(0, 186, 255, 0.2);
+  }
+  
+  .result-value {
+    font-size: 2rem;
+    color: #00ffea;
+    text-shadow: 0 0 10px rgba(0, 255, 234, 0.5);
+    font-weight: 700;
+    animation: pulse 2s infinite;
+  }
+  
+  @keyframes pulse {
+    0% { opacity: 0.8; }
+    50% { opacity: 1; }
+    100% { opacity: 0.8; }
+  }
+  
+  /* Add grid lines for more tech feeling */
+  .grid-lines {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+      linear-gradient(rgba(0, 210, 255, 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 210, 255, 0.05) 1px, transparent 1px);
+    background-size: 20px 20px;
+    z-index: -1;
+  }
+  
+  /* Make form crispy fields look futuristic */
+  .form-row, .form-group {
+    margin-bottom: 1.5rem;
+  }
+  
+  label {
+    color: #00c2ff !important;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    margin-bottom: 0.5rem;
+  }
+  
+  /* Add scanner effect */
+  .scan-line {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: rgba(0, 255, 234, 0.5);
+    box-shadow: 0 0 15px 2px rgba(0, 255, 234, 0.5);
+    animation: scan 3s linear infinite;
+    z-index: -1;
+  }
+  
+  @keyframes scan {
+    0% { top: 0; }
+    100% { top: 100%; }
+  }
+</style>
+
+<div class="container futuristic-container text-center">
+  <div class="grid-lines"></div>
+  <div class="scan-line"></div>
+  
+  <h1 class="futuristic-header">CONVERSION</h1>
+  
+  <form method="POST" class="futuristic-form">
+    {% csrf_token %}
+    
+    <div class="form-group">
+      <legend class="border-bottom mb-4">INITIALIZE MEASUREMENT PARAMETERS</legend>
+      <div class="futuristic-input">
+        {{ form|crispy }}
+      </div>
+      <button class="btn futuristic-btn mt-4" type="submit">
+        <span>CALIBRATE</span>
+      </button>
+    </div>
+    
+    {% if input %}
+    <fieldset class="form-group mt-5">
+      <legend class="border-bottom mb-4">DIMENSIONAL TRANSFER PROTOCOL</legend>
+      <div class="row">
+        <div class="col-md-4">
+          <div class="futuristic-input">
+            {{ m_form.input|as_crispy_field }}
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="futuristic-input">
+            {{ m_form.measure1|as_crispy_field }}
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="futuristic-input">
+            {{ m_form.measure2|as_crispy_field }}
+          </div>
+        </div>
+      </div>
+    </fieldset>
+    
+    <fieldset class="form-group">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="conversion-result">
+            <p class="result-value">{{ answer }}</p>
+          </div>
+        </div>
+      </div>
+    </fieldset>
+    
+    <div class="form-group mt-4">
+      <button class="btn futuristic-btn" type="submit">
+        <span>EXECUTE CONVERSION</span>
+      </button>
+    </div>
+    {% endif %}
+  </form>
+</div>
+{% endblock content %}

@@ -1,0 +1,14 @@
+{% extends 'quiz_app/base.html' %}
+
+{% block title %}Quiz Results{% endblock %}
+
+{% block content %}
+    <div class="quiz-box">
+        <h2>Results for {{ quiz_taker.quiz.title }}</h2>
+        
+        <h3>Your Score: {{ quiz_taker.score }} / {{ quiz_taker.quiz.get_total_questions }}</h3>
+        <p>{{ quiz_taker.score|floatformat:0|default:'0' }}% correct</p>
+        
+        <a href="{% url 'quiz_list' %}" class="btn">Back to Quizzes</a>
+    </div>
+{% endblock %}

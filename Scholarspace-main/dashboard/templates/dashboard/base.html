@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+{% load static %}
+{% load i18n %}
+<html lang="en" class="{% block html_class %}{% endblock %}">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="{% static 'favicon.svg' %}"/>
+    <link rel="shortcut icon" href="{% static 'favicon.svg' %}"/>
+    <meta name="theme-color" content="#545c8c"/>
+
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>{% block title %}Student-dashboard{% endblock %}</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
+          integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous" />
+    <link rel="stylesheet" href="{% static 'css/main.css' %}" />
+
+    <style>
+    /* Background Particles Container */
+    .background-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1000;
+        overflow: hidden;
+        transition: background-color 1s ease; /* Smooth transition for background color */
+    }
+
+    /* Qualification Bubble Styling */
+    .qualification-bubble {
+        position: absolute;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-weight: bold;
+        color: white;
+        box-shadow: 0 0 15px 5px rgba(255, 255, 255, 0.3);
+        pointer-events: none;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+        transition: transform 0.3s ease;
+    }
+
+    .qualification-bubble:hover {
+        transform: scale(1.1);
+    }
+
+    
+    </style>
+    {% block extra_head %}{% endblock %}
+</head>
+<body class="{% block body_class %}{% endblock %}">
+    {% block navbar %}
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="{% if user.is_authenticated %}{% url 'dashboard_home' %}{% else %}{% url 'home' %}{% endif %}">
+                    <span style="font-size: 30px; font-weight: bold;">ScholarSpace</span>
+                </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+                    <ul class="navbar-nav mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="{% if user.is_authenticated %}{% url 'dashboard_home' %}{% else %}{% url 'home' %}{% endif %}">Home</a>
+                        </li>
+                        
+                        {% if user.is_authenticated %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'profile' %}">Profile</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                               aria-haspopup="true" aria-expanded="false">
+                                Options
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="{% url 'books' %}">Books</a>
+                                <a class="dropdown-item" href="{% url 'wiki' %}">Wikipedia</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="{% url 'dictionary' %}">Dictionary</a>
+                                <a class="dropdown-item" href="{% url 'youtube' %}">Youtube</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="{% url 'todo' %}">My Goals</a>
+                                <a class="dropdown-item" href="{% url 'homework' %}">Homework</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="{% url 'notes' %}">Notes</a>
+                                <a class="dropdown-item" href="{% url 'conversion' %}">Conversion</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="{% url 'timetable_app:timetable_home' %}">Time Table</a>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="https://docs.google.com/forms/d/e/1FAIpQLSeXbqorpTQJgPj26UjIslaqMuwM0fphvYulL70F8mXxiqrYhQ/viewform?usp=sharing" target="_blank">Feedback</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+                        </li>
+                        {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'register' %}">Register</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'login' %}">Login</a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <section class="hero text-center">
+        <div class="container">
+            
+        </div>
+    </section>
+    {% endblock navbar %}
+
+    <main class="{% block main_class %}container py-5{% endblock %}">
+        {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        {% block content %}
+        {% endblock content %}
+    </main>
+
+    {% block footer %}
+    <footer>
+
+    </footer>
+    {% endblock footer %}
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
+    </script>
+
+    {% block dashboard_ambient %}
+    {% if request.resolver_match.view_name == 'dashboard_home' %}
+    <div class="background-container" id="background"></div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const background = document.getElementById('background');
+            const numberOfBubbles = 30;
+            
+            // List of educational qualifications
+            const qualifications = ["BE", "BSC", "BCOM", "BA", "MBA", "LLB", "SSC", "HSC"];
+            
+            // Array of bubble gradient color pairs (using rgb)
+            const bubbleGradients = [
+                { inner: "rgb(190, 33, 98)", outer: "rgb(207, 73, 132)" }, // Darker Pink
+                { inner: "rgb(99, 44, 204)", outer: "rgb(76, 17, 175)" },  // Darker Purple
+                { inner: "rgb(192, 0, 64)", outer: "rgb(179, 96, 207)" },  // Darker Red-Purple
+                { inner: "rgb(0, 150, 191)", outer: "rgb(0, 113, 186)" },  // Darker Blue-Green
+                { inner: "rgb(204, 163, 0)", outer: "rgb(204, 122, 0)" }   // Darker Yellow-Orange
+            ];
+
+            // Array of background colors for cycling (darker)
+            const backgroundColors = [
+                "rgba(54, 10, 100, 0.3)",  // Darker Deep Purple
+                "rgba(15, 82, 148, 0.3)", // Darker Blue
+                "rgba(0, 100, 90, 0.3)",  // Darker Teal
+                "rgba(204, 184, 0, 0.3)", // Darker Yellow
+                "rgba(204, 102, 0, 0.3)"   // Darker Orange
+            ];
+            let currentBgColorIndex = 0;
+
+            // Function to change background color
+            function changeBackgroundColor() {
+                background.style.backgroundColor = backgroundColors[currentBgColorIndex];
+                currentBgColorIndex = (currentBgColorIndex + 1) % backgroundColors.length;
+            }
+            // Change background color every 5 seconds
+            setInterval(changeBackgroundColor, 5000); 
+
+            // Create qualification bubbles with base positions and random phase/speed
+            for (let i = 0; i < numberOfBubbles; i++) {
+                const bubble = document.createElement('div');
+                bubble.classList.add('qualification-bubble');
+                
+                // Size for qualification bubbles (40-60px)
+                const size = Math.random() * 20 + 40;
+                const baseLeft = Math.random() * 100;
+                const baseTop = Math.random() * 100;
+                bubble.style.width = `${size}px`;
+                bubble.style.height = `${size}px`;
+                bubble.style.left = `${baseLeft}%`;
+                bubble.style.top = `${baseTop}%`;
+                bubble.style.fontSize = `${size * 0.35}px`;
+                
+                // Save base position and random phase/speed for continuous animation
+                bubble.setAttribute('data-base-left', baseLeft);
+                bubble.setAttribute('data-base-top', baseTop);
+                bubble.setAttribute('data-phase', Math.random() * 2 * Math.PI);
+                bubble.setAttribute('data-speed', 0.2 + Math.random() * 0.3);
+                
+                // Randomly choose a qualification
+                const qualification = qualifications[Math.floor(Math.random() * qualifications.length)];
+                bubble.textContent = qualification;
+                
+                // Randomly choose a bubble gradient
+                const grad = bubbleGradients[Math.floor(Math.random() * bubbleGradients.length)];
+                bubble.style.background = `radial-gradient(circle, ${grad.inner} 30%, ${grad.outer} 100%)`;
+                bubble.style.opacity = "0.8";
+                
+                background.appendChild(bubble);
+            }
+            
+            // Animate bubbles continuously for a live wallpaper effect
+            const bubbles = document.querySelectorAll('.qualification-bubble');
+            function animateBubbles() {
+                const time = Date.now() / 1000;
+                bubbles.forEach(bubble => {
+                    const baseLeft = parseFloat(bubble.getAttribute('data-base-left'));
+                    const baseTop = parseFloat(bubble.getAttribute('data-base-top'));
+                    const phase = parseFloat(bubble.getAttribute('data-phase'));
+                    const speed = parseFloat(bubble.getAttribute('data-speed'));
+                    const amplitude = 2; // Oscillation amplitude in percentage
+                    const offsetX = Math.sin(time * speed + phase) * amplitude;
+                    const offsetY = Math.cos(time * speed + phase) * amplitude;
+                    bubble.style.left = `${Math.max(0, Math.min(100, baseLeft + offsetX))}%`;
+                    bubble.style.top = `${Math.max(0, Math.min(100, baseTop + offsetY))}%`;
+                });
+                requestAnimationFrame(animateBubbles);
+            }
+            animateBubbles();
+            changeBackgroundColor(); // Start the background color cycling
+        });
+    </script>
+    {% endif %}
+    {% endblock dashboard_ambient %}
+</body>
+</html>

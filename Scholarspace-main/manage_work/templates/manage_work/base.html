@@ -1,0 +1,401 @@
+{% load static %}
+<!DOCTYPE html>
+{% load i18n %}
+<html class="light" lang="{{ request.LANGUAGE_CODE }}">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>{% block title %}{% trans "ScholarSpace | Manage Work" %}{% endblock %}</title>
+  <link rel="icon" type="image/svg+xml" href="{% static 'favicon.svg' %}"/>
+  <link href="https://fonts.googleapis.com" rel="preconnect"/>
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  
+  <script id="tailwind-config">
+tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      colors: {
+        "error-container": "var(--c-error-container)",
+        "tertiary-fixed-dim": "var(--c-tertiary-fixed-dim)",
+        "on-surface": "var(--c-on-surface)",
+        "on-surface-variant": "var(--c-on-surface-variant)",
+        "on-primary": "var(--c-on-primary)",
+        "outline": "var(--c-outline)",
+        "on-tertiary": "var(--c-on-tertiary)",
+        "inverse-on-surface": "var(--c-inverse-on-surface)",
+        "on-tertiary-fixed-variant": "var(--c-on-tertiary-fixed-variant)",
+        "on-secondary-fixed": "var(--c-on-secondary-fixed)",
+        "secondary-container": "var(--c-secondary-container)",
+        "error": "var(--c-error)",
+        "on-primary-container": "var(--c-on-primary-container)",
+        "tertiary-fixed": "var(--c-tertiary-fixed)",
+        "inverse-surface": "var(--c-inverse-surface)",
+        "tertiary-container": "var(--c-tertiary-container)",
+        "surface-bright": "var(--c-surface-bright)",
+        "surface-container-low": "var(--c-surface-container-low)",
+        "secondary-dim": "var(--c-secondary-dim)",
+        "surface": "var(--c-surface)",
+        "on-tertiary-fixed": "var(--c-on-tertiary-fixed)",
+        "primary-dim": "var(--c-primary-dim)",
+        "surface-container-lowest": "var(--c-surface-container-lowest)",
+        "on-secondary-fixed-variant": "var(--c-on-secondary-fixed-variant)",
+        "on-secondary-container": "var(--c-on-secondary-container)",
+        "tertiary-dim": "var(--c-tertiary-dim)",
+        "primary-fixed": "var(--c-primary-fixed)",
+        "surface-dim": "var(--c-surface-dim)",
+        "error-dim": "var(--c-error-dim)",
+        "secondary": "var(--c-secondary)",
+        "tertiary": "var(--c-tertiary)",
+        "secondary-fixed": "var(--c-secondary-fixed)",
+        "background": "var(--c-background)",
+        "surface-container-high": "var(--c-surface-container-high)",
+        "primary-fixed-dim": "var(--c-primary-fixed-dim)",
+        "primary-container": "var(--c-primary-container)",
+        "surface-container": "var(--c-surface-container)",
+        "on-tertiary-container": "var(--c-on-tertiary-container)",
+        "on-error-container": "var(--c-on-error-container)",
+        "surface-variant": "var(--c-surface-variant)",
+        "secondary-fixed-dim": "var(--c-secondary-fixed-dim)",
+        "surface-tint": "var(--c-surface-tint)",
+        "on-error": "var(--c-on-error)",
+        "surface-container-highest": "var(--c-surface-container-highest)",
+        "on-primary-fixed": "var(--c-on-primary-fixed)",
+        "on-background": "var(--c-on-background)",
+        "on-secondary": "var(--c-on-secondary)",
+        "on-primary-fixed-variant": "var(--c-on-primary-fixed-variant)",
+        "inverse-primary": "var(--c-inverse-primary)",
+        "outline-variant": "var(--c-outline-variant)",
+        "primary": "var(--c-primary)"
+      },
+      borderRadius: {
+        DEFAULT: "1rem",
+        lg: "2rem",
+        xl: "3rem",
+        full: "9999px"
+      },
+      fontFamily: {
+        headline: ["Plus Jakarta Sans", "sans-serif"],
+        body: ["Inter", "sans-serif"],
+        label: ["Inter", "sans-serif"]
+      }
+    }
+  }
+};
+</script>
+<script>
+  try {
+    if (localStorage.getItem('scholarspace-dark') === '1') {
+      document.documentElement.classList.remove('light');
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+      document.documentElement.classList.add('light');
+    }
+  } catch (err) {}
+</script>
+<style>
+
+:root, html.light {
+  --c-error-container: #f97386;
+  --c-tertiary-fixed-dim: #e2c0ee;
+  --c-on-surface: #31323b;
+  --c-on-surface-variant: #5e5e68;
+  --c-on-primary: #faf8ff;
+  --c-outline: #7a7a84;
+  --c-on-tertiary: #fff7fc;
+  --c-inverse-on-surface: #9e9ca2;
+  --c-on-tertiary-fixed-variant: #674c72;
+  --c-on-secondary-fixed: #3c3e51;
+  --c-secondary-container: #e0e1f9;
+  --c-error: #a8364b;
+  --c-on-primary-container: #373f6d;
+  --c-tertiary-fixed: #f1cefc;
+  --c-inverse-surface: #0d0e12;
+  --c-tertiary-container: #f1cefc;
+  --c-surface-bright: #fbf8fe;
+  --c-surface-container-low: #f5f2fb;
+  --c-secondary-dim: #4f5266;
+  --c-surface: #fbf8fe;
+  --c-on-tertiary-fixed: #493055;
+  --c-primary-dim: #48507f;
+  --c-surface-container-lowest: #ffffff;
+  --c-on-secondary-fixed-variant: #585a6f;
+  --c-on-secondary-container: #4e5065;
+  --c-tertiary-dim: #64496f;
+  --c-primary-fixed: #bfc6fd;
+  --c-surface-dim: #dad9e4;
+  --c-error-dim: #6b0221;
+  --c-secondary: #5b5e72;
+  --c-tertiary: #71557c;
+  --c-secondary-fixed: #e0e1f9;
+  --c-background: #fbf8fe;
+  --c-surface-container-high: #e9e7f1;
+  --c-primary-fixed-dim: #b1b8ee;
+  --c-primary-container: #bfc6fd;
+  --c-surface-container: #efedf6;
+  --c-on-tertiary-container: #5d4368;
+  --c-on-error-container: #6e0523;
+  --c-surface-variant: #e3e1ed;
+  --c-secondary-fixed-dim: #d1d3eb;
+  --c-surface-tint: #545c8c;
+  --c-on-error: #fff7f7;
+  --c-surface-container-highest: #e3e1ed;
+  --c-on-primary-fixed: #232b57;
+  --c-on-background: #31323b;
+  --c-on-secondary: #faf8ff;
+  --c-on-primary-fixed-variant: #404876;
+  --c-inverse-primary: #bfc6fd;
+  --c-outline-variant: #b2b1bc;
+  --c-primary: #545c8c;
+}
+html.dark {
+  --c-error-container: #93000a;
+  --c-tertiary-fixed-dim: #efb8e2;
+  --c-on-surface: #e2e2e9;
+  --c-on-surface-variant: #c4c6d0;
+  --c-on-primary: #262d5d;
+  --c-outline: #8a8c96;
+  --c-on-tertiary: #45273e;
+  --c-inverse-on-surface: #2e3035;
+  --c-on-tertiary-fixed-variant: #5d3c55;
+  --c-on-secondary-fixed: #181a2c;
+  --c-secondary-container: #434759;
+  --c-error: #ffb4ab;
+  --c-on-primary-container: #e0e0ff;
+  --c-tertiary-fixed: #ffd7f1;
+  --c-inverse-surface: #e2e2e9;
+  --c-tertiary-container: #5d3c55;
+  --c-surface-bright: #37393e;
+  --c-surface-container-low: #191a1e;
+  --c-secondary-dim: #5b5e71;
+  --c-surface: #121217;
+  --c-on-tertiary-fixed: #2d1228;
+  --c-primary-dim: #bac3ff;
+  --c-surface-container-lowest: #0a0b0f;
+  --c-on-secondary-fixed-variant: #434759;
+  --c-on-secondary-container: #e0e1f9;
+  --c-tertiary-dim: #efb8e2;
+  --c-primary-fixed: #e0e0ff;
+  --c-surface-dim: #111318;
+  --c-error-dim: #ffb4ab;
+  --c-secondary: #bfc6dc;
+  --c-tertiary: #efb8e2;
+  --c-secondary-fixed: #e0e1f9;
+  --c-background: #0f0f13;
+  --c-surface-container-high: #2b2d31;
+  --c-primary-fixed-dim: #bac3ff;
+  --c-primary-container: #3d4574;
+  --c-surface-container: #1d1f23;
+  --c-on-tertiary-container: #ffd7f1;
+  --c-on-error-container: #ffdad6;
+  --c-surface-variant: #434751;
+  --c-secondary-fixed-dim: #bfc6dc;
+  --c-surface-tint: #bac3ff;
+  --c-on-error: #690005;
+  --c-surface-container-highest: #36383c;
+  --c-on-primary-fixed: #10164c;
+  --c-on-background: #e2e2e9;
+  --c-on-secondary: #2d3042;
+  --c-on-primary-fixed-variant: #262d5d;
+  --c-inverse-primary: #545c8c;
+  --c-outline-variant: #44474e;
+  --c-primary: #bac3ff;
+}
+</style>
+  <style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block; vertical-align: middle;
+    }
+    body { font-family: 'Inter', sans-serif; }
+    
+    input::placeholder, textarea::placeholder { color: #8a8c96; }
+    select { background-color: #1d1f23 !important; color: #e2e2e9 !important; border-color: #44474e !important; }
+    .nav-shadow { box-shadow: 0 1px 3px 0 rgba(0,0,0,0.5); }
+    {% block extra_style %}{% endblock %}
+  </style>
+  {% block extra_head %}{% endblock %}
+</head>
+<body class="bg-surface text-on-background antialiased">
+
+<!-- ── Global Top Nav ─────────────────────────────────────────────────────── -->
+<nav class="sticky top-0 z-50 w-full bg-white border-b border-outline-variant/50 nav-shadow">
+  <div class="max-w-[1600px] mx-auto px-6 h-16 flex items-center justify-between">
+    <div class="flex items-center gap-8">
+      <a href="{% url 'dashboard_home' %}" class="flex items-center gap-2 no-underline">
+        <div class="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center text-primary font-black text-lg font-headline">S</div>
+        <span class="text-xl font-black text-primary tracking-tight font-headline">ScholarSpace</span>
+      </a>
+      <div class="hidden md:flex items-center gap-5 ml-2">
+        <a href="{% url 'dashboard_home' %}" class="text-sm font-medium text-on-surface-variant hover:text-primary transition-colors no-underline">{% trans "Home" %}</a>
+        <a href="{% url 'manage_work:dashboard' %}" class="text-sm font-semibold text-primary border-b-2 border-primary pb-0.5 px-1 no-underline">{% trans "Manage Work" %}</a>
+        <a href="{% url 'profile' %}" class="text-sm font-medium text-on-surface-variant hover:text-primary transition-colors no-underline">{% trans "Profile" %}</a>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSeXbqorpTQJgPj26UjIslaqMuwM0fphvYulL70F8mXxiqrYhQ/viewform?usp=sharing" target="_blank" class="text-sm font-medium text-on-surface-variant hover:text-primary transition-colors no-underline">{% trans "Feedback" %}</a>
+        <a href="{% url 'logout' %}" class="text-sm font-medium text-on-surface-variant hover:text-primary transition-colors no-underline">{% trans "Logout" %}</a>
+      </div>
+    </div>
+    <div class="flex items-center gap-4">
+      <a href="{% url 'notifications' %}" class="relative p-2 text-on-surface-variant hover:bg-surface-variant/30 rounded-full transition-colors no-underline">
+        <span class="material-symbols-outlined">notifications</span>
+        {% if unread_notification_count %}
+        <span class="absolute top-1 right-1 min-w-[14px] h-3.5 bg-red-500 text-white text-[9px] font-bold rounded-full flex items-center justify-center px-0.5">{{ unread_notification_count }}</span>
+        {% endif %}
+      </a>
+
+    </div>
+  </div>
+</nav>
+
+<!-- ── Layout: sidebar + main ────────────────────────────────────────────── -->
+<div class="flex min-h-[calc(100vh-4rem)]">
+
+  <!-- Fixed Sidebar -->
+  <aside class="w-64 border-r border-outline-variant/60 bg-surface-container-lowest flex flex-col fixed h-[calc(100vh-4rem)] top-16 z-40 overflow-y-auto">
+    <div class="p-6 flex-1">
+
+      <p class="text-[10px] text-on-surface-variant font-bold uppercase tracking-widest mb-6">{% trans "Manage Work" %}</p>
+
+      <!-- Live Stats -->
+      <div class="space-y-2 mb-8">
+        <div class="flex items-center justify-between p-2.5 rounded-xl bg-surface-variant/30">
+          <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-[18px] text-on-surface-variant">description</span>
+            <span class="text-xs font-medium text-on-surface">{% trans "Total tasks" %}</span>
+          </div>
+          <span class="text-xs font-bold bg-orange-100 text-orange-700 px-2 py-0.5 rounded-full">{{ mw_total_tasks|default:"0" }}</span>
+        </div>
+        <div class="flex items-center justify-between p-2.5 rounded-xl bg-surface-variant/30">
+          <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-[18px] text-on-surface-variant">bolt</span>
+            <span class="text-xs font-medium text-on-surface">{% trans "Conflicts" %}</span>
+          </div>
+          <span class="text-xs font-bold bg-red-100 text-red-700 px-2 py-0.5 rounded-full">{{ mw_conflicts|default:"0" }}</span>
+        </div>
+        <div class="flex items-center justify-between p-2.5 rounded-xl bg-surface-variant/30">
+          <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-[18px] text-on-surface-variant">alarm</span>
+            <span class="text-xs font-medium text-on-surface">{% trans "Due in 72h" %}</span>
+          </div>
+          <span class="text-xs font-bold bg-green-100 text-green-700 px-2 py-0.5 rounded-full">{{ mw_due_72h|default:"0" }}</span>
+        </div>
+      </div>
+
+      <!-- Core Nav -->
+      <div class="mb-6">
+        <h3 class="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest mb-3">{% trans "Core" %}</h3>
+        <nav class="space-y-1">
+          <a href="{% url 'manage_work:dashboard' %}"
+             class="flex items-center gap-3 px-4 py-2.5 rounded-full text-sm transition-colors no-underline {% block nav_dashboard %}text-on-surface-variant hover:bg-surface-variant/50 font-medium{% endblock %}">
+            <span class="material-symbols-outlined text-[20px]">space_dashboard</span> {% trans 'Dashboard' %}
+          </a>
+          <a href="{% url 'manage_work:add_deadline' %}"
+             class="flex items-center gap-3 px-4 py-2.5 rounded-full text-sm transition-colors no-underline {% block nav_add %}text-on-surface-variant hover:bg-surface-variant/50 font-medium{% endblock %}">
+            <span class="material-symbols-outlined text-[20px]">add_circle</span> {% trans 'Add Deadline' %}
+          </a>
+          <a href="{% url 'manage_work:my_tasks' %}"
+             class="flex items-center gap-3 px-4 py-2.5 rounded-full text-sm transition-colors no-underline {% block nav_tasks %}text-on-surface-variant hover:bg-surface-variant/50 font-medium{% endblock %}">
+            <span class="material-symbols-outlined text-[20px]">checklist</span> {% trans 'My Tasks' %}
+          </a>
+          <a href="{% url 'manage_work:calendar' %}"
+             class="flex items-center gap-3 px-4 py-2.5 rounded-full text-sm transition-colors no-underline {% block nav_calendar %}text-on-surface-variant hover:bg-surface-variant/50 font-medium{% endblock %}">
+            <span class="material-symbols-outlined text-[20px]">calendar_today</span> {% trans 'Calendar' %}
+          </a>
+          <a href="{% url 'manage_work:conflicts' %}"
+             class="flex items-center gap-3 px-4 py-2.5 rounded-full text-sm transition-colors no-underline {% block nav_conflicts %}text-on-surface-variant hover:bg-surface-variant/50 font-medium{% endblock %}">
+            <span class="material-symbols-outlined text-[20px]">warning</span> {% trans 'Conflicts' %}
+            {% if mw_conflicts %}<span class="ml-auto text-[10px] font-bold bg-red-100 text-red-700 px-1.5 py-0.5 rounded-full">{{ mw_conflicts }}</span>{% endif %}
+          </a>
+          <a href="{% url 'manage_work:smart_plan' %}"
+             class="flex items-center gap-3 px-4 py-2.5 rounded-full text-sm transition-colors no-underline {% block nav_plan %}text-on-surface-variant hover:bg-surface-variant/50 font-medium{% endblock %}">
+            <span class="material-symbols-outlined text-[20px]">auto_awesome</span> {% trans 'Smart Plan' %}
+          </a>
+          <a href="{% url 'manage_work:reminders' %}"
+             class="flex items-center gap-3 px-4 py-2.5 rounded-full text-sm transition-colors no-underline {% block nav_reminders %}text-on-surface-variant hover:bg-surface-variant/50 font-medium{% endblock %}">
+            <span class="material-symbols-outlined text-[20px]">notifications</span> {% trans 'Reminders' %}
+            {% if mw_due_72h %}<span class="ml-auto text-[10px] font-bold bg-orange-100 text-orange-700 px-1.5 py-0.5 rounded-full">{{ mw_due_72h }}</span>{% endif %}
+          </a>
+          <a href="{% url 'manage_work:analytics' %}"
+             class="flex items-center gap-3 px-4 py-2.5 rounded-full text-sm transition-colors no-underline {% block nav_analytics %}text-on-surface-variant hover:bg-surface-variant/50 font-medium{% endblock %}">
+            <span class="material-symbols-outlined text-[20px]">bar_chart</span> {% trans 'Analytics' %}
+          </a>
+          <a href="{% url 'manage_work:sms_settings' %}"
+             class="flex items-center gap-3 px-4 py-2.5 rounded-full text-sm transition-colors no-underline {% block nav_sms %}text-on-surface-variant hover:bg-surface-variant/50 font-medium{% endblock %}">
+            <span class="material-symbols-outlined text-[20px]">sms</span> {% trans 'SMS Settings' %}
+          </a>
+        </nav>
+      </div>
+
+      <!-- Coming Soon -->
+      <div>
+        <h3 class="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest mb-3">{% trans "Coming Soon" %}</h3>
+        <div class="space-y-1 opacity-60">
+          <div class="flex items-center justify-between px-4 py-2">
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined text-[20px]">smart_toy</span>
+              <span class="text-sm font-medium">{% trans "AI Scheduling" %}</span>
+            </div>
+            <span class="text-[8px] bg-surface-variant px-1.5 py-0.5 rounded uppercase font-bold">{% trans "Soon" %}</span>
+          </div>
+          <div class="flex items-center justify-between px-4 py-2">
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined text-[20px]">sync</span>
+              <span class="text-sm font-medium">{% trans "Calendar Sync" %}</span>
+            </div>
+            <span class="text-[8px] bg-surface-variant px-1.5 py-0.5 rounded uppercase font-bold">{% trans "Soon" %}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar footer -->
+    <div class="p-5 border-t border-outline-variant/40">
+      <div class="bg-surface-variant/30 rounded-xl p-4">
+        <h4 class="text-xs font-bold text-primary mb-1">ScholarSpace</h4>
+        <p class="text-[10px] text-on-surface-variant leading-tight">{% trans "Plan deadlines and spot conflicts in one place." %}</p>
+      </div>
+      <a href="{% url 'manage_work:telemetry' %}"
+         class="flex items-center gap-2 mt-3 px-2 py-1.5 text-xs text-on-surface-variant hover:text-primary transition-colors no-underline {% block nav_telemetry %}{% endblock %}">
+        <span class="material-symbols-outlined text-[16px]">history</span> {% trans 'Activity Log' %}
+      </a>
+      <a href="{% url 'dashboard_home' %}"
+         class="flex items-center gap-2 px-2 py-1.5 text-xs text-on-surface-variant hover:text-primary transition-colors no-underline">
+        <span class="material-symbols-outlined text-[16px]">arrow_back</span> {% trans 'Back to Dashboard' %}
+      </a>
+    </div>
+  </aside>
+
+  <!-- Main content -->
+  <main class="flex-1 ml-64 bg-surface min-h-[calc(100vh-4rem)]">
+    <!-- Local page header -->
+    <header class="flex items-center justify-between px-8 py-4 bg-surface border-b border-outline-variant/20 sticky top-16 z-30">
+      <h1 class="text-lg font-bold font-headline text-on-surface">{% block page_title %}Manage Work{% endblock %}</h1>
+      <div class="flex items-center gap-3">
+        {% block header_actions %}{% endblock %}
+      </div>
+    </header>
+
+    <!-- Page body -->
+    <div class="p-8 max-w-5xl">
+      {% if messages %}
+      <div class="mb-6 space-y-2">
+        {% for message in messages %}
+        <div class="px-4 py-3 rounded-xl text-sm font-medium
+          {% if message.tags == 'success' %}bg-green-50 text-green-800 border border-green-200
+          {% elif message.tags == 'error' %}bg-red-50 text-red-800 border border-red-200
+          {% else %}bg-primary-container text-on-primary-container{% endif %}">
+          {{ message }}
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+      {% block mw_content %}{% endblock %}
+    </div>
+  </main>
+
+</div>
+</body>
+</html>

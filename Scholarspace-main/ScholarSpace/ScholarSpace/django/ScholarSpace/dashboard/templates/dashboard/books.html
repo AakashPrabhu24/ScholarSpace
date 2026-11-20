@@ -1,0 +1,156 @@
+{% extends 'dashboard/scholar_app_base.html' %}
+{% load static %}
+
+{% block title %}ScholarSpace — Discover Your Next Read{% endblock %}
+
+{% block content %}
+<main class="scholar-page-fade flex-1 min-h-screen w-full pt-24 pb-32 md:pb-12">
+  <div class="px-4 sm:px-8 max-w-7xl mx-auto">
+    <div class="flex justify-center mb-8">
+      <form method="post" action="{% url 'books' %}" class="relative w-full max-w-2xl">
+        {% csrf_token %}
+        <div class="absolute inset-y-0 left-4 flex items-center pointer-events-none text-on-surface-variant">
+          <span class="material-symbols-outlined">search</span>
+        </div>
+        <input
+          class="w-full bg-surface-container-high border-none rounded-full py-4 pl-12 pr-6 focus:ring-2 focus:ring-primary focus:bg-surface-container-lowest transition-all font-body text-base shadow-sm text-on-surface"
+          type="search"
+          name="text"
+          placeholder="Discover Your Next Read"
+          value="{{ search_query }}"
+          maxlength="100"
+          autocomplete="off"
+        />
+      </form>
+    </div>
+
+    <div class="flex flex-wrap justify-center gap-3 mb-10 overflow-x-auto pb-2 scrollbar-hide">
+      <a data-scholar-vt href="{% url 'books' %}" class="px-6 py-2 rounded-full text-sm font-semibold whitespace-nowrap shadow-md no-underline {% if not search_query %}bg-primary text-on-primary{% else %}bg-secondary-container text-on-secondary-container hover:bg-secondary-fixed-dim transition-colors{% endif %}">All Books</a>
+      <a data-scholar-vt href="{% url 'books' %}?q=science" class="px-6 py-2 bg-secondary-container text-on-secondary-container rounded-full text-sm font-medium whitespace-nowrap hover:bg-secondary-fixed-dim transition-colors no-underline {% if search_query == 'science' %}ring-2 ring-primary{% endif %}">Science</a>
+      <a data-scholar-vt href="{% url 'books' %}?q=mathematics" class="px-6 py-2 bg-secondary-container text-on-secondary-container rounded-full text-sm font-medium whitespace-nowrap hover:bg-secondary-fixed-dim transition-colors no-underline">Mathematics</a>
+      <a data-scholar-vt href="{% url 'books' %}?q=literature" class="px-6 py-2 bg-secondary-container text-on-secondary-container rounded-full text-sm font-medium whitespace-nowrap hover:bg-secondary-fixed-dim transition-colors no-underline">Literature</a>
+      <a data-scholar-vt href="{% url 'books' %}?q=philosophy" class="px-6 py-2 bg-secondary-container text-on-secondary-container rounded-full text-sm font-medium whitespace-nowrap hover:bg-secondary-fixed-dim transition-colors no-underline">Philosophy</a>
+      <a data-scholar-vt href="{% url 'books' %}?q=history" class="px-6 py-2 bg-secondary-container text-on-secondary-container rounded-full text-sm font-medium whitespace-nowrap hover:bg-secondary-fixed-dim transition-colors no-underline">History</a>
+    </div>
+
+    {% if books_api_error %}
+    <p class="text-center text-error font-medium text-sm mb-4 max-w-2xl mx-auto px-2" role="alert">{{ books_api_error }}</p>
+    {% endif %}
+    {% if books_did_you_mean and results %}
+    <p class="text-center text-primary font-medium text-sm mb-4 max-w-2xl mx-auto">No exact match for “{{ search_query }}”. Showing results for <strong>{{ books_did_you_mean }}</strong>.</p>
+    {% endif %}
+    {% if books_source == 'openlibrary' and results %}
+    <p class="text-center text-on-surface-variant text-sm mb-6 max-w-2xl mx-auto">Results from <strong>Open Library</strong> (Google Books had no matches or was temporarily unavailable).</p>
+    {% endif %}
+
+    {% if results %}
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+      {% for result in results %}
+      <a href="{{ result.preview }}" target="_blank" rel="noopener noreferrer" class="group bg-surface-container-low rounded-xl overflow-hidden hover:translate-y-[-4px] transition-all duration-300 shadow-sm hover:shadow-md no-underline text-inherit">
+        <div class="aspect-[3/4] relative overflow-hidden bg-surface-container">
+          {% if result.thumbnail %}
+          <img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" alt="" src="{{ result.thumbnail }}"/>
+          {% else %}
+          <div class="w-full h-full flex items-center justify-center text-on-surface-variant text-sm bg-surface-container-high">No cover</div>
+          {% endif %}
+          <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-6">
+            <span class="w-full py-3 bg-surface-container-lowest text-primary rounded-full font-bold text-sm shadow-xl flex items-center justify-center gap-2 pointer-events-none">
+              <span class="material-symbols-outlined text-sm">open_in_new</span>
+              View on Google Books
+            </span>
+          </div>
+        </div>
+        <div class="p-6">
+          {% if result.categories %}
+          <span class="text-editorial-label text-tertiary">{{ result.categories.0 }}</span>
+          {% else %}
+          <span class="text-editorial-label text-on-surface-variant">Book</span>
+          {% endif %}
+          <h3 class="text-lg font-bold text-on-surface mt-1 group-hover:text-primary transition-colors font-headline">{{ result.title }}</h3>
+          {% if result.subtitle %}
+          <p class="text-sm text-secondary font-medium">{{ result.subtitle }}</p>
+          {% endif %}
+          {% if result.description %}
+          <p class="text-xs text-on-surface-variant mt-3 line-clamp-2 leading-relaxed italic">{{ result.description }}</p>
+          {% endif %}
+          {% if result.rating %}
+          <p class="text-xs text-primary mt-2 font-semibold">★ {{ result.rating }}</p>
+          {% endif %}
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+    {% elif search_query %}
+    <p class="text-center text-on-surface-variant mb-8">No books matched “{{ search_query }}”. Try another keyword or chip.</p>
+    {% else %}
+    <p class="text-center text-on-surface-variant text-sm mb-8 max-w-xl mx-auto">Search by title or topic, or pick a category chip. Featured picks below are for inspiration.</p>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+      <article class="group bg-surface-container-low rounded-xl overflow-hidden shadow-sm">
+        <div class="aspect-[3/4] relative overflow-hidden">
+          <img class="w-full h-full object-cover" alt="" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBxr_X-jMaqRIUV7CfqLfPzyazRKdPLOGR5uhVLe0eylntq3PFZVDhVcVESB5omjemEL_HbhFcsmdUvags7V_1DqzxmBj1HOmXEBOCDFldDDGF7vEz6HdFDPgVNMmmkN0bC9tpQIOXzDajotUujQzNZwAiR83qJzMMxDlkRT_PKXB0c4bddO-oySwPciB3EXxxym6QpvT17H2meJBhPNHAwRJ1J5YruHBoayLNWokfUiO2g2f3usip4H3SMw7jtk00dD9pFJskdxyw"/>
+        </div>
+        <div class="p-6">
+          <span class="text-editorial-label text-tertiary">Philosophy</span>
+          <h3 class="text-lg font-bold text-on-surface mt-1 font-headline">The Republic</h3>
+          <p class="text-sm text-secondary font-medium">Plato</p>
+        </div>
+      </article>
+      <article class="group bg-surface-container-low rounded-xl overflow-hidden shadow-sm">
+        <div class="aspect-[3/4] relative overflow-hidden">
+          <img class="w-full h-full object-cover" alt="" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAc7HW0MnhImdb3AzTTN1TSR2YPPdQivTic2iSkLD89oDOFV0ZDU7G8aidWMorIHuAibhT_wxBWCpHwHfeth8e4YhgU40oubd-i-JajuAzPIdDEtbiIdPyQdP4ldLW7Us9NMx8yAqvoM46sIzohuZklz-4xD2NbGjMEyGHk6C3p1EqPL6BmDOIWREMScwf07vsU8W1MZPDyWuqWLiRMSsbelfpkFYSN1-YcuHKw3eXTKyb6rjaWLj0u4hUNyVM8j-k3YlcaZS_YMoo"/>
+        </div>
+        <div class="p-6">
+          <span class="text-editorial-label text-tertiary">Science</span>
+          <h3 class="text-lg font-bold text-on-surface mt-1 font-headline">Quantum Electrodynamics</h3>
+          <p class="text-sm text-secondary font-medium">Richard Feynman</p>
+        </div>
+      </article>
+      <article class="group bg-surface-container-low rounded-xl overflow-hidden shadow-sm">
+        <div class="aspect-[3/4] relative overflow-hidden">
+          <img class="w-full h-full object-cover" alt="" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDM-brLb9psoBHMpCEnz6RYWvskzTlupyPp9O6OWim797KjbQQrkF5X24Gb3wjw7-lVuG0mGcCenFzmuQNg8sa9SpBxGLPCscfStoTAxGUrG1NIxCIpg5-VRV-vOmsevu4HOKNd_CkHOt-dz151c7t_nJ-V0peg1g8p9jVYK1ZQG0wc93Fs5m8s-Y7KNsW0WduRB2jUBEE97PLttSG9kqw2WSeWOx03R2YFmB45e8jcGM2v7G5KhILjad0QHbfOTcUeosTb32Fj5J4"/>
+        </div>
+        <div class="p-6">
+          <span class="text-editorial-label text-tertiary">Design</span>
+          <h3 class="text-lg font-bold text-on-surface mt-1 font-headline">Modern Architecture</h3>
+          <p class="text-sm text-secondary font-medium">Kenneth Frampton</p>
+        </div>
+      </article>
+      <article class="group bg-surface-container-low rounded-xl overflow-hidden shadow-sm">
+        <div class="aspect-[3/4] relative overflow-hidden">
+          <img class="w-full h-full object-cover" alt="" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAdIu3-ZUIuIbMe3PiIGohkMgl0UYCmfy9QiEgp0unaqyDi0xu1bQ1dgekxJZO9nX2eLc2KsYhzd5gC1CGESfMiVz_Ly0QBG6mT6_z3kLPMlZt5ErOiMuE9-yj3db_Mnx9sGUWumodGFd-PguhH34DtgYpTtKanNGtEW2uAegCsHBxc1zNECi_jr48kZEC9fRAch5d310wjorKl5zy0-iR9DVuEnotjMeMeXjMSWcxDGP0nkLCp9I5FgDsIJUCfrIp757d9JWGE2WM"/>
+        </div>
+        <div class="p-6">
+          <span class="text-editorial-label text-tertiary">Mathematics</span>
+          <h3 class="text-lg font-bold text-on-surface mt-1 font-headline">Infinite Powers</h3>
+          <p class="text-sm text-secondary font-medium">Steven Strogatz</p>
+        </div>
+      </article>
+    </div>
+    {% endif %}
+  </div>
+
+  {% if search_query and results %}
+  <div class="fixed bottom-24 md:bottom-10 right-4 md:right-10 z-40 max-w-[calc(100vw-2rem)]">
+    <div class="bg-surface-bright/90 backdrop-blur-xl p-4 sm:p-6 rounded-xl shadow-2xl border border-outline-variant/20 flex items-center gap-4 max-w-sm">
+      <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-lg bg-primary-container flex-shrink-0 flex items-center justify-center overflow-hidden">
+        {% if results.0.thumbnail %}
+        <img class="w-full h-full object-cover" alt="" src="{{ results.0.thumbnail }}"/>
+        {% else %}
+        <span class="material-symbols-outlined text-on-primary-container">menu_book</span>
+        {% endif %}
+      </div>
+      <div class="min-w-0 flex-1">
+        <span class="text-editorial-label text-primary block mb-1">Top result</span>
+        <h4 class="font-bold text-on-surface line-clamp-2 text-sm sm:text-base font-headline">{{ results.0.title }}</h4>
+        {% if results.0.rating %}
+        <p class="text-[10px] text-on-surface-variant mt-1 font-semibold uppercase tracking-wider">★ {{ results.0.rating }}</p>
+        {% endif %}
+      </div>
+      <a href="{{ results.0.preview }}" target="_blank" rel="noopener noreferrer" class="p-2 bg-primary text-on-primary rounded-full hover:scale-110 transition-transform flex items-center justify-center shrink-0 no-underline" title="Open preview">
+        <span class="material-symbols-outlined">open_in_new</span>
+      </a>
+    </div>
+  </div>
+  {% endif %}
+</main>
+{% endblock content %}

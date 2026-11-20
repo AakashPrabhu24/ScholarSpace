@@ -1,0 +1,79 @@
+{% extends 'dashboard/scholar_app_base.html' %}
+{% load static %}
+
+{% block title %}ScholarSpace | Calendar{% endblock %}
+
+{% block scholar_floating_shapes %}
+<div class="absolute top-[15%] left-[8%] w-72 h-72 bg-secondary-container/15 rounded-full blur-[110px] pointer-events-none" aria-hidden="true"></div>
+<div class="absolute bottom-[10%] right-[5%] w-80 h-80 bg-tertiary-container/10 rounded-full blur-[120px] pointer-events-none" aria-hidden="true"></div>
+{% endblock %}
+
+{% block main_class %}flex-grow w-full max-w-full px-0 py-0 pt-0 pb-24 md:pb-0 flex flex-col{% endblock %}
+
+{% block content %}
+<div class="relative z-10 flex flex-col items-center w-full px-6 pb-12 pt-10 min-h-[calc(100vh-4rem)]">
+  <div class="flex flex-col items-center w-full max-w-3xl justify-center flex-1">
+    <div class="text-center mb-10">
+      <h1 class="text-5xl md:text-6xl font-black font-headline tracking-tighter text-on-surface">
+        Calendar <span class="text-primary italic">View</span>
+      </h1>
+      <p class="text-on-surface-variant font-medium text-lg mt-3 max-w-sm mx-auto leading-relaxed">
+        Manage your deadlines and events in one place.
+      </p>
+    </div>
+
+    <div class="w-full bg-surface-container-lowest rounded-xl shadow-[0_8px_24px_rgba(0,0,0,0.06)] p-6 mb-6">
+      <div class="flex items-center justify-between mb-6">
+        <h2 class="text-2xl font-bold text-primary">{{ month_name }} {{ year }}</h2>
+        <div class="flex items-center gap-2">
+          <a href="?year={{ prev_year }}&month={{ prev_month }}" class="p-2 rounded-full bg-surface-container-high hover:bg-surface-container transition-colors no-underline text-on-surface flex items-center">
+            <span class="material-symbols-outlined">chevron_left</span>
+          </a>
+          <a href="?year={{ next_year }}&month={{ next_month }}" class="p-2 rounded-full bg-surface-container-high hover:bg-surface-container transition-colors no-underline text-on-surface flex items-center">
+            <span class="material-symbols-outlined">chevron_right</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-7 gap-2 mb-4">
+        <div class="text-center text-xs font-bold text-on-surface-variant">Mon</div>
+        <div class="text-center text-xs font-bold text-on-surface-variant">Tue</div>
+        <div class="text-center text-xs font-bold text-on-surface-variant">Wed</div>
+        <div class="text-center text-xs font-bold text-on-surface-variant">Thu</div>
+        <div class="text-center text-xs font-bold text-on-surface-variant">Fri</div>
+        <div class="text-center text-xs font-bold text-on-surface-variant">Sat</div>
+        <div class="text-center text-xs font-bold text-on-surface-variant">Sun</div>
+      </div>
+
+      <div class="grid grid-cols-7 gap-2">
+        {% for week in calendar_weeks %}
+          {% for day in week %}
+            {% if day == 0 %}
+              <div class="h-20"></div>
+            {% else %}
+              <div class="h-20 border border-outline-variant/20 rounded-lg p-2 {% if day == today.day and month == today.month and year == today.year %}bg-primary-container{% else %}bg-surface-container-lowest{% endif %}">
+                <div class="text-sm font-bold {% if day == today.day and month == today.month and year == today.year %}text-primary{% else %}text-on-surface{% endif %} mb-1">{{ day }}</div>
+                {% if deadlines_by_day %}
+                  {% for d_day, deadline_list in deadlines_by_day.items %}
+                    {% if d_day == day %}
+                      {% for deadline in deadline_list %}
+                        <div class="text-xs p-1 rounded mb-1 {% if deadline.priority == 'HIGH' %}bg-error-container text-on-error-container{% elif deadline.priority == 'MEDIUM' %}bg-secondary-container text-on-secondary-container{% else %}bg-tertiary-container text-on-tertiary-container{% endif %}" title="{{ deadline.title }} - {{ deadline.get_priority_display }}">
+                          {{ deadline.title|truncatechars:12 }}
+                        </div>
+                      {% endfor %}
+                    {% endif %}
+                  {% endfor %}
+                {% endif %}
+              </div>
+            {% endif %}
+          {% endfor %}
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="text-center text-on-surface-variant">
+      <p class="text-sm">Calendar functionality is now working! Events will be displayed here once registered.</p>
+    </div>
+  </div>
+</div>
+{% endblock %}

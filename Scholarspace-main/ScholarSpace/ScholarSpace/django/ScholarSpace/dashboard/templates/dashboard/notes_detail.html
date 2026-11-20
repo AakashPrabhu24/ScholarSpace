@@ -1,0 +1,633 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+{% endblock %}
+
+{% block content %}
+<div class="notes-container">
+  <!-- Live background elements -->
+  <div class="background-animation">
+    <div class="gradient-background"></div>
+    <div class="particles-container"></div>
+    <div class="floating-shapes"></div>
+    <div class="moving-lights"></div>
+  </div>
+
+  <div class="custom-shape-divider">
+    <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+      <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="shape-fill"></path>
+    </svg>
+  </div>
+
+  <div class="content-wrapper">
+    <div class="note-card">
+      <div class="card-blur-bg"></div>
+      <div class="note-header">
+        <div class="title-glow"></div>
+        <h1 class="note-title animate__animated animate__fadeIn">{{ notes.title }}</h1>
+      </div>
+      <div class="note-body">
+        <div class="note-content animate__animated animate__fadeIn animate__delay-1s">
+          {{ notes.description|linebreaksbr }}
+        </div>
+        
+        {% if notes.pdf_file %}
+        <div class="pdf-download-container animate__animated animate__fadeInUp animate__delay-2s">
+          <div class="download-icon-container">
+            <i class="fas fa-file-pdf"></i>
+          </div>
+          <a href="{{ notes.pdf_file.url }}" 
+             class="download-button" 
+             target="_blank" 
+             download>
+            <span class="download-text">Download PDF</span>
+            <span class="download-icon"><i class="fas fa-arrow-down"></i></span>
+          </a>
+        </div>
+        {% else %}
+        <div class="no-pdf-alert animate__animated animate__fadeIn animate__delay-2s">
+          <div class="alert-icon">
+            <i class="fas fa-info-circle"></i>
+          </div>
+          <p>No PDF file attached to this note</p>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <div class="custom-shape-divider-bottom">
+    <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+      <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="shape-fill"></path>
+    </svg>
+  </div>
+</div>
+
+<style>
+  :root {
+    --primary-color: #3a1c71;
+    --secondary-color: #d76d77;
+    --accent-color: #ffaf7b;
+    --text-color: #333;
+    --light-text: #fff;
+    --card-bg: rgba(255, 255, 255, 0.8);
+    --card-shadow: 0 20px 80px rgba(0, 0, 0, 0.15);
+    --transition-time: 0.4s;
+  }
+
+  /* Main container */
+  .notes-container {
+    position: relative;
+    min-height: 100vh;
+    width: 100%;
+    overflow: hidden;
+    padding: 80px 0;
+  }
+
+  /* Live background styles */
+  .background-animation {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    overflow: hidden;
+  }
+
+  .gradient-background {
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color), var(--accent-color), var(--primary-color));
+    background-size: 400% 400%;
+    animation: gradientShift 15s ease infinite;
+    transform-origin: center center;
+    z-index: -3;
+  }
+
+  @keyframes gradientShift {
+    0% {
+      background-position: 0% 50%;
+      transform: rotate(0deg);
+    }
+    50% {
+      background-position: 100% 50%;
+      transform: rotate(5deg);
+    }
+    100% {
+      background-position: 0% 50%;
+      transform: rotate(0deg);
+    }
+  }
+
+  .particles-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -2;
+  }
+
+  .particle {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.5);
+    box-shadow: 0 0 10px 2px rgba(255, 255, 255, 0.2);
+    pointer-events: none;
+  }
+
+  .floating-shapes {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -2;
+  }
+
+  .floating-shape {
+    position: absolute;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+    opacity: 0.7;
+    filter: blur(5px);
+    pointer-events: none;
+  }
+
+  .moving-lights {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+  }
+
+  .light-beam {
+    position: absolute;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  /* Decorative wave shapes */
+  .custom-shape-divider {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    overflow: hidden;
+    line-height: 0;
+    z-index: 0;
+  }
+
+  .custom-shape-divider svg {
+    position: relative;
+    display: block;
+    width: calc(100% + 1.3px);
+    height: 150px;
+  }
+
+  .custom-shape-divider .shape-fill {
+    fill: rgba(255, 255, 255, 0.1);
+  }
+
+  .custom-shape-divider-bottom {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    overflow: hidden;
+    line-height: 0;
+    transform: rotate(180deg);
+    z-index: 0;
+  }
+
+  .custom-shape-divider-bottom svg {
+    position: relative;
+    display: block;
+    width: calc(100% + 1.3px);
+    height: 150px;
+  }
+
+  .custom-shape-divider-bottom .shape-fill {
+    fill: rgba(255, 255, 255, 0.1);
+  }
+
+  /* Content wrapper */
+  .content-wrapper {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 20px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Note card */
+  .note-card {
+    position: relative;
+    background: var(--card-bg);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: var(--card-shadow);
+    transform: translateY(0);
+    transition: transform var(--transition-time), box-shadow var(--transition-time);
+    z-index: 2;
+  }
+
+  .note-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 30px 100px rgba(0, 0, 0, 0.2);
+  }
+
+  .card-blur-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cg fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath opacity='.5' d='M96 95h4v1h-4v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9zm-1 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm9-10v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm9-10v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm9-10v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    opacity: 0.5;
+  }
+
+  /* Note header */
+  .note-header {
+    position: relative;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: var(--light-text);
+    padding: 40px 20px;
+    text-align: center;
+    overflow: hidden;
+  }
+
+  .title-glow {
+    position: absolute;
+    top: -20px;
+    left: 0;
+    width: 100%;
+    height: 120%;
+    background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.3) 0%, transparent 70%);
+    opacity: 0.7;
+  }
+
+  .note-title {
+    position: relative;
+    z-index: 1;
+    font-family: 'Georgia', serif;
+    font-weight: 700;
+    font-size: 2.5rem;
+    letter-spacing: 0.5px;
+    margin: 0;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  }
+
+  /* Note body */
+  .note-body {
+    padding: 50px;
+    position: relative;
+  }
+
+  .note-content {
+    font-family: 'Georgia', serif;
+    font-size: 1.2rem;
+    line-height: 1.8;
+    color: var(--text-color);
+    margin-bottom: 50px;
+  }
+
+  /* PDF download section */
+  .pdf-download-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 40px;
+  }
+
+  .download-icon-container {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+  }
+
+  .download-icon-container i {
+    font-size: 32px;
+    color: var(--light-text);
+  }
+
+  .download-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: var(--light-text);
+    text-decoration: none;
+    padding: 15px 40px;
+    border-radius: 50px;
+    font-size: 18px;
+    font-weight: 600;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+    transition: all var(--transition-time);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .download-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transform: translateX(-100%);
+  }
+
+  .download-button:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2);
+  }
+
+  .download-button:hover::before {
+    animation: shine 1.5s infinite;
+  }
+
+  @keyframes shine {
+    100% {
+      transform: translateX(100%);
+    }
+  }
+
+  .download-text {
+    margin-right: 10px;
+  }
+
+  .download-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+  }
+
+  /* No PDF alert */
+  .no-pdf-alert {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 25px 30px;
+    background: rgba(0, 0, 0, 0.03);
+    border-radius: 15px;
+    border-left: 5px solid var(--secondary-color);
+    margin: 40px 0;
+  }
+
+  .alert-icon {
+    font-size: 24px;
+    color: var(--secondary-color);
+    margin-right: 15px;
+  }
+
+  .no-pdf-alert p {
+    margin: 0;
+    font-size: 18px;
+    color: #666;
+  }
+
+  /* Media queries for responsive design */
+  @media (max-width: 768px) {
+    .note-header {
+      padding: 30px 15px;
+    }
+
+    .note-title {
+      font-size: 2rem;
+    }
+
+    .note-body {
+      padding: 30px 20px;
+    }
+
+    .note-content {
+      font-size: 1.1rem;
+    }
+
+    .download-button {
+      padding: 12px 30px;
+      font-size: 16px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .notes-container {
+      padding: 60px 0;
+    }
+
+    .note-title {
+      font-size: 1.8rem;
+    }
+
+    .note-content {
+      font-size: 1rem;
+    }
+
+    .download-icon-container {
+      width: 60px;
+      height: 60px;
+    }
+
+    .download-icon-container i {
+      font-size: 24px;
+    }
+  }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Live background animation setup
+  const createParticles = () => {
+    const particlesContainer = document.querySelector('.particles-container');
+    const particleCount = window.innerWidth < 768 ? 50 : 100;
+    
+    for (let i = 0; i < particleCount; i++) {
+      const particle = document.createElement('div');
+      particle.classList.add('particle');
+      
+      // Random size, position, and animation
+      const size = Math.random() * 5 + 2;
+      const left = Math.random() * 100;
+      const top = Math.random() * 100;
+      const duration = Math.random() * 30 + 10;
+      const delay = Math.random() * 5;
+      
+      particle.style.width = size + 'px';
+      particle.style.height = size + 'px';
+      particle.style.left = left + '%';
+      particle.style.top = top + '%';
+      particle.style.opacity = Math.random() * 0.6 + 0.2;
+      
+      // Add animation
+      particle.style.animation = `float ${duration}s ${delay}s infinite ease-in-out`;
+      
+      particlesContainer.appendChild(particle);
+    }
+  };
+  
+  const createFloatingShapes = () => {
+    const shapesContainer = document.querySelector('.floating-shapes');
+    const shapeCount = window.innerWidth < 768 ? 6 : 12;
+    
+    for (let i = 0; i < shapeCount; i++) {
+      const shape = document.createElement('div');
+      shape.classList.add('floating-shape');
+      
+      // Random size, position, and animation
+      const size = Math.random() * 300 + 100;
+      const left = Math.random() * 100;
+      const top = Math.random() * 100;
+      const duration = Math.random() * 40 + 20;
+      const delay = Math.random() * 10;
+      
+      shape.style.width = size + 'px';
+      shape.style.height = size + 'px';
+      shape.style.left = left + '%';
+      shape.style.top = top + '%';
+      
+      // Add animation with random transforms
+      shape.style.animation = `floatShape ${duration}s ${delay}s infinite ease-in-out`;
+      
+      shapesContainer.appendChild(shape);
+    }
+  };
+  
+  const createMovingLights = () => {
+    const lightsContainer = document.querySelector('.moving-lights');
+    const lightCount = window.innerWidth < 768 ? 3 : 6;
+    
+    for (let i = 0; i < lightCount; i++) {
+      const light = document.createElement('div');
+      light.classList.add('light-beam');
+      
+      // Random position and animation
+      const left = Math.random() * 100;
+      const top = Math.random() * 100;
+      
+      light.style.left = left + '%';
+      light.style.top = top + '%';
+      
+      lightsContainer.appendChild(light);
+      
+      // Animate light movement
+      animateLight(light);
+    }
+  };
+  
+  const animateLight = (light) => {
+    const moveLight = () => {
+      const containerWidth = document.querySelector('.notes-container').offsetWidth;
+      const containerHeight = document.querySelector('.notes-container').offsetHeight;
+      
+      const targetX = Math.random() * containerWidth;
+      const targetY = Math.random() * containerHeight;
+      const duration = Math.random() * 8000 + 4000;
+      
+      light.style.transition = `all ${duration/1000}s cubic-bezier(0.1, 0.7, 0.6, 1)`;
+      light.style.left = targetX + 'px';
+      light.style.top = targetY + 'px';
+      
+      setTimeout(moveLight, duration);
+    };
+    
+    moveLight();
+  };
+  
+  // Initialize all background animations
+  createParticles();
+  createFloatingShapes();
+  createMovingLights();
+  
+  // Add parallax effect on mouse move
+  const notesContainer = document.querySelector('.notes-container');
+  notesContainer.addEventListener('mousemove', function(e) {
+    const x = e.clientX / window.innerWidth;
+    const y = e.clientY / window.innerHeight;
+    
+    const gradientBg = document.querySelector('.gradient-background');
+    gradientBg.style.transform = `translate(${-x * 20}px, ${-y * 20}px) rotate(${x * 5}deg)`;
+    
+    const particles = document.querySelectorAll('.particle');
+    particles.forEach(particle => {
+      const speed = parseFloat(particle.style.width) / 5;
+      particle.style.transform = `translate(${-x * speed * 40}px, ${-y * speed * 40}px)`;
+    });
+  });
+  
+  // Add interactive card effect
+  const noteCard = document.querySelector('.note-card');
+  if (noteCard) {
+    noteCard.addEventListener('mousemove', function(e) {
+      const rect = noteCard.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+      
+      const angleX = (y - centerY) / 30;
+      const angleY = (centerX - x) / 30;
+      
+      noteCard.style.transform = `perspective(1000px) rotateX(${angleX}deg) rotateY(${angleY}deg) translateY(-10px)`;
+    });
+    
+    noteCard.addEventListener('mouseleave', function() {
+      noteCard.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateY(0)';
+    });
+  }
+});
+
+// Add the floating shape animation
+document.head.insertAdjacentHTML('beforeend', `
+  <style>
+    @keyframes float {
+      0% {
+        transform: translateY(0) rotate(0deg);
+      }
+      50% {
+        transform: translateY(-100px) rotate(10deg);
+      }
+      100% {
+        transform: translateY(0) rotate(0deg);
+      }
+    }
+    
+    @keyframes floatShape {
+      0% {
+        transform: translateY(0) rotate(0deg) scale(1);
+      }
+      50% {
+        transform: translateY(-50px) rotate(15deg) scale(1.1);
+      }
+      100% {
+        transform: translateY(0) rotate(0deg) scale(1);
+      }
+    }
+  </style>
+`);
+</script>
+{% endblock content %}

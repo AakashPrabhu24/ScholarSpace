@@ -1,0 +1,399 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+
+{% block title %}ScholarSpace | Create account{% endblock %}
+{% block html_class %}light{% endblock %}
+{% block body_class %}bg-background text-on-background min-h-screen flex flex-col{% endblock %}
+
+{% block extra_head %}
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "tertiary-fixed-dim": "#e2c0ee",
+          "surface-container-low": "#f5f2fb",
+          "secondary-fixed-dim": "#d1d3eb",
+          "on-secondary-container": "#4e5065",
+          "tertiary-fixed": "#f1cefc",
+          "surface-bright": "#fbf8fe",
+          "on-secondary": "#faf8ff",
+          "surface-container-high": "#e9e7f1",
+          "on-primary": "#faf8ff",
+          "on-surface": "#31323b",
+          "tertiary": "#71557c",
+          "inverse-primary": "#bfc6fd",
+          "outline-variant": "#b2b1bc",
+          "on-surface-variant": "#5e5e68",
+          "error": "#a8364b",
+          "on-tertiary-container": "#5d4368",
+          "tertiary-dim": "#64496f",
+          "primary-dim": "#48507f",
+          "on-secondary-fixed-variant": "#585a6f",
+          "error-dim": "#6b0221",
+          "background": "#fbf8fe",
+          "on-primary-fixed": "#232b57",
+          "surface-container": "#efedf6",
+          "surface-variant": "#e3e1ed",
+          "surface-tint": "#545c8c",
+          "secondary-dim": "#4f5266",
+          "surface-container-lowest": "#ffffff",
+          "inverse-on-surface": "#9e9ca2",
+          "on-background": "#31323b",
+          "on-tertiary-fixed-variant": "#674c72",
+          "on-tertiary": "#fff7fc",
+          "primary-fixed-dim": "#b1b8ee",
+          "on-tertiary-fixed": "#493055",
+          "secondary-container": "#e0e1f9",
+          "on-primary-fixed-variant": "#404876",
+          "primary-container": "#bfc6fd",
+          "surface": "#fbf8fe",
+          "secondary": "#5b5e72",
+          "primary": "#545c8c",
+          "primary-fixed": "#bfc6fd",
+          "secondary-fixed": "#e0e1f9",
+          "on-secondary-fixed": "#3c3e51",
+          "error-container": "#f97386",
+          "on-error-container": "#6e0523",
+          "surface-container-highest": "#e3e1ed",
+          "inverse-surface": "#0d0e12",
+          "surface-dim": "#dad9e4",
+          "on-primary-container": "#373f6d",
+          "tertiary-container": "#f1cefc",
+          "on-error": "#fff7f7",
+          "outline": "#7a7a84"
+        },
+        borderRadius: {
+          DEFAULT: "1rem",
+          lg: "2rem",
+          xl: "3rem",
+          full: "9999px"
+        },
+        fontFamily: {
+          headline: ["Plus Jakarta Sans"],
+          body: ["Inter"],
+          label: ["Inter"]
+        }
+      }
+    }
+  }
+</script>
+<style>
+  body { font-family: 'Inter', sans-serif; }
+  h1, h2, h3, .font-headline { font-family: 'Plus Jakarta Sans', sans-serif; }
+  .material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  }
+  .bg-scholar-gradient {
+    background: linear-gradient(135deg, #545c8c 0%, #48507f 100%);
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+  .anim-fade-up { animation: fadeUp 0.55s cubic-bezier(.22,.68,0,1.2) both; }
+  .anim-fade    { animation: fadeIn 0.5s ease both; }
+  .delay-1 { animation-delay: 0.08s; }
+  .delay-2 { animation-delay: 0.16s; }
+  .delay-3 { animation-delay: 0.24s; }
+  .delay-4 { animation-delay: 0.32s; }
+  .delay-5 { animation-delay: 0.40s; }
+  .delay-6 { animation-delay: 0.48s; }
+  .delay-7 { animation-delay: 0.56s; }
+  .delay-8 { animation-delay: 0.64s; }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50%       { transform: translateY(-8px); }
+  }
+  .float-anim { animation: float 5s ease-in-out infinite; }
+
+  .input-wrap { transition: box-shadow 0.2s, background 0.2s; }
+  .input-wrap:focus-within {
+    box-shadow: 0 0 0 2px #545c8c;
+    background: #ffffff !important;
+  }
+
+  .btn-primary { position: relative; overflow: hidden; }
+  .btn-primary::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.12) 50%, transparent 70%);
+    transform: translateX(-100%);
+    transition: transform 0.6s ease;
+  }
+  .btn-primary:hover::after { transform: translateX(100%); }
+  .btn-primary:active { transform: scale(0.98); }
+
+  .social-btn { transition: background 0.2s, border-color 0.2s, transform 0.15s; }
+  .social-btn:hover { background: #efedf6; transform: translateY(-1px); }
+  .social-btn:active { transform: translateY(0); }
+
+  .nav-link {
+    position: relative;
+    transition: color 0.2s;
+  }
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -2px; left: 0;
+    width: 0; height: 2px;
+    background: #545c8c;
+    transition: width 0.25s ease;
+    border-radius: 2px;
+  }
+  .nav-link:hover::after { width: 100%; }
+  .nav-link.active::after { width: 100%; }
+
+  .chip { transition: transform 0.2s, box-shadow 0.2s; }
+  .chip:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(84,92,140,0.18); }
+
+  .blob1, .blob2 {
+    position: absolute;
+    border-radius: 9999px;
+    filter: blur(60px);
+    pointer-events: none;
+  }
+
+  main > .messages { width: 100%; max-width: 72rem; margin-left: auto; margin-right: auto; padding: 0 0.5rem 1rem; }
+  main .messages .alert { border-radius: 1rem; padding: 0.75rem 1rem; margin-bottom: 0.75rem; font-size: 0.875rem; border: none; }
+  main .messages .alert-success { background: #bfc6fd; color: #373f6d; }
+  main .messages .alert-error, main .messages .alert-danger { background: #f97386; color: #6e0523; }
+  .field-error { color: #a8364b; font-size: 0.75rem; margin-top: 0.25rem; margin-left: 0.25rem; }
+  .field-error ul { list-style: none; padding: 0; margin: 0; }
+</style>
+{% endblock extra_head %}
+
+{% block navbar %}
+<header class="sticky top-0 z-50 w-full bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-b border-slate-200/60 dark:border-slate-800/60">
+  <div class="relative flex w-full items-center justify-between min-h-[3rem] px-6 py-3 max-w-screen-2xl mx-auto">
+    <a href="{% url 'public_landing' %}" class="relative z-10 shrink-0 text-2xl font-black tracking-tight text-indigo-700 dark:text-indigo-300 font-headline">ScholarSpace</a>
+    <a href="{% url 'public_landing' %}" class="absolute left-1/2 top-1/2 hidden md:inline-block -translate-x-1/2 -translate-y-1/2 text-sm font-semibold text-indigo-700 dark:text-indigo-300 border-b-2 border-indigo-600 dark:border-indigo-400 pb-1 whitespace-nowrap">Home</a>
+    <div class="relative z-10 flex shrink-0 items-center">
+      <a href="{% url 'login' %}" class="inline-flex items-center justify-center px-6 py-2.5 rounded-full text-sm font-semibold border border-outline text-primary hover:bg-slate-100 dark:hover:bg-slate-800 transition-all active:scale-95">Login</a>
+    </div>
+  </div>
+</header>
+{% endblock navbar %}
+
+{% block main_class %}flex-grow flex flex-col justify-center p-6 md:p-12{% endblock %}
+
+{% block content %}
+<div class="max-w-6xl w-full mx-auto grid md:grid-cols-2 gap-0 overflow-hidden bg-surface-container-lowest rounded-xl shadow-[0_8px_40px_rgba(49,50,59,0.08)] border border-outline-variant/20 anim-fade-up delay-1">
+
+  <div class="hidden md:flex flex-col justify-center p-16 bg-surface-container-low relative overflow-hidden">
+    <div class="blob1" style="width:220px;height:220px;background:#bfc6fd22;top:-60px;right:-40px;"></div>
+    <div class="blob2" style="width:280px;height:280px;background:#f1cefc18;bottom:-80px;left:-60px;"></div>
+
+    <div class="relative z-10">
+      <h1 class="text-4xl lg:text-5xl font-extrabold text-primary tracking-tight leading-tight mb-6 anim-fade-up delay-2" style="font-family:'Plus Jakarta Sans',sans-serif;">
+        Join <br/><span class="text-tertiary">ScholarSpace.</span>
+      </h1>
+      <p class="text-on-surface-variant text-lg max-w-md leading-relaxed mb-8 anim-fade-up delay-3">
+        Join a community of scholars dedicated to rigorous thought and curated learning experiences.
+      </p>
+      <div class="flex flex-wrap gap-3 anim-fade-up delay-4">
+        <span class="chip px-4 py-1.5 rounded-full bg-secondary-fixed-dim text-on-secondary-fixed text-sm font-medium cursor-default">Research Hub</span>
+        <span class="chip px-4 py-1.5 rounded-full bg-tertiary-fixed text-on-tertiary-fixed text-sm font-medium cursor-default">Curated Insights</span>
+      </div>
+    </div>
+
+    <div class="mt-12 relative float-anim anim-fade delay-5">
+      <div class="rounded-xl overflow-hidden shadow-xl border-4 border-white">
+        <svg viewBox="0 0 500 280" xmlns="http://www.w3.org/2000/svg" class="w-full">
+          <defs>
+            <radialGradient id="bg-grad" cx="50%" cy="50%" r="70%">
+              <stop offset="0%" stop-color="#1e2a3a"/>
+              <stop offset="100%" stop-color="#0d1520"/>
+            </radialGradient>
+          </defs>
+          <rect width="500" height="280" fill="url(#bg-grad)"/>
+          <rect x="30" y="40" width="90" height="120" rx="6" fill="#1a7a7a" transform="rotate(-8,75,100)"/>
+          <rect x="34" y="44" width="82" height="112" rx="4" fill="#26a0a0" transform="rotate(-8,75,100)"/>
+          <line x1="44" y1="65" x2="100" y2="63" stroke="#1a7a7a" stroke-width="1.5" transform="rotate(-8,75,100)"/>
+          <line x1="44" y1="75" x2="100" y2="73" stroke="#1a7a7a" stroke-width="1.5" transform="rotate(-8,75,100)"/>
+          <line x1="44" y1="85" x2="100" y2="83" stroke="#1a7a7a" stroke-width="1.5" transform="rotate(-8,75,100)"/>
+          <rect x="140" y="20" width="80" height="105" rx="6" fill="#2a4a8a" transform="rotate(5,180,72)"/>
+          <rect x="144" y="24" width="72" height="97" rx="4" fill="#3a5aaa" transform="rotate(5,180,72)"/>
+          <rect x="60" y="160" width="200" height="18" rx="3" fill="#e8d5b0" transform="rotate(-3,160,169)"/>
+          <rect x="62" y="162" width="196" height="14" rx="2" fill="#f0e0c0" transform="rotate(-3,160,169)"/>
+          <g transform="rotate(-3,160,169)">
+            <line x1="70" y1="162" x2="70" y2="170" stroke="#c4a87a" stroke-width="0.8"/>
+            <line x1="80" y1="164" x2="80" y2="170" stroke="#c4a87a" stroke-width="0.8"/>
+            <line x1="90" y1="162" x2="90" y2="170" stroke="#c4a87a" stroke-width="0.8"/>
+            <line x1="100" y1="164" x2="100" y2="170" stroke="#c4a87a" stroke-width="0.8"/>
+            <line x1="110" y1="162" x2="110" y2="170" stroke="#c4a87a" stroke-width="0.8"/>
+            <line x1="120" y1="164" x2="120" y2="170" stroke="#c4a87a" stroke-width="0.8"/>
+            <line x1="130" y1="162" x2="130" y2="170" stroke="#c4a87a" stroke-width="0.8"/>
+            <line x1="140" y1="164" x2="140" y2="170" stroke="#c4a87a" stroke-width="0.8"/>
+            <line x1="150" y1="162" x2="150" y2="170" stroke="#c4a87a" stroke-width="0.8"/>
+            <line x1="160" y1="164" x2="160" y2="170" stroke="#c4a87a" stroke-width="0.8"/>
+            <line x1="170" y1="162" x2="170" y2="170" stroke="#c4a87a" stroke-width="0.8"/>
+            <line x1="180" y1="164" x2="180" y2="170" stroke="#c4a87a" stroke-width="0.8"/>
+            <line x1="190" y1="162" x2="190" y2="170" stroke="#c4a87a" stroke-width="0.8"/>
+            <line x1="200" y1="164" x2="200" y2="170" stroke="#c4a87a" stroke-width="0.8"/>
+            <line x1="210" y1="162" x2="210" y2="170" stroke="#c4a87a" stroke-width="0.8"/>
+            <line x1="220" y1="164" x2="220" y2="170" stroke="#c4a87a" stroke-width="0.8"/>
+            <line x1="230" y1="162" x2="230" y2="170" stroke="#c4a87a" stroke-width="0.8"/>
+            <line x1="240" y1="164" x2="240" y2="170" stroke="#c4a87a" stroke-width="0.8"/>
+            <line x1="250" y1="162" x2="250" y2="170" stroke="#c4a87a" stroke-width="0.8"/>
+          </g>
+          <rect x="310" y="30" width="12" height="130" rx="2" fill="#f4c430" transform="rotate(15,316,95)"/>
+          <rect x="310" y="30" width="12" height="16" rx="2" fill="#e8b020" transform="rotate(15,316,95)"/>
+          <polygon points="310,160 322,160 316,178" fill="#ffe4b5" transform="rotate(15,316,95)"/>
+          <polygon points="312,170 320,170 316,178" fill="#8b6914" transform="rotate(15,316,95)"/>
+          <rect x="310" y="152" width="12" height="10" rx="0" fill="#f0a0a0" transform="rotate(15,316,95)"/>
+          <rect x="340" y="60" width="10" height="110" rx="2" fill="#7ec8e3" transform="rotate(-10,345,115)"/>
+          <polygon points="340,170 350,170 345,186" fill="#ffe4b5" transform="rotate(-10,345,115)"/>
+          <polygon points="342,178 348,178 345,186" fill="#8b6914" transform="rotate(-10,345,115)"/>
+          <rect x="340" y="162" width="10" height="9" fill="#f0a0a0" transform="rotate(-10,345,115)"/>
+          <circle cx="400" cy="80" r="30" fill="none" stroke="#9ab3d4" stroke-width="1.5" stroke-dasharray="4 3"/>
+          <line x1="400" y1="50" x2="400" y2="110" stroke="#7a93b4" stroke-width="2"/>
+          <line x1="370" y1="80" x2="430" y2="80" stroke="#7a93b4" stroke-width="2"/>
+          <line x1="400" y1="80" x2="420" y2="100" stroke="#c0a060" stroke-width="2"/>
+          <circle cx="400" cy="80" r="5" fill="#c0a060"/>
+          <circle cx="420" cy="100" r="3" fill="#c0a060"/>
+          <circle cx="430" cy="190" r="50" fill="none" stroke="#4a8fa0" stroke-width="1.5" opacity="0.6"/>
+          <ellipse cx="430" cy="190" rx="25" ry="50" fill="none" stroke="#4a8fa0" stroke-width="1" opacity="0.4"/>
+          <ellipse cx="430" cy="190" rx="50" ry="15" fill="none" stroke="#4a8fa0" stroke-width="1" opacity="0.4"/>
+          <line x1="380" y1="190" x2="480" y2="190" stroke="#4a8fa0" stroke-width="0.8" opacity="0.4"/>
+          <line x1="430" y1="140" x2="430" y2="240" stroke="#4a8fa0" stroke-width="0.8" opacity="0.4"/>
+          <ellipse cx="415" cy="175" rx="12" ry="8" fill="#2a6a5a" opacity="0.7"/>
+          <ellipse cx="445" cy="185" rx="10" ry="6" fill="#2a6a5a" opacity="0.6"/>
+          <ellipse cx="425" cy="200" rx="8" ry="5" fill="#2a6a5a" opacity="0.5"/>
+          <rect x="180" y="50" width="45" height="45" rx="3" fill="#ffcc66" transform="rotate(6,202,72)" opacity="0.9"/>
+          <line x1="188" y1="67" x2="216" y2="66" stroke="#e6b050" stroke-width="1.2" transform="rotate(6,202,72)"/>
+          <line x1="188" y1="74" x2="216" y2="73" stroke="#e6b050" stroke-width="1.2" transform="rotate(6,202,72)"/>
+          <line x1="188" y1="81" x2="216" y2="80" stroke="#e6b050" stroke-width="1.2" transform="rotate(6,202,72)"/>
+          <rect x="240" y="170" width="40" height="40" rx="3" fill="#ff8fa0" transform="rotate(-5,260,190)" opacity="0.85"/>
+          <circle cx="100" cy="220" r="6" fill="#7ec8e3" opacity="0.6"/>
+          <circle cx="115" cy="230" r="4" fill="#f4c430" opacity="0.7"/>
+          <circle cx="90" cy="235" r="3" fill="#bfc6fd" opacity="0.8"/>
+          <circle cx="310" cy="230" r="5" fill="#f1cefc" opacity="0.7"/>
+          <circle cx="330" cy="218" r="3" fill="#7ec8e3" opacity="0.6"/>
+          <circle cx="260" cy="110" r="22" fill="none" stroke="#8ab4c0" stroke-width="2.5" opacity="0.8"/>
+          <circle cx="260" cy="110" r="18" fill="#1a2a3a" opacity="0.5"/>
+          <line x1="276" y1="126" x2="290" y2="142" stroke="#8ab4c0" stroke-width="3" stroke-linecap="round" opacity="0.8"/>
+          <ellipse cx="252" cy="100" rx="7" ry="4" fill="white" opacity="0.12" transform="rotate(-30,252,100)"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="p-8 md:p-14 flex flex-col justify-center">
+    <form method="post" action="">
+      {% csrf_token %}
+      <div class="mb-8 anim-fade-up delay-2">
+        <h2 class="text-2xl font-bold text-on-surface mb-1" style="font-family:'Plus Jakarta Sans',sans-serif;">Create Account</h2>
+        <p class="text-on-surface-variant text-sm">Start your scholarly journey today.</p>
+      </div>
+
+      {% if form.non_field_errors %}
+      <div class="mb-4 text-sm text-error field-error">{{ form.non_field_errors }}</div>
+      {% endif %}
+
+      <div class="space-y-5">
+        <div class="anim-fade-up delay-3">
+          <label class="block text-xs font-semibold uppercase tracking-widest text-on-surface-variant mb-2 ml-1" for="{{ form.username.id_for_label }}">Username</label>
+          <div class="input-wrap flex items-center bg-surface-container-high rounded-xl">
+            <span class="material-symbols-outlined ml-4 text-outline text-xl select-none">person</span>
+            {{ form.username }}
+          </div>
+          {% if form.username.errors %}<div class="field-error">{{ form.username.errors }}</div>{% endif %}
+        </div>
+
+        <div class="anim-fade-up delay-4">
+          <label class="block text-xs font-semibold uppercase tracking-widest text-on-surface-variant mb-2 ml-1" for="{{ form.password1.id_for_label }}">Password</label>
+          <div class="input-wrap flex items-center bg-surface-container-high rounded-xl">
+            <span class="material-symbols-outlined ml-4 text-outline text-xl select-none">lock</span>
+            {{ form.password1 }}
+          </div>
+          {% if form.password1.errors %}<div class="field-error">{{ form.password1.errors }}</div>{% endif %}
+        </div>
+
+        <div class="anim-fade-up delay-5">
+          <label class="block text-xs font-semibold uppercase tracking-widest text-on-surface-variant mb-2 ml-1" for="{{ form.password2.id_for_label }}">Confirm Password</label>
+          <div class="input-wrap flex items-center bg-surface-container-high rounded-xl">
+            <span class="material-symbols-outlined ml-4 text-outline text-xl select-none">verified_user</span>
+            {{ form.password2 }}
+          </div>
+          {% if form.password2.errors %}<div class="field-error">{{ form.password2.errors }}</div>{% endif %}
+        </div>
+
+        <div class="pt-2 anim-fade-up delay-6">
+          <button type="submit" class="btn-primary w-full bg-scholar-gradient text-on-primary font-bold py-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 text-sm tracking-wide">
+            Create Account
+          </button>
+        </div>
+
+        <div class="flex items-center gap-4 py-2 anim-fade-up delay-7">
+          <div class="h-px flex-grow bg-outline-variant/30"></div>
+          <span class="text-xs text-outline font-medium uppercase tracking-tighter whitespace-nowrap">or sign up with</span>
+          <div class="h-px flex-grow bg-outline-variant/30"></div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4 anim-fade-up delay-8">
+          <a href="{% url 'google_oauth_start' %}" class="social-btn flex items-center justify-center gap-2 border border-outline-variant/30 py-3 rounded-full no-underline text-on-surface">
+            <svg width="18" height="18" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M17.64 9.20c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.874 2.684-6.615z" fill="#4285F4"/>
+              <path d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 009 18z" fill="#34A853"/>
+              <path d="M3.964 10.71A5.41 5.41 0 013.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 000 9c0 1.452.348 2.827.957 4.042l3.007-2.332z" fill="#FBBC05"/>
+              <path d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 00.957 4.958L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58z" fill="#EA4335"/>
+            </svg>
+            <span class="text-sm font-semibold text-on-surface">Google</span>
+          </a>
+          <button class="social-btn flex items-center justify-center gap-2 border border-outline-variant/30 py-3 rounded-full" type="button">
+            <span class="material-symbols-outlined text-xl text-on-surface">school</span>
+            <span class="text-sm font-semibold text-on-surface">Institution</span>
+          </button>
+        </div>
+      </div>
+    </form>
+
+    <p class="mt-8 text-center text-sm text-on-surface-variant anim-fade-up delay-8">
+      Already have an account?
+      <a class="text-primary font-bold hover:underline underline-offset-4 decoration-primary/30 ml-1" href="{% url 'login' %}">Sign in</a>
+    </p>
+  </div>
+</div>
+{% endblock content %}
+
+{% block footer %}
+<footer class="bg-slate-50 py-12 mt-auto">
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 px-8 max-w-7xl mx-auto">
+    <div class="space-y-4">
+      <a href="{% url 'public_landing' %}" class="text-lg font-black text-slate-900 uppercase tracking-tighter inline-block" style="font-family:'Plus Jakarta Sans',sans-serif;">ScholarSpace</a>
+      <p class="text-sm text-slate-500 leading-relaxed">Defining the next generation of academic excellence through digital discipline.</p>
+    </div>
+    <div class="flex flex-col gap-3">
+      <span class="text-xs uppercase tracking-widest text-indigo-700 font-bold">Platform</span>
+      <a class="text-sm text-slate-500 hover:text-indigo-500 underline decoration-indigo-500/30 underline-offset-4 transition-all" href="{% url 'wiki' %}">Help Center</a>
+      <a class="text-sm text-slate-500 hover:text-indigo-500 underline decoration-indigo-500/30 underline-offset-4 transition-all" href="https://docs.google.com/forms/d/e/1FAIpQLSeXbqorpTQJgPj26UjIslaqMuwM0fphvYulL70F8mXxiqrYhQ/viewform?usp=sharing" target="_blank" rel="noopener noreferrer">Contact Us</a>
+    </div>
+    <div class="flex flex-col gap-3">
+      <span class="text-xs uppercase tracking-widest text-indigo-700 font-bold">Legal</span>
+      <a class="text-sm text-slate-500 hover:text-indigo-500 underline decoration-indigo-500/30 underline-offset-4 transition-all" href="#">Privacy Policy</a>
+      <a class="text-sm text-slate-500 hover:text-indigo-500 underline decoration-indigo-500/30 underline-offset-4 transition-all" href="#">Terms of Service</a>
+    </div>
+    <div class="flex flex-col gap-3">
+      <span class="text-xs uppercase tracking-widest text-indigo-700 font-bold">ScholarSpace</span>
+      <p class="text-sm text-slate-500">© 2026 ScholarSpace</p>
+      <div class="flex gap-4 mt-2">
+        <span class="material-symbols-outlined text-slate-400 hover:text-primary cursor-pointer transition-colors">public</span>
+        <span class="material-symbols-outlined text-slate-400 hover:text-primary cursor-pointer transition-colors">potted_plant</span>
+        <span class="material-symbols-outlined text-slate-400 hover:text-primary cursor-pointer transition-colors">menu_book</span>
+      </div>
+    </div>
+  </div>
+</footer>
+{% endblock footer %}

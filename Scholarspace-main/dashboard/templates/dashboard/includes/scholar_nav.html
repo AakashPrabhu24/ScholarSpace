@@ -1,0 +1,71 @@
+{% load i18n %}
+{% with url_name=request.resolver_match.url_name app_ns=request.resolver_match.namespace %}
+<nav class="scholar-top-nav fixed top-0 z-[60] w-full overflow-visible bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl shadow-sm shadow-indigo-100/20">
+  <div class="flex justify-between items-center w-full px-6 py-3 max-w-screen-2xl mx-auto gap-4 overflow-visible">
+    <div class="flex items-center gap-4 min-w-0 overflow-visible">
+      <a href="{% url 'dashboard_home' %}" data-scholar-vt class="flex items-center gap-4 shrink-0 no-underline">
+        <img alt="" class="w-10 h-10 rounded-xl shadow-md" width="40" height="40" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDJ1Z5JOaN-92_4eh490q9B74RkQAA1K3h1-nEQmGhQ4YWh6q0aWPjMeunlPdPcptk5ShAI9HDXAiJqU1rxrVpEPln9XvztYuAIMwEz1ophqXSpaUwWy0FN3EN7tndIhQmnyT_EUoZNPTXYonwY4_UxSmibDUVoiVtXkV59QrhTYUa3w5rq3kioHW19eK2ib-02YOlBrFlvd5tfLIcnG9DTatU1R-UklcR1kqtru4w6vhi2PKpGh2-42jq2VorlkFarmzcfQEb5Nys"/>
+        <span class="text-2xl font-black tracking-tight text-indigo-700 dark:text-indigo-300 font-headline">ScholarSpace</span>
+      </a>
+    </div>
+    <div class="hidden md:flex items-center gap-8 overflow-visible">
+      <a data-scholar-vt class="{% if url_name == 'dashboard_home' %}text-indigo-700 dark:text-indigo-300 border-b-2 border-indigo-600 dark:border-indigo-400 pb-1 font-medium text-sm{% else %}text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-200 transition-colors text-sm font-medium{% endif %} no-underline" href="{% url 'dashboard_home' %}">{% trans "Home" %}</a>
+      {% if manage_work_url %}
+      <a data-scholar-vt class="{% if app_ns == 'manage_work' %}text-indigo-700 dark:text-indigo-300 border-b-2 border-indigo-600 dark:border-indigo-400 pb-1 font-medium text-sm{% else %}text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-200 transition-colors text-sm font-medium{% endif %} no-underline whitespace-nowrap" href="{{ manage_work_url }}">{% trans "Manage Work" %}</a>
+      {% endif %}
+      <div class="overflow-visible" data-scholar-options>
+        <button type="button" class="scholar-options-trigger flex items-center gap-1 {% if url_name == 'books' or url_name == 'wiki' or url_name == 'dictionary' or url_name == 'youtube' or url_name == 'youtube_watch' or url_name == 'todo' or url_name == 'homework' or url_name == 'notes' or url_name == 'google_calendar' or url_name == 'conversion' or url_name == 'notes-detail' or url_name == 'timetable_home' or url_name == 'questions' or url_name == 'generate_timetable' %}text-indigo-700 dark:text-indigo-300 border-b-2 border-indigo-600 dark:border-indigo-400 pb-1 font-medium text-sm{% else %}text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-200 transition-colors text-sm font-medium{% endif %} bg-transparent border-x-0 border-t-0 cursor-pointer" aria-expanded="false" aria-haspopup="true" aria-controls="scholar-options-menu">
+          {% trans "Options" %} <span class="material-symbols-outlined text-[18px]">expand_more</span>
+        </button>
+        <div id="scholar-options-menu" role="menu" class="scholar-options-panel">
+          <div class="bg-surface-container-lowest shadow-lg rounded-lg border border-outline-variant/10 py-2">
+          {% if manage_work_url %}
+          <a data-scholar-vt role="menuitem" class="block px-4 py-2 hover:bg-surface-container text-sm text-on-surface no-underline font-medium" href="{{ manage_work_url }}">{% trans "Manage Work" %}</a>
+          {% endif %}
+          <a role="menuitem" class="block px-4 py-2 hover:bg-surface-container text-sm text-on-surface no-underline" href="{% url 'books' %}">{% trans "Books" %}</a>
+          <a role="menuitem" class="block px-4 py-2 hover:bg-surface-container text-sm text-on-surface no-underline" href="{% url 'wiki' %}">{% trans "Wikipedia" %}</a>
+          <a role="menuitem" class="block px-4 py-2 hover:bg-surface-container text-sm text-on-surface no-underline" href="{% url 'dictionary' %}">{% trans "Dictionary" %}</a>
+          <a role="menuitem" class="block px-4 py-2 hover:bg-surface-container text-sm text-on-surface no-underline" href="{% url 'youtube' %}">{% trans "YouTube" %}</a>
+          <a role="menuitem" class="block px-4 py-2 hover:bg-surface-container text-sm text-on-surface no-underline" href="{% url 'todo' %}">{% trans "My Goals" %}</a>
+          <a role="menuitem" class="block px-4 py-2 hover:bg-surface-container text-sm text-on-surface no-underline" href="{% url 'homework' %}">{% trans "Homework" %}</a>
+          <a role="menuitem" class="block px-4 py-2 hover:bg-surface-container text-sm text-on-surface no-underline" href="{% url 'notes' %}">{% trans "Notes" %}</a>
+          <a data-scholar-vt role="menuitem" class="block px-4 py-2 hover:bg-surface-container text-sm text-on-surface no-underline" href="{% url 'timetable_app:timetable_home' %}">{% trans "Time Table" %}</a>
+          <a role="menuitem" class="block px-4 py-2 hover:bg-surface-container text-sm text-on-surface no-underline" href="{% url 'google_calendar' %}">{% trans "Google Calendar" %}</a>
+          </div>
+        </div>
+      </div>
+      <a data-scholar-vt class="{% if url_name == 'profile' %}text-indigo-700 dark:text-indigo-300 border-b-2 border-indigo-600 dark:border-indigo-400 pb-1 font-medium text-sm{% else %}text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-200 transition-colors text-sm font-medium{% endif %} no-underline" href="{% url 'profile' %}">{% trans "Profile" %}</a>
+      <a class="text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-200 transition-colors text-sm font-medium no-underline" href="https://docs.google.com/forms/d/e/1FAIpQLSeXbqorpTQJgPj26UjIslaqMuwM0fphvYulL70F8mXxiqrYhQ/viewform?usp=sharing" target="_blank" rel="noopener noreferrer">{% trans "Feedback" %}</a>
+      <a data-scholar-vt class="text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-200 transition-colors text-sm font-medium no-underline" href="{% url 'logout' %}">{% trans "Logout" %}</a>
+    </div>
+    <div class="flex items-center gap-2 shrink-0">
+      {% if request.user.is_authenticated %}
+      <a href="{% url 'notifications' %}"
+         class="relative inline-flex items-center justify-center p-2 rounded-full text-on-surface-variant hover:bg-surface-container transition-colors no-underline"
+         title="Notifications"
+         aria-label="Notifications">
+        <span class="material-symbols-outlined text-[22px]">notifications</span>
+        {% if unread_notification_count %}
+        <span class="absolute top-1 right-1 min-w-[16px] h-4 bg-error text-on-error text-[9px] font-black rounded-full flex items-center justify-center px-1 leading-none">
+          {{ unread_notification_count }}
+        </span>
+        {% endif %}
+      </a>
+      {% endif %}
+      {% if url_name == 'dashboard_home' %}
+      <button
+        type="button"
+        id="scholar-settings-trigger"
+        class="material-symbols-outlined text-on-surface-variant hover:bg-surface-container dark:hover:bg-slate-800 p-2 rounded-full transition-colors bg-transparent border-0 cursor-pointer inline-flex"
+        title="Settings"
+        aria-label="Open settings"
+        aria-expanded="false"
+        aria-controls="home-settings-dialog"
+      >settings</button>
+      {% else %}
+      <a href="{% url 'profile' %}" class="material-symbols-outlined text-on-surface-variant hover:bg-surface-container p-2 rounded-full transition-colors no-underline inline-flex" title="Settings">settings</a>
+      {% endif %}
+    </div>
+  </div>
+</nav>
+{% endwith %}

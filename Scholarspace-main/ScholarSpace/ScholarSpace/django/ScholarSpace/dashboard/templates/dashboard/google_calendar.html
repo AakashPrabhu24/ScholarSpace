@@ -1,0 +1,73 @@
+{% extends 'dashboard/scholar_app_base.html' %}
+
+{% block title %}ScholarSpace | Academic Calendar{% endblock %}
+
+{% block content %}
+<main class="scholar-page-fade mt-20 md:mt-24 px-4 sm:px-8 pb-12 flex-grow max-w-7xl mx-auto w-full">
+  <header class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
+    <div>
+      <nav class="flex items-center gap-2 text-on-surface-variant text-sm font-medium mb-2">
+        <span>Tools</span>
+        <span class="material-symbols-outlined text-xs">chevron_right</span>
+        <span class="text-primary font-bold">Academic Calendar</span>
+      </nav>
+      <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight text-on-surface font-headline">{{ month_year }}</h1>
+      {% if api_error %}
+        <p class="text-sm text-error mt-2">{{ api_error }}</p>
+      {% elif not has_api_key %}
+        <p class="text-sm text-on-surface-variant mt-2">Add <code class="text-xs bg-surface-container px-1 rounded">GOOGLE_CALENDAR_API_KEY</code> or <code class="text-xs bg-surface-container px-1 rounded">google_calendar_api_key.txt</code> for the upcoming-events list.</p>
+      {% endif %}
+    </div>
+    <div class="flex flex-wrap items-center gap-3">
+      <a data-scholar-vt href="{% url 'dashboard_home' %}" class="inline-flex items-center gap-2 px-6 py-3 bg-surface-container-low text-on-surface font-semibold rounded-full hover:bg-surface-container-high transition-all active:scale-95 no-underline">
+        <span class="material-symbols-outlined text-[20px]">dashboard</span>
+        Dashboard
+      </a>
+      <a href="https://calendar.google.com/calendar" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-br from-primary to-primary-dim text-on-primary font-semibold rounded-full shadow-lg shadow-primary/20 hover:opacity-90 transition-all active:scale-95 no-underline">
+        <span class="material-symbols-outlined text-[20px]">open_in_new</span>
+        Open full Google Calendar
+      </a>
+    </div>
+  </header>
+
+  <section class="bg-surface-container-lowest rounded-xl shadow-xl shadow-on-surface/5 border border-outline-variant/10 overflow-hidden">
+    <div class="flex flex-wrap items-center justify-between gap-4 p-4 sm:p-6 bg-surface-container-low/50 backdrop-blur-sm border-b border-outline-variant/10">
+      <p class="text-sm text-on-surface-variant font-medium">Full Google Calendar (embedded). Use tabs inside the frame for day, week, or agenda.</p>
+      <a href="{{ iframe_src }}" target="_blank" rel="noopener noreferrer" class="text-sm font-bold text-primary hover:underline no-underline">Pop out embed</a>
+    </div>
+    <div class="relative w-full bg-surface-container-low" style="min-height:75vh;">
+      <iframe title="Google Calendar" class="absolute inset-0 w-full h-full min-h-[75vh] border-0" src="{{ iframe_src }}" loading="lazy" allowfullscreen></iframe>
+    </div>
+  </section>
+
+  <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div class="bg-surface-container-low p-6 rounded-lg border border-outline-variant/10">
+      <h3 class="text-sm font-bold uppercase tracking-widest text-on-surface-variant mb-4">Upcoming (Calendar API)</h3>
+      {% if event_previews %}
+        <ul class="space-y-4">
+          {% for row in event_previews %}
+            <li class="flex items-start gap-4">
+              <div class="w-1 h-10 rounded-full {% cycle 'bg-primary' 'bg-tertiary' 'bg-secondary' %} mt-1 shrink-0"></div>
+              <div>
+                <p class="font-bold text-on-surface">{{ row.title }}</p>
+                {% if row.when %}<p class="text-xs text-on-surface-variant">{{ row.when }}</p>{% endif %}
+              </div>
+            </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p class="text-sm text-on-surface-variant">No upcoming events loaded yet. Check API key, Calendar API enablement, and public calendar ID.</p>
+      {% endif %}
+    </div>
+    <div class="md:col-span-2 relative overflow-hidden rounded-lg bg-primary-dim text-on-primary p-8">
+      <div class="relative z-10 flex flex-col justify-center h-full">
+        <span class="text-xs font-bold uppercase tracking-[0.2em] opacity-80 mb-2">Focus</span>
+        <h2 class="text-2xl font-bold mb-4 font-headline">Keep this page open for your live Google Calendar, or open the full site in a new tab for creating events on your personal calendar.</h2>
+        <a href="https://calendar.google.com/calendar" target="_blank" rel="noopener noreferrer" class="w-fit px-6 py-2 bg-on-primary text-primary font-bold rounded-full text-sm hover:bg-primary-container transition-all no-underline">Open Google Calendar</a>
+      </div>
+      <div class="absolute -right-20 -top-20 w-80 h-80 bg-primary/20 rounded-full blur-3xl"></div>
+      <div class="absolute -left-10 -bottom-10 w-40 h-40 bg-tertiary/20 rounded-full blur-2xl"></div>
+    </div>
+  </div>
+</main>
+{% endblock content %}

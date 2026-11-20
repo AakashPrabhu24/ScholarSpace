@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+{% load static %}
+{% load i18n %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% trans "AI Drawable Calculator" %}</title>
+    <link rel="stylesheet" href="{% static 'calculator/css/style.css' %}">
+    <!-- Chart.js for Graphing -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        
+        <!-- Top Panel: Results -->
+        <div class="top-panel">
+            <div class="info-box">
+                <span class="label">{% trans "Recognized (Click to Edit):" %}</span>
+                <span id="recognized-equation" class="value text-muted" contenteditable="true" title="{% trans 'Manual Override: Edit if AI misreads' %}">{% trans "Draw something..." %}</span>
+            </div>
+            <div class="info-box result-box">
+                <span class="label">{% trans "Result:" %}</span>
+                <span id="solved-result" class="value text-highlight">-</span>
+            </div>
+            <div id="loading-indicator" class="hidden">{% trans "Processing..." %}</div>
+        </div>
+
+        <!-- Main Workspace -->
+        <div class="workspace">
+            
+            <!-- Left/Center: Drawing Canvas -->
+            <div class="canvas-container">
+                <div class="toolbar">
+                    <button id="btn-clear" title="{% trans 'Clear Canvas' %}">🗑️ {% trans "Clear" %}</button>
+                    <button id="btn-undo" title="{% trans 'Undo Last Stroke' %}">↩️ {% trans "Undo" %}</button>
+                    <button id="btn-erase" title="{% trans 'Toggle Eraser' %}">🧽 {% trans "Erase" %}</button>
+                    <button id="btn-solve" class="primary-btn" title="{% trans 'Force Solve' %}">✨ {% trans "Solve" %}</button>
+                </div>
+                <canvas id="drawing-canvas"></canvas>
+            </div>
+
+            <!-- Right: Graph Panel -->
+            <div class="graph-container">
+                <div class="graph-header">{% trans "Graph Output" %}</div>
+                <div class="chart-wrapper">
+                    <canvas id="graph-canvas"></canvas>
+                </div>
+                <div id="graph-error" class="error-msg hidden"></div>
+            </div>
+            
+        </div>
+        
+        <!-- History Panel (Bottom) -->
+        <div class="history-panel">
+            <h3>{% trans "History" %}</h3>
+            <ul id="history-list">
+                <!-- History items injected here -->
+            </ul>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="{% static 'calculator/js/api.js' %}"></script>
+    <script src="{% static 'calculator/js/graph.js' %}"></script>
+    <script src="{% static 'calculator/js/canvas.js' %}"></script>
+</body>
+</html>

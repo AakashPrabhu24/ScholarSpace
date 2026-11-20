@@ -1,0 +1,171 @@
+{% extends 'dashboard/scholar_app_base.html' %}
+{% load static %}
+
+{% block title %}ScholarSpace | Wikipedia Search{% endblock %}
+
+{% block scholar_floating_shapes %}
+<style>
+  .glass-card {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+  }
+  .athelier-shadow { box-shadow: 0 8px 24px rgba(0,0,0,0.06); }
+  .wiki-blob {
+    position: absolute;
+    border-radius: 9999px;
+    pointer-events: none;
+  }
+</style>
+<div class="wiki-blob bg-primary-container/20 blur-[100px] w-72 h-72"
+     style="top:15%;left:10%;z-index:0" aria-hidden="true"></div>
+<div class="wiki-blob bg-tertiary-container/20 blur-[120px] w-96 h-96"
+     style="bottom:15%;right:8%;z-index:0" aria-hidden="true"></div>
+<div class="wiki-blob bg-secondary-container/5 blur-[150px] w-[700px] h-[700px]"
+     style="top:50%;left:50%;transform:translate(-50%,-50%);z-index:0" aria-hidden="true"></div>
+{% endblock %}
+
+{% block main_class %}flex-grow w-full max-w-full px-0 py-0 pt-0 pb-24 md:pb-0 flex flex-col{% endblock %}
+
+{% block content %}
+<div class="relative z-10 flex flex-col items-center w-full px-6 pb-12 min-h-[calc(100vh-4rem)]">
+
+  <!-- Hero + Search -->
+  <div class="flex flex-col items-center w-full max-w-4xl pt-10 {% if not title and not error %}justify-center flex-1{% endif %}">
+
+    <!-- Branding -->
+    <div class="text-center mb-10 space-y-4">
+      <div class="flex flex-col items-center gap-4">
+        <div class="w-20 h-20 bg-surface-container-lowest rounded-xl p-3 athelier-shadow flex items-center justify-center border border-outline-variant/10">
+          <img alt="Wikipedia logo" class="w-full h-auto grayscale opacity-80"
+               src="https://lh3.googleusercontent.com/aida-public/AB6AXuB_ghazJAak8krG7JZKkOCBA9TBatr6repiIjm12ekv94MbvlEKKbyqdE_WorECfHRqYNXRhsjLk2Je-BrbDjNxOIef-r5WaPnTYydb9ACaGr25yqG4esk4EbuGAHCMWSNjsvfnRbKU8SWof82ssKQ0yNkxhmV_G3tJPGfSMrwjMuW_EfvR4YAxa6uWnCgh8qDF-W5_W4dKf8EgtuhZOA1Xh3mPpQj7W034pddhohNSm9zvgfKmisULiDwhop09zTSXvPTq_5alAuE" />
+        </div>
+        <h1 class="text-5xl md:text-6xl font-black font-headline tracking-tighter text-on-surface mt-2">
+          Explore <span class="text-primary italic">Everything.</span>
+        </h1>
+      </div>
+      <p class="text-on-surface-variant font-medium text-lg md:text-xl max-w-md mx-auto leading-relaxed">
+        Discover the universe of knowledge with a touch of cosmic brilliance.
+      </p>
+    </div>
+
+    <!-- Glass Search Card -->
+    <div class="w-full glass-card rounded-xl athelier-shadow p-2 md:p-4 border border-white/50 mb-6">
+      <form method="post" action="" id="wiki-search-form">
+        {% csrf_token %}
+        <div class="flex flex-col md:flex-row gap-3">
+          <div class="relative flex-1">
+            <div class="absolute inset-y-0 left-5 flex items-center pointer-events-none text-outline">
+              <span class="material-symbols-outlined">search</span>
+            </div>
+            <input
+              class="w-full pl-14 pr-6 py-5 bg-surface-container-high border-none rounded-lg text-lg font-medium text-on-surface placeholder:text-outline focus:ring-2 focus:ring-primary/20 focus:bg-surface-container-lowest transition-all duration-300 outline-none"
+              id="wiki-input"
+              name="text"
+              type="text"
+              placeholder="Enter Your Search"
+              value="{{ form.text.value|default:'' }}"
+              autocomplete="off"
+            />
+          </div>
+          <button type="submit"
+                  class="bg-gradient-to-br from-primary to-primary-dim text-on-primary font-headline font-bold text-sm tracking-widest uppercase px-10 py-5 rounded-lg flex items-center justify-center gap-3 hover:shadow-lg hover:shadow-primary/20 active:scale-95 transform transition-all group">
+            Illuminate
+            <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform"
+                  style="font-variation-settings:'FILL' 1">auto_awesome</span>
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Error -->
+    {% if error %}
+    <div class="w-full mb-6 p-4 bg-error-container/30 border border-error/20 rounded-xl flex items-start gap-3">
+      <span class="material-symbols-outlined text-error mt-0.5 shrink-0">error_outline</span>
+      <p class="text-on-surface font-medium">{{ error }}</p>
+    </div>
+    {% endif %}
+
+    <!-- Result Card -->
+    {% if title %}
+    <div class="w-full glass-card rounded-xl athelier-shadow border border-white/50 overflow-hidden mb-8">
+      <a href="{{ link }}" target="_blank"
+         class="block p-6 border-b border-outline-variant/10 hover:bg-surface-container-low transition-colors group no-underline">
+        <div class="flex items-start justify-between gap-4">
+          <div class="flex-1 min-w-0">
+            <h2 class="text-2xl font-bold font-headline text-on-surface group-hover:text-primary transition-colors mb-1">
+              {{ title }}
+            </h2>
+            <p class="text-sm text-outline truncate">{{ link }}</p>
+          </div>
+          <span class="material-symbols-outlined text-primary group-hover:translate-x-1 transition-transform shrink-0 mt-1">open_in_new</span>
+        </div>
+        <div class="mt-3 w-12 h-0.5 bg-primary rounded-full group-hover:w-24 transition-all duration-300"></div>
+      </a>
+      <div class="p-6">
+        <p class="text-on-surface leading-relaxed text-base">{{ details }}</p>
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- Suggested Topics — only shown on fresh load -->
+    {% if not title and not error %}
+    <div class="mt-8 w-full">
+      <h3 class="text-xs font-bold uppercase tracking-[0.2em] text-on-surface-variant mb-6 text-center">
+        Trending Constellations of Knowledge
+      </h3>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <button type="button" onclick="searchTopic('Quantum Entanglement')"
+                class="group cursor-pointer p-4 rounded-lg bg-surface-container-low hover:bg-surface-container-lowest transition-all duration-300 border border-outline-variant/5 text-left w-full">
+          <span class="block text-[10px] font-bold text-tertiary uppercase mb-2">Science</span>
+          <span class="block font-headline font-bold text-on-surface group-hover:text-primary transition-colors">Quantum Entanglement</span>
+        </button>
+        <button type="button" onclick="searchTopic('Silk Road')"
+                class="group cursor-pointer p-4 rounded-lg bg-surface-container-low hover:bg-surface-container-lowest transition-all duration-300 border border-outline-variant/5 text-left w-full">
+          <span class="block text-[10px] font-bold text-secondary uppercase mb-2">History</span>
+          <span class="block font-headline font-bold text-on-surface group-hover:text-primary transition-colors">The Silk Road</span>
+        </button>
+        <button type="button" onclick="searchTopic('Surrealism')"
+                class="group cursor-pointer p-4 rounded-lg bg-surface-container-low hover:bg-surface-container-lowest transition-all duration-300 border border-outline-variant/5 text-left w-full">
+          <span class="block text-[10px] font-bold text-primary uppercase mb-2">Art</span>
+          <span class="block font-headline font-bold text-on-surface group-hover:text-primary transition-colors">Surrealism Movement</span>
+        </button>
+        <button type="button" onclick="searchTopic('James Webb Space Telescope')"
+                class="group cursor-pointer p-4 rounded-lg bg-surface-container-low hover:bg-surface-container-lowest transition-all duration-300 border border-outline-variant/5 text-left w-full">
+          <span class="block text-[10px] font-bold text-tertiary uppercase mb-2">Space</span>
+          <span class="block font-headline font-bold text-on-surface group-hover:text-primary transition-colors">James Webb Optics</span>
+        </button>
+      </div>
+    </div>
+    {% endif %}
+
+  </div><!-- /hero inner -->
+
+  <!-- Recently Illumined strip — appears after a successful search -->
+  {% if title %}
+  <div class="w-full max-w-sm mt-auto pt-8">
+    <div class="p-4 glass-card rounded-xl border border-white/40 athelier-shadow flex items-center gap-4">
+      <div class="w-12 h-12 rounded-full bg-tertiary-fixed flex items-center justify-center text-on-tertiary-fixed shrink-0">
+        <span class="material-symbols-outlined">history</span>
+      </div>
+      <div class="flex-1 min-w-0">
+        <p class="text-xs font-bold text-on-surface-variant uppercase tracking-wider">Last Searched</p>
+        <p class="text-sm font-semibold text-on-surface truncate">{{ title }}</p>
+      </div>
+      <a href="{{ link }}" target="_blank"
+         class="text-primary p-2 hover:bg-primary-container/20 rounded-full transition-colors no-underline flex items-center">
+        <span class="material-symbols-outlined">chevron_right</span>
+      </a>
+    </div>
+  </div>
+  {% endif %}
+
+</div><!-- /outer -->
+
+<script>
+function searchTopic(topic) {
+  document.getElementById('wiki-input').value = topic;
+  document.getElementById('wiki-search-form').submit();
+}
+</script>
+{% endblock %}
